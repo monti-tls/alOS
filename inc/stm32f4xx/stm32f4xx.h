@@ -104,8 +104,8 @@ extern "C" {
    Timeout value
    */
 #if !defined(HSE_STARTUP_TIMEOUT)
-#define HSE_STARTUP_TIMEOUT                                                                    \
-    ((uint16_t)0x0500) /*!< Time out for HSE start up  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define HSE_STARTUP_TIMEOUT                                                                      \
+    ((uint16_t)0x0500) /*!< Time out for HSE start up  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 #endif                 /* HSE_STARTUP_TIMEOUT */
 
@@ -119,8 +119,8 @@ extern "C" {
 #define __STM32F4XX_STDPERIPH_VERSION_MAIN (0x01) /*!< [31:24] main version */
 #define __STM32F4XX_STDPERIPH_VERSION_SUB1 (0x00) /*!< [23:16] sub1 version */
 #define __STM32F4XX_STDPERIPH_VERSION_SUB2 (0x00) /*!< [15:8]  sub2 version */
-#define __STM32F4XX_STDPERIPH_VERSION_RC                                          \
-    (0x00) /*!< [7:0]  release candidate  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define __STM32F4XX_STDPERIPH_VERSION_RC                                            \
+    (0x00) /*!< [7:0]  release candidate  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
               */
 #define __STM32F4XX_STDPERIPH_VERSION                                                          \
     ((__STM32F4XX_STDPERIPH_VERSION_MAIN << 24) | (__STM32F4XX_STDPERIPH_VERSION_SUB1 << 16) | \
@@ -139,8 +139,8 @@ extern "C" {
  */
 #define __CM4_REV 0x0001 /*!< Core revision r0p1                            */
 #define __MPU_PRESENT 1  /*!< STM32F4XX provides an MPU                     */
-#define __NVIC_PRIO_BITS                                                                          \
-    4 /*!< STM32F4XX uses 4 Bits for the Priority Levels  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define __NVIC_PRIO_BITS                                                                            \
+    4 /*!< STM32F4XX uses 4 Bits for the Priority Levels  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
          */
 #define __Vendor_SysTickConfig 0 /*!< Set to 1 if different SysTick Config is used  */
 
@@ -153,7 +153,8 @@ extern "C" {
  * device
  *        in @ref Library_configuration_section
  */
-typedef enum IRQn {
+typedef enum IRQn
+{
     /******  Cortex-M4 Processor Exceptions Numbers
        ****************************************************************/
     NonMaskableInt_IRQn = -14,    /*!< 2 Non Maskable Interrupt */
@@ -297,12 +298,25 @@ typedef __I uint32_t vuc32; /*!< Read Only */
 typedef __I uint16_t vuc16; /*!< Read Only */
 typedef __I uint8_t vuc8;   /*!< Read Only */
 
-typedef enum { RESET = 0, SET = !RESET } FlagStatus, ITStatus;
+typedef enum
+{
+    RESET = 0,
+    SET = !RESET
+} FlagStatus,
+    ITStatus;
 
-typedef enum { DISABLE = 0, ENABLE = !DISABLE } FunctionalState;
+typedef enum
+{
+    DISABLE = 0,
+    ENABLE = !DISABLE
+} FunctionalState;
 #define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
 
-typedef enum { ERROR = 0, SUCCESS = !ERROR } ErrorStatus;
+typedef enum
+{
+    ERROR = 0,
+    SUCCESS = !ERROR
+} ErrorStatus;
 
 /**
   * @}
@@ -316,7 +330,8 @@ typedef enum { ERROR = 0, SUCCESS = !ERROR } ErrorStatus;
   * @brief Analog to Digital Converter
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t SR;    /*!< ADC status register,                         Address
                             offset: 0x00 */
     __IO uint32_t CR1;   /*!< ADC control register 1,                      Address
@@ -359,7 +374,8 @@ typedef struct {
                             offset: 0x4C */
 } ADC_TypeDef;
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CSR; /*!< ADC Common status register,                  Address
                           offset: ADC1 base address + 0x300 */
     __IO uint32_t CCR; /*!< ADC common control register,                 Address
@@ -373,7 +389,8 @@ typedef struct {
   * @brief Controller Area Network TxMailBox
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t TIR;  /*!< CAN TX mailbox identifier register */
     __IO uint32_t TDTR; /*!< CAN mailbox data length control and time stamp register */
     __IO uint32_t TDLR; /*!< CAN mailbox data low register */
@@ -384,7 +401,8 @@ typedef struct {
   * @brief Controller Area Network FIFOMailBox
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t RIR;  /*!< CAN receive FIFO mailbox identifier register */
     __IO uint32_t RDTR; /*!< CAN receive FIFO mailbox data length control and time stamp
                            register */
@@ -396,7 +414,8 @@ typedef struct {
   * @brief Controller Area Network FilterRegister
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t FR1; /*!< CAN Filter bank register 1 */
     __IO uint32_t FR2; /*!< CAN Filter bank register 1 */
 } CAN_FilterRegister_TypeDef;
@@ -405,7 +424,8 @@ typedef struct {
   * @brief Controller Area Network
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t MCR;                              /*!< CAN master control register,         Address offset: 0x00 */
     __IO uint32_t MSR;                              /*!< CAN master status register,          Address offset: 0x04 */
     __IO uint32_t TSR;                              /*!< CAN transmit status register,        Address offset: 0x08 */
@@ -437,7 +457,8 @@ typedef struct {
   * @brief CRC calculation unit
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t DR;   /*!< CRC Data register,             Address offset: 0x00 */
     __IO uint8_t IDR;   /*!< CRC Independent data register, Address offset: 0x04 */
     uint8_t RESERVED0;  /*!< Reserved, 0x05                                      */
@@ -449,7 +470,8 @@ typedef struct {
   * @brief Digital to Analog Converter
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR;      /*!< DAC control register, Address offset: 0x00 */
     __IO uint32_t SWTRIGR; /*!< DAC software trigger register, Address offset: 0x04 */
     __IO uint32_t DHR12R1; /*!< DAC channel1 12-bit right-aligned data holding
@@ -479,7 +501,8 @@ typedef struct {
   * @brief Debug MCU
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t IDCODE; /*!< MCU device ID code,               Address offset: 0x00 */
     __IO uint32_t CR;     /*!< Debug MCU configuration register, Address offset: 0x04 */
     __IO uint32_t APB1FZ; /*!< Debug MCU APB1 freeze register,   Address offset: 0x08 */
@@ -490,7 +513,8 @@ typedef struct {
   * @brief DCMI
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR;      /*!< DCMI control register 1,                       Address offset:
                               0x00 */
     __IO uint32_t SR;      /*!< DCMI status register,                          Address offset:
@@ -517,7 +541,8 @@ typedef struct {
   * @brief DMA Controller
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR;   /*!< DMA stream x configuration register      */
     __IO uint32_t NDTR; /*!< DMA stream x number of data register     */
     __IO uint32_t PAR;  /*!< DMA stream x peripheral address register */
@@ -526,7 +551,8 @@ typedef struct {
     __IO uint32_t FCR;  /*!< DMA stream x FIFO control register       */
 } DMA_Stream_TypeDef;
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t LISR;  /*!< DMA low interrupt status register,      Address offset: 0x00 */
     __IO uint32_t HISR;  /*!< DMA high interrupt status register,     Address offset: 0x04 */
     __IO uint32_t LIFCR; /*!< DMA low interrupt flag clear register,  Address
@@ -539,7 +565,8 @@ typedef struct {
   * @brief Ethernet MAC
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t MACCR;
     __IO uint32_t MACFFR;
     __IO uint32_t MACHTHR;
@@ -612,7 +639,8 @@ typedef struct {
   * @brief External Interrupt/Event Controller
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t IMR;   /*!< EXTI Interrupt mask register,            Address offset: 0x00 */
     __IO uint32_t EMR;   /*!< EXTI Event mask register,                Address offset: 0x04 */
     __IO uint32_t RTSR;  /*!< EXTI Rising trigger selection register,  Address
@@ -628,7 +656,8 @@ typedef struct {
   * @brief FLASH Registers
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t ACR;     /*!< FLASH access control register, Address offset: 0x00 */
     __IO uint32_t KEYR;    /*!< FLASH key register,            Address offset: 0x04 */
     __IO uint32_t OPTKEYR; /*!< FLASH option key register,     Address offset: 0x08 */
@@ -641,7 +670,8 @@ typedef struct {
   * @brief Flexible Static Memory Controller
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t BTCR[8]; /*!< NOR/PSRAM chip-select control register(BCR) and
                               chip-select timing register(BTR), Address offset:
                               0x00-1C */
@@ -651,7 +681,8 @@ typedef struct {
   * @brief Flexible Static Memory Controller Bank1E
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t BWTR[7]; /*!< NOR/PSRAM write timing registers, Address offset:
                               0x104-0x11C */
 } FSMC_Bank1E_TypeDef;
@@ -660,7 +691,8 @@ typedef struct {
   * @brief Flexible Static Memory Controller Bank2
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t PCR2;  /*!< NAND Flash control register 2, Address offset: 0x60 */
     __IO uint32_t SR2;   /*!< NAND Flash FIFO status and interrupt register 2,
                             Address offset: 0x64 */
@@ -676,7 +708,8 @@ typedef struct {
   * @brief Flexible Static Memory Controller Bank3
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t PCR3;  /*!< NAND Flash control register 3, Address offset: 0x80 */
     __IO uint32_t SR3;   /*!< NAND Flash FIFO status and interrupt register 3,
                             Address offset: 0x84 */
@@ -692,7 +725,8 @@ typedef struct {
   * @brief Flexible Static Memory Controller Bank4
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t PCR4;  /*!< PC Card  control register 4, Address offset: 0xA0 */
     __IO uint32_t SR4;   /*!< PC Card  FIFO status and interrupt register 4,
                             Address offset: 0xA4 */
@@ -708,7 +742,8 @@ typedef struct {
   * @brief General Purpose I/O
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t MODER;   /*!< GPIO port mode register,               Address offset: 0x00 */
     __IO uint32_t OTYPER;  /*!< GPIO port output type register,        Address
                               offset: 0x04      */
@@ -728,7 +763,8 @@ typedef struct {
   * @brief System configuration controller
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t MEMRMP;    /*!< SYSCFG memory remap register,
                                 Address offset: 0x00      */
     __IO uint32_t PMC;       /*!< SYSCFG peripheral mode configuration register,
@@ -744,7 +780,8 @@ typedef struct {
   * @brief Inter-integrated Circuit Interface
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint16_t CR1;   /*!< I2C Control register 1,     Address offset: 0x00 */
     uint16_t RESERVED0;  /*!< Reserved, 0x02                                   */
     __IO uint16_t CR2;   /*!< I2C Control register 2,     Address offset: 0x04 */
@@ -769,7 +806,8 @@ typedef struct {
   * @brief Independent WATCHDOG
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t KR;  /*!< IWDG Key register,       Address offset: 0x00 */
     __IO uint32_t PR;  /*!< IWDG Prescaler register, Address offset: 0x04 */
     __IO uint32_t RLR; /*!< IWDG Reload register,    Address offset: 0x08 */
@@ -780,7 +818,8 @@ typedef struct {
   * @brief Power Control
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR;  /*!< PWR power control register,        Address offset: 0x00 */
     __IO uint32_t CSR; /*!< PWR power control/status register, Address offset: 0x04 */
 } PWR_TypeDef;
@@ -789,7 +828,8 @@ typedef struct {
   * @brief Reset and Clock Control
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR;         /*!< RCC clock control register, Address offset: 0x00 */
     __IO uint32_t PLLCFGR;    /*!< RCC PLL configuration register, Address offset: 0x04 */
     __IO uint32_t CFGR;       /*!< RCC clock configuration register, Address offset: 0x08 */
@@ -835,7 +875,8 @@ typedef struct {
   * @brief Real-Time Clock
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t TR;       /*!< RTC time register, Address offset: 0x00 */
     __IO uint32_t DR;       /*!< RTC date register, Address offset: 0x04 */
     __IO uint32_t CR;       /*!< RTC control register, Address offset: 0x08 */
@@ -883,7 +924,8 @@ typedef struct {
   * @brief SD host Interface
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t POWER;    /*!< SDIO power control register,    Address offset: 0x00 */
     __IO uint32_t CLKCR;    /*!< SDI clock control register,     Address offset: 0x04 */
     __IO uint32_t ARG;      /*!< SDIO argument register,         Address offset: 0x08 */
@@ -910,7 +952,8 @@ typedef struct {
   * @brief Serial Peripheral Interface
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint16_t CR1;     /*!< SPI control register 1 (not used in I2S mode),
                               Address offset: 0x00 */
     uint16_t RESERVED0;    /*!< Reserved, 0x02 */
@@ -939,7 +982,8 @@ typedef struct {
   * @brief TIM
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint16_t CR1;   /*!< TIM control register 1,              Address offset: 0x00 */
     uint16_t RESERVED0;  /*!< Reserved, 0x02 */
     __IO uint16_t CR2;   /*!< TIM control register 2,              Address offset: 0x04 */
@@ -982,7 +1026,8 @@ typedef struct {
   * @brief Universal Synchronous Asynchronous Receiver Transmitter
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint16_t SR;   /*!< USART Status register,                   Address offset: 0x00 */
     uint16_t RESERVED0; /*!< Reserved, 0x02 */
     __IO uint16_t DR;   /*!< USART Data register,                     Address offset: 0x04 */
@@ -1004,7 +1049,8 @@ typedef struct {
   * @brief Window WATCHDOG
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR;  /*!< WWDG Control register,       Address offset: 0x00 */
     __IO uint32_t CFR; /*!< WWDG Configuration register, Address offset: 0x04 */
     __IO uint32_t SR;  /*!< WWDG Status register,        Address offset: 0x08 */
@@ -1014,7 +1060,8 @@ typedef struct {
   * @brief Crypto Processor
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR;    /*!< CRYP control register, Address offset: 0x00 */
     __IO uint32_t SR;    /*!< CRYP status register, Address offset: 0x04 */
     __IO uint32_t DR;    /*!< CRYP data input register, Address offset: 0x08 */
@@ -1048,7 +1095,8 @@ typedef struct {
   * @brief HASH
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR;      /*!< HASH control register,          Address offset: 0x00 */
     __IO uint32_t DIN;     /*!< HASH data input register,       Address offset: 0x04        */
     __IO uint32_t STR;     /*!< HASH start register,            Address offset: 0x08        */
@@ -1064,7 +1112,8 @@ typedef struct {
   * @brief HASH
   */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CR; /*!< RNG control register, Address offset: 0x00 */
     __IO uint32_t SR; /*!< RNG status register,  Address offset: 0x04 */
     __IO uint32_t DR; /*!< RNG data register,    Address offset: 0x08 */
@@ -1080,41 +1129,50 @@ typedef struct {
 #define FLASH_BASE                                                                                                     \
     ((uint32_t)0x08000000) /*!< FLASH(up to 1 MB) base address in the alias      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               region                         */
 #define CCMDATARAM_BASE                                                                                                \
     ((uint32_t)0x10000000) /*!< CCM(core coupled memory) data RAM(64 KB) base    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               address in the alias region  */
 #define SRAM1_BASE                                                                                                     \
     ((uint32_t)0x20000000) /*!< SRAM1(112 KB) base address in the alias region   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define SRAM2_BASE ((uint32_t)0x2001C000)  /*!< SRAM2(16 KB) base address in the alias region */
 #define PERIPH_BASE ((uint32_t)0x40000000) /*!< Peripheral base address in the alias region */
 #define BKPSRAM_BASE                                                                                                   \
     ((uint32_t)0x40024000) /*!< Backup SRAM(4 KB) base address in the alias      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               region                         */
 #define FSMC_R_BASE ((uint32_t)0xA0000000) /*!< FSMC registers base address */
 
 #define CCMDATARAM_BB_BASE                                                                                             \
     ((uint32_t)0x12000000) /*!< CCM(core coupled memory) data RAM(64 KB) base    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               address in the bit-band region  */
 #define SRAM1_BB_BASE                                                                                                  \
     ((uint32_t)0x22000000) /*!< SRAM1(112 KB) base address in the bit-band       \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               region                             */
 #define SRAM2_BB_BASE                                                                                                 \
     ((uint32_t)0x2201C000) /*!< SRAM2(16 KB) base address in the bit-band     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               region                              */
 #define PERIPH_BB_BASE                                                                                                 \
     ((uint32_t)0x42000000) /*!< Peripheral base address in the bit-band region   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define BKPSRAM_BB_BASE                                                                                                \
     ((uint32_t)0x42024000) /*!< Backup SRAM(4 KB) base address in the bit-band   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               region                         */
 
 /* Legacy defines */
@@ -1350,6 +1408,7 @@ typedef struct {
 #define ADC_CR1_AWDCH                                                                                                  \
     ((uint32_t)0x0000001F) /*!<AWDCH[4:0] bits (Analog watchdog channel select   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               bits) */
 #define ADC_CR1_AWDCH_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define ADC_CR1_AWDCH_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -1363,6 +1422,7 @@ typedef struct {
 #define ADC_CR1_AWDSGL                                                                                                 \
     ((uint32_t)0x00000200) /*!<Enable the watchdog on a single channel in scan   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               mode */
 #define ADC_CR1_JAUTO ((uint32_t)0x00000400)   /*!<Automatic injected group conversion */
 #define ADC_CR1_DISCEN ((uint32_t)0x00000800)  /*!<Discontinuous mode on regular channels */
@@ -1370,6 +1430,7 @@ typedef struct {
 #define ADC_CR1_DISCNUM                                                                                                \
     ((uint32_t)0x0000E000) /*!<DISCNUM[2:0] bits (Discontinuous mode channel     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               count) */
 #define ADC_CR1_DISCNUM_0 ((uint32_t)0x00002000) /*!<Bit 0 */
 #define ADC_CR1_DISCNUM_1 ((uint32_t)0x00004000) /*!<Bit 1 */
@@ -1391,6 +1452,7 @@ typedef struct {
 #define ADC_CR2_JEXTSEL                                                                                                \
     ((uint32_t)0x000F0000) /*!<JEXTSEL[3:0] bits (External event select for      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               injected group) */
 #define ADC_CR2_JEXTSEL_0 ((uint32_t)0x00010000) /*!<Bit 0 */
 #define ADC_CR2_JEXTSEL_1 ((uint32_t)0x00020000) /*!<Bit 1 */
@@ -1399,6 +1461,7 @@ typedef struct {
 #define ADC_CR2_JEXTEN                                                                                                 \
     ((uint32_t)0x00300000) /*!<JEXTEN[1:0] bits (External Trigger Conversion     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               mode for injected channelsp) */
 #define ADC_CR2_JEXTEN_0 ((uint32_t)0x00100000) /*!<Bit 0 */
 #define ADC_CR2_JEXTEN_1 ((uint32_t)0x00200000) /*!<Bit 1 */
@@ -1406,6 +1469,7 @@ typedef struct {
 #define ADC_CR2_EXTSEL                                                                                                 \
     ((uint32_t)0x0F000000) /*!<EXTSEL[3:0] bits (External Event Select for       \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               regular group) */
 #define ADC_CR2_EXTSEL_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define ADC_CR2_EXTSEL_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -1413,6 +1477,7 @@ typedef struct {
 #define ADC_CR2_EXTSEL_3 ((uint32_t)0x08000000) /*!<Bit 3 */
 #define ADC_CR2_EXTEN                                                                                                 \
     ((uint32_t)0x30000000) /*!<EXTEN[1:0] bits (External Trigger Conversion   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               mode for regular channelsp) */
 #define ADC_CR2_EXTEN_0 ((uint32_t)0x10000000) /*!<Bit 0 */
 #define ADC_CR2_EXTEN_1 ((uint32_t)0x20000000) /*!<Bit 1 */
@@ -1422,6 +1487,7 @@ typedef struct {
 #define ADC_SMPR1_SMP10                                                                                                \
     ((uint32_t)0x00000007) /*!<SMP10[2:0] bits (Channel 10 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP10_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define ADC_SMPR1_SMP10_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -1429,6 +1495,7 @@ typedef struct {
 #define ADC_SMPR1_SMP11                                                                                                \
     ((uint32_t)0x00000038) /*!<SMP11[2:0] bits (Channel 11 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP11_0 ((uint32_t)0x00000008) /*!<Bit 0 */
 #define ADC_SMPR1_SMP11_1 ((uint32_t)0x00000010) /*!<Bit 1 */
@@ -1436,6 +1503,7 @@ typedef struct {
 #define ADC_SMPR1_SMP12                                                                                                \
     ((uint32_t)0x000001C0) /*!<SMP12[2:0] bits (Channel 12 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP12_0 ((uint32_t)0x00000040) /*!<Bit 0 */
 #define ADC_SMPR1_SMP12_1 ((uint32_t)0x00000080) /*!<Bit 1 */
@@ -1443,6 +1511,7 @@ typedef struct {
 #define ADC_SMPR1_SMP13                                                                                                \
     ((uint32_t)0x00000E00) /*!<SMP13[2:0] bits (Channel 13 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP13_0 ((uint32_t)0x00000200) /*!<Bit 0 */
 #define ADC_SMPR1_SMP13_1 ((uint32_t)0x00000400) /*!<Bit 1 */
@@ -1450,6 +1519,7 @@ typedef struct {
 #define ADC_SMPR1_SMP14                                                                                                \
     ((uint32_t)0x00007000) /*!<SMP14[2:0] bits (Channel 14 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP14_0 ((uint32_t)0x00001000) /*!<Bit 0 */
 #define ADC_SMPR1_SMP14_1 ((uint32_t)0x00002000) /*!<Bit 1 */
@@ -1457,6 +1527,7 @@ typedef struct {
 #define ADC_SMPR1_SMP15                                                                                                \
     ((uint32_t)0x00038000) /*!<SMP15[2:0] bits (Channel 15 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP15_0 ((uint32_t)0x00008000) /*!<Bit 0 */
 #define ADC_SMPR1_SMP15_1 ((uint32_t)0x00010000) /*!<Bit 1 */
@@ -1464,6 +1535,7 @@ typedef struct {
 #define ADC_SMPR1_SMP16                                                                                                \
     ((uint32_t)0x001C0000) /*!<SMP16[2:0] bits (Channel 16 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP16_0 ((uint32_t)0x00040000) /*!<Bit 0 */
 #define ADC_SMPR1_SMP16_1 ((uint32_t)0x00080000) /*!<Bit 1 */
@@ -1471,6 +1543,7 @@ typedef struct {
 #define ADC_SMPR1_SMP17                                                                                                \
     ((uint32_t)0x00E00000) /*!<SMP17[2:0] bits (Channel 17 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP17_0 ((uint32_t)0x00200000) /*!<Bit 0 */
 #define ADC_SMPR1_SMP17_1 ((uint32_t)0x00400000) /*!<Bit 1 */
@@ -1478,6 +1551,7 @@ typedef struct {
 #define ADC_SMPR1_SMP18                                                                                                \
     ((uint32_t)0x07000000) /*!<SMP18[2:0] bits (Channel 18 Sample time           \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               selection) */
 #define ADC_SMPR1_SMP18_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define ADC_SMPR1_SMP18_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -1487,6 +1561,7 @@ typedef struct {
 #define ADC_SMPR2_SMP0                                                                                                 \
     ((uint32_t)0x00000007) /*!<SMP0[2:0] bits (Channel 0 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP0_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define ADC_SMPR2_SMP0_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -1494,6 +1569,7 @@ typedef struct {
 #define ADC_SMPR2_SMP1                                                                                                 \
     ((uint32_t)0x00000038) /*!<SMP1[2:0] bits (Channel 1 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP1_0 ((uint32_t)0x00000008) /*!<Bit 0 */
 #define ADC_SMPR2_SMP1_1 ((uint32_t)0x00000010) /*!<Bit 1 */
@@ -1501,6 +1577,7 @@ typedef struct {
 #define ADC_SMPR2_SMP2                                                                                                 \
     ((uint32_t)0x000001C0) /*!<SMP2[2:0] bits (Channel 2 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP2_0 ((uint32_t)0x00000040) /*!<Bit 0 */
 #define ADC_SMPR2_SMP2_1 ((uint32_t)0x00000080) /*!<Bit 1 */
@@ -1508,6 +1585,7 @@ typedef struct {
 #define ADC_SMPR2_SMP3                                                                                                 \
     ((uint32_t)0x00000E00) /*!<SMP3[2:0] bits (Channel 3 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP3_0 ((uint32_t)0x00000200) /*!<Bit 0 */
 #define ADC_SMPR2_SMP3_1 ((uint32_t)0x00000400) /*!<Bit 1 */
@@ -1515,6 +1593,7 @@ typedef struct {
 #define ADC_SMPR2_SMP4                                                                                                 \
     ((uint32_t)0x00007000) /*!<SMP4[2:0] bits (Channel 4 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP4_0 ((uint32_t)0x00001000) /*!<Bit 0 */
 #define ADC_SMPR2_SMP4_1 ((uint32_t)0x00002000) /*!<Bit 1 */
@@ -1522,6 +1601,7 @@ typedef struct {
 #define ADC_SMPR2_SMP5                                                                                                 \
     ((uint32_t)0x00038000) /*!<SMP5[2:0] bits (Channel 5 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP5_0 ((uint32_t)0x00008000) /*!<Bit 0 */
 #define ADC_SMPR2_SMP5_1 ((uint32_t)0x00010000) /*!<Bit 1 */
@@ -1529,6 +1609,7 @@ typedef struct {
 #define ADC_SMPR2_SMP6                                                                                                 \
     ((uint32_t)0x001C0000) /*!<SMP6[2:0] bits (Channel 6 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP6_0 ((uint32_t)0x00040000) /*!<Bit 0 */
 #define ADC_SMPR2_SMP6_1 ((uint32_t)0x00080000) /*!<Bit 1 */
@@ -1536,6 +1617,7 @@ typedef struct {
 #define ADC_SMPR2_SMP7                                                                                                 \
     ((uint32_t)0x00E00000) /*!<SMP7[2:0] bits (Channel 7 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP7_0 ((uint32_t)0x00200000) /*!<Bit 0 */
 #define ADC_SMPR2_SMP7_1 ((uint32_t)0x00400000) /*!<Bit 1 */
@@ -1543,6 +1625,7 @@ typedef struct {
 #define ADC_SMPR2_SMP8                                                                                                 \
     ((uint32_t)0x07000000) /*!<SMP8[2:0] bits (Channel 8 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP8_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define ADC_SMPR2_SMP8_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -1550,6 +1633,7 @@ typedef struct {
 #define ADC_SMPR2_SMP9                                                                                                 \
     ((uint32_t)0x38000000) /*!<SMP9[2:0] bits (Channel 9 Sample time selection)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ADC_SMPR2_SMP9_0 ((uint32_t)0x08000000) /*!<Bit 0 */
 #define ADC_SMPR2_SMP9_1 ((uint32_t)0x10000000) /*!<Bit 1 */
@@ -1577,6 +1661,7 @@ typedef struct {
 #define ADC_SQR1_SQ13                                                                                                  \
     ((uint32_t)0x0000001F) /*!<SQ13[4:0] bits (13th conversion in regular        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR1_SQ13_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define ADC_SQR1_SQ13_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -1586,6 +1671,7 @@ typedef struct {
 #define ADC_SQR1_SQ14                                                                                                  \
     ((uint32_t)0x000003E0) /*!<SQ14[4:0] bits (14th conversion in regular        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR1_SQ14_0 ((uint32_t)0x00000020) /*!<Bit 0 */
 #define ADC_SQR1_SQ14_1 ((uint32_t)0x00000040) /*!<Bit 1 */
@@ -1595,6 +1681,7 @@ typedef struct {
 #define ADC_SQR1_SQ15                                                                                                  \
     ((uint32_t)0x00007C00) /*!<SQ15[4:0] bits (15th conversion in regular        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR1_SQ15_0 ((uint32_t)0x00000400) /*!<Bit 0 */
 #define ADC_SQR1_SQ15_1 ((uint32_t)0x00000800) /*!<Bit 1 */
@@ -1604,6 +1691,7 @@ typedef struct {
 #define ADC_SQR1_SQ16                                                                                                  \
     ((uint32_t)0x000F8000) /*!<SQ16[4:0] bits (16th conversion in regular        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR1_SQ16_0 ((uint32_t)0x00008000) /*!<Bit 0 */
 #define ADC_SQR1_SQ16_1 ((uint32_t)0x00010000) /*!<Bit 1 */
@@ -1620,6 +1708,7 @@ typedef struct {
 #define ADC_SQR2_SQ7                                                                                                   \
     ((uint32_t)0x0000001F) /*!<SQ7[4:0] bits (7th conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR2_SQ7_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define ADC_SQR2_SQ7_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -1629,6 +1718,7 @@ typedef struct {
 #define ADC_SQR2_SQ8                                                                                                   \
     ((uint32_t)0x000003E0) /*!<SQ8[4:0] bits (8th conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR2_SQ8_0 ((uint32_t)0x00000020) /*!<Bit 0 */
 #define ADC_SQR2_SQ8_1 ((uint32_t)0x00000040) /*!<Bit 1 */
@@ -1638,6 +1728,7 @@ typedef struct {
 #define ADC_SQR2_SQ9                                                                                                   \
     ((uint32_t)0x00007C00) /*!<SQ9[4:0] bits (9th conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR2_SQ9_0 ((uint32_t)0x00000400) /*!<Bit 0 */
 #define ADC_SQR2_SQ9_1 ((uint32_t)0x00000800) /*!<Bit 1 */
@@ -1647,6 +1738,7 @@ typedef struct {
 #define ADC_SQR2_SQ10                                                                                                  \
     ((uint32_t)0x000F8000) /*!<SQ10[4:0] bits (10th conversion in regular        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR2_SQ10_0 ((uint32_t)0x00008000) /*!<Bit 0 */
 #define ADC_SQR2_SQ10_1 ((uint32_t)0x00010000) /*!<Bit 1 */
@@ -1656,6 +1748,7 @@ typedef struct {
 #define ADC_SQR2_SQ11                                                                                                  \
     ((uint32_t)0x01F00000) /*!<SQ11[4:0] bits (11th conversion in regular        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR2_SQ11_0 ((uint32_t)0x00100000) /*!<Bit 0 */
 #define ADC_SQR2_SQ11_1 ((uint32_t)0x00200000) /*!<Bit 1 */
@@ -1665,6 +1758,7 @@ typedef struct {
 #define ADC_SQR2_SQ12                                                                                                  \
     ((uint32_t)0x3E000000) /*!<SQ12[4:0] bits (12th conversion in regular        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR2_SQ12_0 ((uint32_t)0x02000000) /*!<Bit 0 */
 #define ADC_SQR2_SQ12_1 ((uint32_t)0x04000000) /*!<Bit 1 */
@@ -1676,6 +1770,7 @@ typedef struct {
 #define ADC_SQR3_SQ1                                                                                                   \
     ((uint32_t)0x0000001F) /*!<SQ1[4:0] bits (1st conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR3_SQ1_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define ADC_SQR3_SQ1_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -1685,6 +1780,7 @@ typedef struct {
 #define ADC_SQR3_SQ2                                                                                                   \
     ((uint32_t)0x000003E0) /*!<SQ2[4:0] bits (2nd conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR3_SQ2_0 ((uint32_t)0x00000020) /*!<Bit 0 */
 #define ADC_SQR3_SQ2_1 ((uint32_t)0x00000040) /*!<Bit 1 */
@@ -1694,6 +1790,7 @@ typedef struct {
 #define ADC_SQR3_SQ3                                                                                                   \
     ((uint32_t)0x00007C00) /*!<SQ3[4:0] bits (3rd conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR3_SQ3_0 ((uint32_t)0x00000400) /*!<Bit 0 */
 #define ADC_SQR3_SQ3_1 ((uint32_t)0x00000800) /*!<Bit 1 */
@@ -1703,6 +1800,7 @@ typedef struct {
 #define ADC_SQR3_SQ4                                                                                                   \
     ((uint32_t)0x000F8000) /*!<SQ4[4:0] bits (4th conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR3_SQ4_0 ((uint32_t)0x00008000) /*!<Bit 0 */
 #define ADC_SQR3_SQ4_1 ((uint32_t)0x00010000) /*!<Bit 1 */
@@ -1712,6 +1810,7 @@ typedef struct {
 #define ADC_SQR3_SQ5                                                                                                   \
     ((uint32_t)0x01F00000) /*!<SQ5[4:0] bits (5th conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR3_SQ5_0 ((uint32_t)0x00100000) /*!<Bit 0 */
 #define ADC_SQR3_SQ5_1 ((uint32_t)0x00200000) /*!<Bit 1 */
@@ -1721,6 +1820,7 @@ typedef struct {
 #define ADC_SQR3_SQ6                                                                                                   \
     ((uint32_t)0x3E000000) /*!<SQ6[4:0] bits (6th conversion in regular          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_SQR3_SQ6_0 ((uint32_t)0x02000000) /*!<Bit 0 */
 #define ADC_SQR3_SQ6_1 ((uint32_t)0x04000000) /*!<Bit 1 */
@@ -1732,6 +1832,7 @@ typedef struct {
 #define ADC_JSQR_JSQ1                                                                                                  \
     ((uint32_t)0x0000001F) /*!<JSQ1[4:0] bits (1st conversion in injected        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_JSQR_JSQ1_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define ADC_JSQR_JSQ1_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -1741,6 +1842,7 @@ typedef struct {
 #define ADC_JSQR_JSQ2                                                                                                  \
     ((uint32_t)0x000003E0) /*!<JSQ2[4:0] bits (2nd conversion in injected        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_JSQR_JSQ2_0 ((uint32_t)0x00000020) /*!<Bit 0 */
 #define ADC_JSQR_JSQ2_1 ((uint32_t)0x00000040) /*!<Bit 1 */
@@ -1750,6 +1852,7 @@ typedef struct {
 #define ADC_JSQR_JSQ3                                                                                                  \
     ((uint32_t)0x00007C00) /*!<JSQ3[4:0] bits (3rd conversion in injected        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_JSQR_JSQ3_0 ((uint32_t)0x00000400) /*!<Bit 0 */
 #define ADC_JSQR_JSQ3_1 ((uint32_t)0x00000800) /*!<Bit 1 */
@@ -1759,6 +1862,7 @@ typedef struct {
 #define ADC_JSQR_JSQ4                                                                                                  \
     ((uint32_t)0x000F8000) /*!<JSQ4[4:0] bits (4th conversion in injected        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               sequence) */
 #define ADC_JSQR_JSQ4_0 ((uint32_t)0x00008000) /*!<Bit 0 */
 #define ADC_JSQR_JSQ4_1 ((uint32_t)0x00010000) /*!<Bit 1 */
@@ -1814,6 +1918,7 @@ typedef struct {
 #define ADC_CCR_MULTI_4 ((uint32_t)0x00000010) /*!<Bit 4 */
 #define ADC_CCR_DELAY                                                                                                 \
     ((uint32_t)0x00000F00) /*!<DELAY[3:0] bits (Delay between 2 sampling      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               phases) */
 #define ADC_CCR_DELAY_0 ((uint32_t)0x00000100) /*!<Bit 0 */
 #define ADC_CCR_DELAY_1 ((uint32_t)0x00000200) /*!<Bit 1 */
@@ -1823,6 +1928,7 @@ typedef struct {
 #define ADC_CCR_DMA                                                                                                    \
     ((uint32_t)0x0000C000) /*!<DMA[1:0] bits (Direct Memory Access mode for      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               multimode) */
 #define ADC_CCR_DMA_0 ((uint32_t)0x00004000)    /*!<Bit 0 */
 #define ADC_CCR_DMA_1 ((uint32_t)0x00008000)    /*!<Bit 1 */
@@ -1850,9 +1956,9 @@ typedef struct {
 #define CAN_MCR_NART ((uint16_t)0x0010)  /*!<No Automatic Retransmission */
 #define CAN_MCR_AWUM ((uint16_t)0x0020)  /*!<Automatic Wakeup Mode */
 #define CAN_MCR_ABOM ((uint16_t)0x0040)  /*!<Automatic Bus-Off Management */
-#define CAN_MCR_TTCM                                                                                                   \
-    ((uint16_t)0x0080)                   /*!<Time Triggered Communication Mode \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                            */
+#define CAN_MCR_TTCM                                                                                   \
+    ((uint16_t)0x0080) /*!<Time Triggered Communication Mode \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
 #define CAN_MCR_RESET ((uint16_t)0x8000) /*!<bxCAN software master reset */
 
 /*******************  Bit definition for CAN_MSR register  ********************/
@@ -1868,30 +1974,30 @@ typedef struct {
 
 /*******************  Bit definition for CAN_TSR register  ********************/
 #define CAN_TSR_RQCP0 ((uint32_t)0x00000001) /*!<Request Completed Mailbox0 */
-#define CAN_TSR_TXOK0                                                                                                  \
-    ((uint32_t)0x00000002)                   /*!<Transmission OK of Mailbox0   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                */
+#define CAN_TSR_TXOK0                                                                                  \
+    ((uint32_t)0x00000002) /*!<Transmission OK of Mailbox0   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define CAN_TSR_ALST0 ((uint32_t)0x00000004) /*!<Arbitration Lost for Mailbox0 */
 #define CAN_TSR_TERR0 ((uint32_t)0x00000008) /*!<Transmission Error of Mailbox0 */
 #define CAN_TSR_ABRQ0 ((uint32_t)0x00000080) /*!<Abort Request for Mailbox0 */
 #define CAN_TSR_RQCP1 ((uint32_t)0x00000100) /*!<Request Completed Mailbox1 */
-#define CAN_TSR_TXOK1                                                                                                  \
-    ((uint32_t)0x00000200)                   /*!<Transmission OK of Mailbox1   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                */
+#define CAN_TSR_TXOK1                                                                                  \
+    ((uint32_t)0x00000200) /*!<Transmission OK of Mailbox1   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define CAN_TSR_ALST1 ((uint32_t)0x00000400) /*!<Arbitration Lost for Mailbox1 */
 #define CAN_TSR_TERR1 ((uint32_t)0x00000800) /*!<Transmission Error of Mailbox1 */
-#define CAN_TSR_ABRQ1                                                                                                  \
-    ((uint32_t)0x00008000)                   /*!<Abort Request for Mailbox 1   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                */
+#define CAN_TSR_ABRQ1                                                                                  \
+    ((uint32_t)0x00008000) /*!<Abort Request for Mailbox 1   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define CAN_TSR_RQCP2 ((uint32_t)0x00010000) /*!<Request Completed Mailbox2 */
-#define CAN_TSR_TXOK2                                                                                                  \
-    ((uint32_t)0x00020000)                   /*!<Transmission OK of Mailbox 2  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                */
+#define CAN_TSR_TXOK2                                                                                  \
+    ((uint32_t)0x00020000) /*!<Transmission OK of Mailbox 2  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define CAN_TSR_ALST2 ((uint32_t)0x00040000) /*!<Arbitration Lost for mailbox 2 */
 #define CAN_TSR_TERR2 ((uint32_t)0x00080000) /*!<Transmission Error of Mailbox 2 */
-#define CAN_TSR_ABRQ2                                                                                                 \
-    ((uint32_t)0x00800000)                  /*!<Abort Request for Mailbox 2   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                               */
+#define CAN_TSR_ABRQ2                                                                                  \
+    ((uint32_t)0x00800000) /*!<Abort Request for Mailbox 2   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define CAN_TSR_CODE ((uint32_t)0x03000000) /*!<Mailbox Code */
 
 #define CAN_TSR_TME ((uint32_t)0x1C000000)  /*!<TME[2:0] bits */
@@ -1945,6 +2051,7 @@ typedef struct {
 #define CAN_ESR_TEC                                                                                                    \
     ((uint32_t)0x00FF0000) /*!<Least significant byte of the 9-bit Transmit      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Error Counter */
 #define CAN_ESR_REC ((uint32_t)0xFF000000) /*!<Receive Error Counter */
 
@@ -2098,35 +2205,35 @@ typedef struct {
 
 /*******************  Bit definition for CAN_FS1R register  *******************/
 #define CAN_FS1R_FSC ((uint16_t)0x3FFF) /*!<Filter Scale Configuration */
-#define CAN_FS1R_FSC0                                                                                \
-    ((uint16_t)0x0001) /*!<Filter Scale Configuration bit 0  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC0                                                                                  \
+    ((uint16_t)0x0001) /*!<Filter Scale Configuration bit 0  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC1                                                                                \
-    ((uint16_t)0x0002) /*!<Filter Scale Configuration bit 1  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC1                                                                                  \
+    ((uint16_t)0x0002) /*!<Filter Scale Configuration bit 1  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC2                                                                                \
-    ((uint16_t)0x0004) /*!<Filter Scale Configuration bit 2  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC2                                                                                  \
+    ((uint16_t)0x0004) /*!<Filter Scale Configuration bit 2  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC3                                                                                \
-    ((uint16_t)0x0008) /*!<Filter Scale Configuration bit 3  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC3                                                                                  \
+    ((uint16_t)0x0008) /*!<Filter Scale Configuration bit 3  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC4                                                                                \
-    ((uint16_t)0x0010) /*!<Filter Scale Configuration bit 4  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC4                                                                                  \
+    ((uint16_t)0x0010) /*!<Filter Scale Configuration bit 4  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC5                                                                                \
-    ((uint16_t)0x0020) /*!<Filter Scale Configuration bit 5  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC5                                                                                  \
+    ((uint16_t)0x0020) /*!<Filter Scale Configuration bit 5  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC6                                                                                \
-    ((uint16_t)0x0040) /*!<Filter Scale Configuration bit 6  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC6                                                                                  \
+    ((uint16_t)0x0040) /*!<Filter Scale Configuration bit 6  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC7                                                                                \
-    ((uint16_t)0x0080) /*!<Filter Scale Configuration bit 7  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC7                                                                                  \
+    ((uint16_t)0x0080) /*!<Filter Scale Configuration bit 7  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC8                                                                                \
-    ((uint16_t)0x0100) /*!<Filter Scale Configuration bit 8  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC8                                                                                  \
+    ((uint16_t)0x0100) /*!<Filter Scale Configuration bit 8  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define CAN_FS1R_FSC9                                                                                \
-    ((uint16_t)0x0200) /*!<Filter Scale Configuration bit 9  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define CAN_FS1R_FSC9                                                                                  \
+    ((uint16_t)0x0200) /*!<Filter Scale Configuration bit 9  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 #define CAN_FS1R_FSC10 ((uint16_t)0x0400) /*!<Filter Scale Configuration bit 10 */
 #define CAN_FS1R_FSC11 ((uint16_t)0x0800) /*!<Filter Scale Configuration bit 11 */
@@ -3199,12 +3306,14 @@ typedef struct {
 #define DAC_CR_WAVE1                                                                                                   \
     ((uint32_t)0x000000C0) /*!<WAVE1[1:0] (DAC channel1 noise/triangle wave      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               generation enable) */
 #define DAC_CR_WAVE1_0 ((uint32_t)0x00000040) /*!<Bit 0 */
 #define DAC_CR_WAVE1_1 ((uint32_t)0x00000080) /*!<Bit 1 */
 
 #define DAC_CR_MAMP1                                                                                                  \
     ((uint32_t)0x00000F00) /*!<MAMP1[3:0] (DAC channel1 Mask/Amplitude        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               selector) */
 #define DAC_CR_MAMP1_0 ((uint32_t)0x00000100) /*!<Bit 0 */
 #define DAC_CR_MAMP1_1 ((uint32_t)0x00000200) /*!<Bit 1 */
@@ -3224,12 +3333,14 @@ typedef struct {
 #define DAC_CR_WAVE2                                                                                                   \
     ((uint32_t)0x00C00000) /*!<WAVE2[1:0] (DAC channel2 noise/triangle wave      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               generation enable) */
 #define DAC_CR_WAVE2_0 ((uint32_t)0x00400000) /*!<Bit 0 */
 #define DAC_CR_WAVE2_1 ((uint32_t)0x00800000) /*!<Bit 1 */
 
 #define DAC_CR_MAMP2                                                                                                  \
     ((uint32_t)0x0F000000) /*!<MAMP2[3:0] (DAC channel2 Mask/Amplitude        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               selector) */
 #define DAC_CR_MAMP2_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define DAC_CR_MAMP2_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -3239,11 +3350,11 @@ typedef struct {
 #define DAC_CR_DMAEN2 ((uint32_t)0x10000000) /*!<DAC channel2 DMA enabled */
 
 /*****************  Bit definition for DAC_SWTRIGR register  ******************/
-#define DAC_SWTRIGR_SWTRIG1                                                                    \
-    ((uint8_t)0x01) /*!<DAC channel1 software trigger  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define DAC_SWTRIGR_SWTRIG1                                                                      \
+    ((uint8_t)0x01) /*!<DAC channel1 software trigger  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                        */
-#define DAC_SWTRIGR_SWTRIG2                                                                    \
-    ((uint8_t)0x02) /*!<DAC channel2 software trigger  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define DAC_SWTRIGR_SWTRIG2                                                                      \
+    ((uint8_t)0x02) /*!<DAC channel2 software trigger  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                        */
 
 /*****************  Bit definition for DAC_DHR12R1 register  ******************/
@@ -3558,135 +3669,175 @@ typedef struct {
 /******************  Bit definition for EXTI_RTSR register  *******************/
 #define EXTI_RTSR_TR0                                                                                                 \
     ((uint32_t)0x00000001) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 0 */
 #define EXTI_RTSR_TR1                                                                                                 \
     ((uint32_t)0x00000002) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 1 */
 #define EXTI_RTSR_TR2                                                                                                 \
     ((uint32_t)0x00000004) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 2 */
 #define EXTI_RTSR_TR3                                                                                                 \
     ((uint32_t)0x00000008) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 3 */
 #define EXTI_RTSR_TR4                                                                                                 \
     ((uint32_t)0x00000010) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 4 */
 #define EXTI_RTSR_TR5                                                                                                 \
     ((uint32_t)0x00000020) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 5 */
 #define EXTI_RTSR_TR6                                                                                                 \
     ((uint32_t)0x00000040) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 6 */
 #define EXTI_RTSR_TR7                                                                                                 \
     ((uint32_t)0x00000080) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 7 */
 #define EXTI_RTSR_TR8                                                                                                 \
     ((uint32_t)0x00000100) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 8 */
 #define EXTI_RTSR_TR9                                                                                                 \
     ((uint32_t)0x00000200) /*!< Rising trigger event configuration bit of     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 9 */
 #define EXTI_RTSR_TR10                                                                                                 \
     ((uint32_t)0x00000400) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               10 */
 #define EXTI_RTSR_TR11                                                                                                 \
     ((uint32_t)0x00000800) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               11 */
 #define EXTI_RTSR_TR12                                                                                                 \
     ((uint32_t)0x00001000) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               12 */
 #define EXTI_RTSR_TR13                                                                                                 \
     ((uint32_t)0x00002000) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               13 */
 #define EXTI_RTSR_TR14                                                                                                 \
     ((uint32_t)0x00004000) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               14 */
 #define EXTI_RTSR_TR15                                                                                                 \
     ((uint32_t)0x00008000) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               15 */
 #define EXTI_RTSR_TR16                                                                                                 \
     ((uint32_t)0x00010000) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               16 */
 #define EXTI_RTSR_TR17                                                                                                 \
     ((uint32_t)0x00020000) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               17 */
 #define EXTI_RTSR_TR18                                                                                                 \
     ((uint32_t)0x00040000) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               18 */
 #define EXTI_RTSR_TR19                                                                                                 \
     ((uint32_t)0x00080000) /*!< Rising trigger event configuration bit of line   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               19 */
 
 /******************  Bit definition for EXTI_FTSR register  *******************/
 #define EXTI_FTSR_TR0                                                                                                 \
     ((uint32_t)0x00000001) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 0 */
 #define EXTI_FTSR_TR1                                                                                                 \
     ((uint32_t)0x00000002) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 1 */
 #define EXTI_FTSR_TR2                                                                                                 \
     ((uint32_t)0x00000004) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 2 */
 #define EXTI_FTSR_TR3                                                                                                 \
     ((uint32_t)0x00000008) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 3 */
 #define EXTI_FTSR_TR4                                                                                                 \
     ((uint32_t)0x00000010) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 4 */
 #define EXTI_FTSR_TR5                                                                                                 \
     ((uint32_t)0x00000020) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 5 */
 #define EXTI_FTSR_TR6                                                                                                 \
     ((uint32_t)0x00000040) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 6 */
 #define EXTI_FTSR_TR7                                                                                                 \
     ((uint32_t)0x00000080) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 7 */
 #define EXTI_FTSR_TR8                                                                                                 \
     ((uint32_t)0x00000100) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 8 */
 #define EXTI_FTSR_TR9                                                                                                 \
     ((uint32_t)0x00000200) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 9 */
 #define EXTI_FTSR_TR10                                                                                                \
     ((uint32_t)0x00000400) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 10 */
 #define EXTI_FTSR_TR11                                                                                                \
     ((uint32_t)0x00000800) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 11 */
 #define EXTI_FTSR_TR12                                                                                                \
     ((uint32_t)0x00001000) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 12 */
 #define EXTI_FTSR_TR13                                                                                                \
     ((uint32_t)0x00002000) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 13 */
 #define EXTI_FTSR_TR14                                                                                                \
     ((uint32_t)0x00004000) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 14 */
 #define EXTI_FTSR_TR15                                                                                                \
     ((uint32_t)0x00008000) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 15 */
 #define EXTI_FTSR_TR16                                                                                                \
     ((uint32_t)0x00010000) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 16 */
 #define EXTI_FTSR_TR17                                                                                                \
     ((uint32_t)0x00020000) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 17 */
 #define EXTI_FTSR_TR18                                                                                                \
     ((uint32_t)0x00040000) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 18 */
 #define EXTI_FTSR_TR19                                                                                                \
     ((uint32_t)0x00080000) /*!< Falling trigger event configuration bit of    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               line 19 */
 
 /******************  Bit definition for EXTI_SWIER register  ******************/
@@ -3829,14 +3980,14 @@ typedef struct {
 
 #define FSMC_BCR1_FACCEN ((uint32_t)0x00000040)  /*!<Flash access enable */
 #define FSMC_BCR1_BURSTEN ((uint32_t)0x00000100) /*!<Burst enable bit */
-#define FSMC_BCR1_WAITPOL                                                                                              \
-    ((uint32_t)0x00000200)                       /*!<Wait signal polarity bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                    */
-#define FSMC_BCR1_WRAPMOD ((uint32_t)0x00000400) /*!<Wrapped burst mode support */
-#define FSMC_BCR1_WAITCFG ((uint32_t)0x00000800) /*!<Wait timing configuration */
-#define FSMC_BCR1_WREN ((uint32_t)0x00001000)    /*!<Write enable bit */
-#define FSMC_BCR1_WAITEN ((uint32_t)0x00002000)  /*!<Wait enable bit */
-#define FSMC_BCR1_EXTMOD ((uint32_t)0x00004000)  /*!<Extended mode enable */
+#define FSMC_BCR1_WAITPOL                                                                          \
+    ((uint32_t)0x00000200) /*!<Wait signal polarity bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
+#define FSMC_BCR1_WRAPMOD ((uint32_t)0x00000400)   /*!<Wrapped burst mode support */
+#define FSMC_BCR1_WAITCFG ((uint32_t)0x00000800)   /*!<Wait timing configuration */
+#define FSMC_BCR1_WREN ((uint32_t)0x00001000)      /*!<Write enable bit */
+#define FSMC_BCR1_WAITEN ((uint32_t)0x00002000)    /*!<Wait enable bit */
+#define FSMC_BCR1_EXTMOD ((uint32_t)0x00004000)    /*!<Extended mode enable */
 #define FSMC_BCR1_ASYNCWAIT ((uint32_t)0x00008000) /*!<Asynchronous wait */
 #define FSMC_BCR1_CBURSTRW ((uint32_t)0x00080000)  /*!<Write burst enable */
 
@@ -3854,14 +4005,14 @@ typedef struct {
 
 #define FSMC_BCR2_FACCEN ((uint32_t)0x00000040)  /*!<Flash access enable */
 #define FSMC_BCR2_BURSTEN ((uint32_t)0x00000100) /*!<Burst enable bit */
-#define FSMC_BCR2_WAITPOL                                                                                              \
-    ((uint32_t)0x00000200)                       /*!<Wait signal polarity bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                    */
-#define FSMC_BCR2_WRAPMOD ((uint32_t)0x00000400) /*!<Wrapped burst mode support */
-#define FSMC_BCR2_WAITCFG ((uint32_t)0x00000800) /*!<Wait timing configuration */
-#define FSMC_BCR2_WREN ((uint32_t)0x00001000)    /*!<Write enable bit */
-#define FSMC_BCR2_WAITEN ((uint32_t)0x00002000)  /*!<Wait enable bit */
-#define FSMC_BCR2_EXTMOD ((uint32_t)0x00004000)  /*!<Extended mode enable */
+#define FSMC_BCR2_WAITPOL                                                                          \
+    ((uint32_t)0x00000200) /*!<Wait signal polarity bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
+#define FSMC_BCR2_WRAPMOD ((uint32_t)0x00000400)   /*!<Wrapped burst mode support */
+#define FSMC_BCR2_WAITCFG ((uint32_t)0x00000800)   /*!<Wait timing configuration */
+#define FSMC_BCR2_WREN ((uint32_t)0x00001000)      /*!<Write enable bit */
+#define FSMC_BCR2_WAITEN ((uint32_t)0x00002000)    /*!<Wait enable bit */
+#define FSMC_BCR2_EXTMOD ((uint32_t)0x00004000)    /*!<Extended mode enable */
 #define FSMC_BCR2_ASYNCWAIT ((uint32_t)0x00008000) /*!<Asynchronous wait */
 #define FSMC_BCR2_CBURSTRW ((uint32_t)0x00080000)  /*!<Write burst enable */
 
@@ -3902,14 +4053,14 @@ typedef struct {
 
 #define FSMC_BCR4_FACCEN ((uint32_t)0x00000040)  /*!<Flash access enable */
 #define FSMC_BCR4_BURSTEN ((uint32_t)0x00000100) /*!<Burst enable bit */
-#define FSMC_BCR4_WAITPOL                                                                                              \
-    ((uint32_t)0x00000200)                       /*!<Wait signal polarity bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                    */
-#define FSMC_BCR4_WRAPMOD ((uint32_t)0x00000400) /*!<Wrapped burst mode support */
-#define FSMC_BCR4_WAITCFG ((uint32_t)0x00000800) /*!<Wait timing configuration */
-#define FSMC_BCR4_WREN ((uint32_t)0x00001000)    /*!<Write enable bit */
-#define FSMC_BCR4_WAITEN ((uint32_t)0x00002000)  /*!<Wait enable bit */
-#define FSMC_BCR4_EXTMOD ((uint32_t)0x00004000)  /*!<Extended mode enable */
+#define FSMC_BCR4_WAITPOL                                                                          \
+    ((uint32_t)0x00000200) /*!<Wait signal polarity bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
+#define FSMC_BCR4_WRAPMOD ((uint32_t)0x00000400)   /*!<Wrapped burst mode support */
+#define FSMC_BCR4_WAITCFG ((uint32_t)0x00000800)   /*!<Wait timing configuration */
+#define FSMC_BCR4_WREN ((uint32_t)0x00001000)      /*!<Write enable bit */
+#define FSMC_BCR4_WAITEN ((uint32_t)0x00002000)    /*!<Wait enable bit */
+#define FSMC_BCR4_EXTMOD ((uint32_t)0x00004000)    /*!<Extended mode enable */
 #define FSMC_BCR4_ASYNCWAIT ((uint32_t)0x00008000) /*!<Asynchronous wait */
 #define FSMC_BCR4_CBURSTRW ((uint32_t)0x00080000)  /*!<Write burst enable */
 
@@ -3917,6 +4068,7 @@ typedef struct {
 #define FSMC_BTR1_ADDSET                                                                                               \
     ((uint32_t)0x0000000F) /*!<ADDSET[3:0] bits (Address setup phase duration)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define FSMC_BTR1_ADDSET_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_BTR1_ADDSET_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -3937,6 +4089,7 @@ typedef struct {
 
 #define FSMC_BTR1_BUSTURN                                                                                             \
     ((uint32_t)0x000F0000) /*!<BUSTURN[3:0] bits (Bus turnaround phase        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               duration) */
 #define FSMC_BTR1_BUSTURN_0 ((uint32_t)0x00010000) /*!<Bit 0 */
 #define FSMC_BTR1_BUSTURN_1 ((uint32_t)0x00020000) /*!<Bit 1 */
@@ -3963,6 +4116,7 @@ typedef struct {
 #define FSMC_BTR2_ADDSET                                                                                               \
     ((uint32_t)0x0000000F) /*!<ADDSET[3:0] bits (Address setup phase duration)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define FSMC_BTR2_ADDSET_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_BTR2_ADDSET_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -3983,6 +4137,7 @@ typedef struct {
 
 #define FSMC_BTR2_BUSTURN                                                                                             \
     ((uint32_t)0x000F0000) /*!<BUSTURN[3:0] bits (Bus turnaround phase        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               duration) */
 #define FSMC_BTR2_BUSTURN_0 ((uint32_t)0x00010000) /*!<Bit 0 */
 #define FSMC_BTR2_BUSTURN_1 ((uint32_t)0x00020000) /*!<Bit 1 */
@@ -4009,6 +4164,7 @@ typedef struct {
 #define FSMC_BTR3_ADDSET                                                                                               \
     ((uint32_t)0x0000000F) /*!<ADDSET[3:0] bits (Address setup phase duration)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define FSMC_BTR3_ADDSET_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_BTR3_ADDSET_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4029,6 +4185,7 @@ typedef struct {
 
 #define FSMC_BTR3_BUSTURN                                                                                             \
     ((uint32_t)0x000F0000) /*!<BUSTURN[3:0] bits (Bus turnaround phase        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               duration) */
 #define FSMC_BTR3_BUSTURN_0 ((uint32_t)0x00010000) /*!<Bit 0 */
 #define FSMC_BTR3_BUSTURN_1 ((uint32_t)0x00020000) /*!<Bit 1 */
@@ -4055,6 +4212,7 @@ typedef struct {
 #define FSMC_BTR4_ADDSET                                                                                               \
     ((uint32_t)0x0000000F) /*!<ADDSET[3:0] bits (Address setup phase duration)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define FSMC_BTR4_ADDSET_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_BTR4_ADDSET_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4075,6 +4233,7 @@ typedef struct {
 
 #define FSMC_BTR4_BUSTURN                                                                                             \
     ((uint32_t)0x000F0000) /*!<BUSTURN[3:0] bits (Bus turnaround phase        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               duration) */
 #define FSMC_BTR4_BUSTURN_0 ((uint32_t)0x00010000) /*!<Bit 0 */
 #define FSMC_BTR4_BUSTURN_1 ((uint32_t)0x00020000) /*!<Bit 1 */
@@ -4101,6 +4260,7 @@ typedef struct {
 #define FSMC_BWTR1_ADDSET                                                                                              \
     ((uint32_t)0x0000000F) /*!<ADDSET[3:0] bits (Address setup phase duration)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define FSMC_BWTR1_ADDSET_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_BWTR1_ADDSET_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4139,6 +4299,7 @@ typedef struct {
 #define FSMC_BWTR2_ADDSET                                                                                              \
     ((uint32_t)0x0000000F) /*!<ADDSET[3:0] bits (Address setup phase duration)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define FSMC_BWTR2_ADDSET_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_BWTR2_ADDSET_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4177,6 +4338,7 @@ typedef struct {
 #define FSMC_BWTR3_ADDSET                                                                                              \
     ((uint32_t)0x0000000F) /*!<ADDSET[3:0] bits (Address setup phase duration)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define FSMC_BWTR3_ADDSET_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_BWTR3_ADDSET_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4215,6 +4377,7 @@ typedef struct {
 #define FSMC_BWTR4_ADDSET                                                                                              \
     ((uint32_t)0x0000000F) /*!<ADDSET[3:0] bits (Address setup phase duration)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define FSMC_BWTR4_ADDSET_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_BWTR4_ADDSET_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4250,8 +4413,8 @@ typedef struct {
 #define FSMC_BWTR4_ACCMOD_1 ((uint32_t)0x20000000) /*!<Bit 1 */
 
 /******************  Bit definition for FSMC_PCR2 register  *******************/
-#define FSMC_PCR2_PWAITEN                                                                                            \
-    ((uint32_t)0x00000002)                     /*!<Wait feature enable bit   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define FSMC_PCR2_PWAITEN                                                                                              \
+    ((uint32_t)0x00000002)                     /*!<Wait feature enable bit   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                                                   */
 #define FSMC_PCR2_PBKEN ((uint32_t)0x00000004) /*!<PC Card/NAND Flash memory bank enable bit */
 #define FSMC_PCR2_PTYP ((uint32_t)0x00000008)  /*!<Memory type */
@@ -4280,8 +4443,8 @@ typedef struct {
 #define FSMC_PCR2_ECCPS_2 ((uint32_t)0x00080000) /*!<Bit 2 */
 
 /******************  Bit definition for FSMC_PCR3 register  *******************/
-#define FSMC_PCR3_PWAITEN                                                                                            \
-    ((uint32_t)0x00000002)                     /*!<Wait feature enable bit   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define FSMC_PCR3_PWAITEN                                                                                              \
+    ((uint32_t)0x00000002)                     /*!<Wait feature enable bit   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                                                   */
 #define FSMC_PCR3_PBKEN ((uint32_t)0x00000004) /*!<PC Card/NAND Flash memory bank enable bit */
 #define FSMC_PCR3_PTYP ((uint32_t)0x00000008)  /*!<Memory type */
@@ -4310,8 +4473,8 @@ typedef struct {
 #define FSMC_PCR3_ECCPS_2 ((uint32_t)0x00080000) /*!<Bit 2 */
 
 /******************  Bit definition for FSMC_PCR4 register  *******************/
-#define FSMC_PCR4_PWAITEN                                                                                            \
-    ((uint32_t)0x00000002)                     /*!<Wait feature enable bit   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define FSMC_PCR4_PWAITEN                                                                                              \
+    ((uint32_t)0x00000002)                     /*!<Wait feature enable bit   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                                                   */
 #define FSMC_PCR4_PBKEN ((uint32_t)0x00000004) /*!<PC Card/NAND Flash memory bank enable bit */
 #define FSMC_PCR4_PTYP ((uint32_t)0x00000008)  /*!<Memory type */
@@ -4400,6 +4563,7 @@ typedef struct {
 #define FSMC_PMEM2_MEMHIZ2                                                                                             \
     ((uint32_t)0xFF000000) /*!<MEMHIZ2[7:0] bits (Common memory 2 databus HiZ    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               time) */
 #define FSMC_PMEM2_MEMHIZ2_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define FSMC_PMEM2_MEMHIZ2_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -4444,6 +4608,7 @@ typedef struct {
 #define FSMC_PMEM3_MEMHIZ3                                                                                             \
     ((uint32_t)0xFF000000) /*!<MEMHIZ3[7:0] bits (Common memory 3 databus HiZ    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               time) */
 #define FSMC_PMEM3_MEMHIZ3_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define FSMC_PMEM3_MEMHIZ3_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -4488,6 +4653,7 @@ typedef struct {
 #define FSMC_PMEM4_MEMHIZ4                                                                                             \
     ((uint32_t)0xFF000000) /*!<MEMHIZ4[7:0] bits (Common memory 4 databus HiZ    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               time) */
 #define FSMC_PMEM4_MEMHIZ4_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define FSMC_PMEM4_MEMHIZ4_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -4501,6 +4667,7 @@ typedef struct {
 /******************  Bit definition for FSMC_PATT2 register  ******************/
 #define FSMC_PATT2_ATTSET2                                                                                            \
     ((uint32_t)0x000000FF) /*!<ATTSET2[7:0] bits (Attribute memory 2 setup    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT2_ATTSET2_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_PATT2_ATTSET2_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4513,6 +4680,7 @@ typedef struct {
 
 #define FSMC_PATT2_ATTWAIT2                                                                                           \
     ((uint32_t)0x0000FF00) /*!<ATTWAIT2[7:0] bits (Attribute memory 2 wait    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT2_ATTWAIT2_0 ((uint32_t)0x00000100) /*!<Bit 0 */
 #define FSMC_PATT2_ATTWAIT2_1 ((uint32_t)0x00000200) /*!<Bit 1 */
@@ -4525,6 +4693,7 @@ typedef struct {
 
 #define FSMC_PATT2_ATTHOLD2                                                                                           \
     ((uint32_t)0x00FF0000) /*!<ATTHOLD2[7:0] bits (Attribute memory 2 hold    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT2_ATTHOLD2_0 ((uint32_t)0x00010000) /*!<Bit 0 */
 #define FSMC_PATT2_ATTHOLD2_1 ((uint32_t)0x00020000) /*!<Bit 1 */
@@ -4537,6 +4706,7 @@ typedef struct {
 
 #define FSMC_PATT2_ATTHIZ2                                                                                             \
     ((uint32_t)0xFF000000) /*!<ATTHIZ2[7:0] bits (Attribute memory 2 databus   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               HiZ time) */
 #define FSMC_PATT2_ATTHIZ2_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define FSMC_PATT2_ATTHIZ2_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -4550,6 +4720,7 @@ typedef struct {
 /******************  Bit definition for FSMC_PATT3 register  ******************/
 #define FSMC_PATT3_ATTSET3                                                                                            \
     ((uint32_t)0x000000FF) /*!<ATTSET3[7:0] bits (Attribute memory 3 setup    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT3_ATTSET3_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_PATT3_ATTSET3_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4562,6 +4733,7 @@ typedef struct {
 
 #define FSMC_PATT3_ATTWAIT3                                                                                           \
     ((uint32_t)0x0000FF00) /*!<ATTWAIT3[7:0] bits (Attribute memory 3 wait    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT3_ATTWAIT3_0 ((uint32_t)0x00000100) /*!<Bit 0 */
 #define FSMC_PATT3_ATTWAIT3_1 ((uint32_t)0x00000200) /*!<Bit 1 */
@@ -4574,6 +4746,7 @@ typedef struct {
 
 #define FSMC_PATT3_ATTHOLD3                                                                                           \
     ((uint32_t)0x00FF0000) /*!<ATTHOLD3[7:0] bits (Attribute memory 3 hold    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT3_ATTHOLD3_0 ((uint32_t)0x00010000) /*!<Bit 0 */
 #define FSMC_PATT3_ATTHOLD3_1 ((uint32_t)0x00020000) /*!<Bit 1 */
@@ -4586,6 +4759,7 @@ typedef struct {
 
 #define FSMC_PATT3_ATTHIZ3                                                                                             \
     ((uint32_t)0xFF000000) /*!<ATTHIZ3[7:0] bits (Attribute memory 3 databus   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               HiZ time) */
 #define FSMC_PATT3_ATTHIZ3_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define FSMC_PATT3_ATTHIZ3_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -4599,6 +4773,7 @@ typedef struct {
 /******************  Bit definition for FSMC_PATT4 register  ******************/
 #define FSMC_PATT4_ATTSET4                                                                                            \
     ((uint32_t)0x000000FF) /*!<ATTSET4[7:0] bits (Attribute memory 4 setup    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT4_ATTSET4_0 ((uint32_t)0x00000001) /*!<Bit 0 */
 #define FSMC_PATT4_ATTSET4_1 ((uint32_t)0x00000002) /*!<Bit 1 */
@@ -4611,6 +4786,7 @@ typedef struct {
 
 #define FSMC_PATT4_ATTWAIT4                                                                                           \
     ((uint32_t)0x0000FF00) /*!<ATTWAIT4[7:0] bits (Attribute memory 4 wait    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT4_ATTWAIT4_0 ((uint32_t)0x00000100) /*!<Bit 0 */
 #define FSMC_PATT4_ATTWAIT4_1 ((uint32_t)0x00000200) /*!<Bit 1 */
@@ -4623,6 +4799,7 @@ typedef struct {
 
 #define FSMC_PATT4_ATTHOLD4                                                                                           \
     ((uint32_t)0x00FF0000) /*!<ATTHOLD4[7:0] bits (Attribute memory 4 hold    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               time) */
 #define FSMC_PATT4_ATTHOLD4_0 ((uint32_t)0x00010000) /*!<Bit 0 */
 #define FSMC_PATT4_ATTHOLD4_1 ((uint32_t)0x00020000) /*!<Bit 1 */
@@ -4635,6 +4812,7 @@ typedef struct {
 
 #define FSMC_PATT4_ATTHIZ4                                                                                             \
     ((uint32_t)0xFF000000) /*!<ATTHIZ4[7:0] bits (Attribute memory 4 databus   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               HiZ time) */
 #define FSMC_PATT4_ATTHIZ4_0 ((uint32_t)0x01000000) /*!<Bit 0 */
 #define FSMC_PATT4_ATTHIZ4_1 ((uint32_t)0x02000000) /*!<Bit 1 */
@@ -5105,8 +5283,8 @@ typedef struct {
 #define I2C_OAR1_ADD8 ((uint16_t)0x0100) /*!<Bit 8 */
 #define I2C_OAR1_ADD9 ((uint16_t)0x0200) /*!<Bit 9 */
 
-#define I2C_OAR1_ADDMODE                                                                          \
-    ((uint16_t)0x8000) /*!<Addressing Mode (Slave mode)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define I2C_OAR1_ADDMODE                                                                            \
+    ((uint16_t)0x8000) /*!<Addressing Mode (Slave mode)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 /*******************  Bit definition for I2C_OAR2 register  *******************/
@@ -5120,18 +5298,18 @@ typedef struct {
 #define I2C_SR1_SB ((uint16_t)0x0001)   /*!<Start Bit (Master mode) */
 #define I2C_SR1_ADDR ((uint16_t)0x0002) /*!<Address sent (master mode)/matched (slave mode) */
 #define I2C_SR1_BTF ((uint16_t)0x0004)  /*!<Byte Transfer Finished */
-#define I2C_SR1_ADD10                                                                                                  \
-    ((uint16_t)0x0008)                   /*!<10-bit header sent (Master mode)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                            */
+#define I2C_SR1_ADD10                                                                                  \
+    ((uint16_t)0x0008) /*!<10-bit header sent (Master mode)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
 #define I2C_SR1_STOPF ((uint16_t)0x0010) /*!<Stop detection (Slave mode) */
 #define I2C_SR1_RXNE ((uint16_t)0x0040)  /*!<Data Register not Empty (receivers) */
-#define I2C_SR1_TXE                                                                                                    \
-    ((uint16_t)0x0080)                  /*!<Data Register Empty (transmitters) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                           */
-#define I2C_SR1_BERR ((uint16_t)0x0100) /*!<Bus Error */
-#define I2C_SR1_ARLO ((uint16_t)0x0200) /*!<Arbitration Lost (master mode) */
-#define I2C_SR1_AF ((uint16_t)0x0400)   /*!<Acknowledge Failure */
-#define I2C_SR1_OVR ((uint16_t)0x0800)  /*!<Overrun/Underrun */
+#define I2C_SR1_TXE                                                                                     \
+    ((uint16_t)0x0080) /*!<Data Register Empty (transmitters) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
+#define I2C_SR1_BERR ((uint16_t)0x0100)     /*!<Bus Error */
+#define I2C_SR1_ARLO ((uint16_t)0x0200)     /*!<Arbitration Lost (master mode) */
+#define I2C_SR1_AF ((uint16_t)0x0400)       /*!<Acknowledge Failure */
+#define I2C_SR1_OVR ((uint16_t)0x0800)      /*!<Overrun/Underrun */
 #define I2C_SR1_PECERR ((uint16_t)0x1000)   /*!<PEC Error in reception */
 #define I2C_SR1_TIMEOUT ((uint16_t)0x4000)  /*!<Timeout or Tlow Error */
 #define I2C_SR1_SMBALERT ((uint16_t)0x8000) /*!<SMBus Alert */
@@ -5142,8 +5320,8 @@ typedef struct {
 #define I2C_SR2_TRA ((uint16_t)0x0004)        /*!<Transmitter/Receiver */
 #define I2C_SR2_GENCALL ((uint16_t)0x0010)    /*!<General Call Address (Slave mode) */
 #define I2C_SR2_SMBDEFAULT ((uint16_t)0x0020) /*!<SMBus Device Default Address (Slave mode) */
-#define I2C_SR2_SMBHOST                                                                                              \
-    ((uint16_t)0x0040)                   /*!<SMBus Host Header (Slave mode)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define I2C_SR2_SMBHOST                                                                                                \
+    ((uint16_t)0x0040)                   /*!<SMBus Host Header (Slave mode)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                                             */
 #define I2C_SR2_DUALF ((uint16_t)0x0080) /*!<Dual Flag (Slave mode) */
 #define I2C_SR2_PEC ((uint16_t)0xFF00)   /*!<Packet Error Checking Register */
@@ -5151,6 +5329,7 @@ typedef struct {
 /*******************  Bit definition for I2C_CCR register  ********************/
 #define I2C_CCR_CCR                                                                                                   \
     ((uint16_t)0x0FFF) /*!<Clock Control Register in Fast/Standard mode       \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          \                                                                                           \
                           (Master mode) */
 #define I2C_CCR_DUTY ((uint16_t)0x4000) /*!<Fast Mode Duty Cycle */
 #define I2C_CCR_FS ((uint16_t)0x8000)   /*!<I2C Master Mode Selection */
@@ -5164,8 +5343,8 @@ typedef struct {
 /*                                                                            */
 /******************************************************************************/
 /*******************  Bit definition for IWDG_KR register  ********************/
-#define IWDG_KR_KEY                                                                                    \
-    ((uint16_t)0xFFFF) /*!<Key value (write only, read 0000h)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define IWDG_KR_KEY                                                                                      \
+    ((uint16_t)0xFFFF) /*!<Key value (write only, read 0000h)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 /*******************  Bit definition for IWDG_PR register  ********************/
@@ -5179,8 +5358,8 @@ typedef struct {
 
 /*******************  Bit definition for IWDG_SR register  ********************/
 #define IWDG_SR_PVU ((uint8_t)0x01) /*!<Watchdog prescaler value update */
-#define IWDG_SR_RVU                                                                                    \
-    ((uint8_t)0x02) /*!<Watchdog counter reload value update   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define IWDG_SR_RVU                                                                                      \
+    ((uint8_t)0x02) /*!<Watchdog counter reload value update   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                        */
 
 /******************************************************************************/
@@ -5313,8 +5492,8 @@ typedef struct {
 
 #define RCC_CFGR_SWS_HSI ((uint32_t)0x00000000) /*!< HSI oscillator used as system clock */
 #define RCC_CFGR_SWS_HSE ((uint32_t)0x00000004) /*!< HSE oscillator used as system clock */
-#define RCC_CFGR_SWS_PLL                                                                          \
-    ((uint32_t)0x00000008) /*!< PLL used as system clock  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define RCC_CFGR_SWS_PLL                                                                            \
+    ((uint32_t)0x00000008) /*!< PLL used as system clock  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
 
 /*!< HPRE configuration */
@@ -5328,11 +5507,11 @@ typedef struct {
 #define RCC_CFGR_HPRE_DIV2 ((uint32_t)0x00000080) /*!< SYSCLK divided by 2 */
 #define RCC_CFGR_HPRE_DIV4 ((uint32_t)0x00000090) /*!< SYSCLK divided by 4 */
 #define RCC_CFGR_HPRE_DIV8 ((uint32_t)0x000000A0) /*!< SYSCLK divided by 8 */
-#define RCC_CFGR_HPRE_DIV16                                                                    \
-    ((uint32_t)0x000000B0) /*!< SYSCLK divided by 16   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define RCC_CFGR_HPRE_DIV16                                                                      \
+    ((uint32_t)0x000000B0) /*!< SYSCLK divided by 16   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
-#define RCC_CFGR_HPRE_DIV64                                                                    \
-    ((uint32_t)0x000000C0) /*!< SYSCLK divided by 64   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define RCC_CFGR_HPRE_DIV64                                                                      \
+    ((uint32_t)0x000000C0) /*!< SYSCLK divided by 64   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
 #define RCC_CFGR_HPRE_DIV128 ((uint32_t)0x000000D0) /*!< SYSCLK divided by 128 */
 #define RCC_CFGR_HPRE_DIV256 ((uint32_t)0x000000E0) /*!< SYSCLK divided by 256 */
@@ -6089,6 +6268,7 @@ typedef struct {
 #define SDIO_CMD_WAITPEND                                                                                              \
     ((uint16_t)0x0200) /*!<CPSM Waits for ends of data transfer (CmdPend         \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           \                                                                                            \
+                          \ \                                                                                                                     \
                           internal signal) */
 #define SDIO_CMD_CPSMEN ((uint16_t)0x0400)      /*!<Command path state machine (CPSM) Enable bit */
 #define SDIO_CMD_SDIOSUSPEND ((uint16_t)0x0800) /*!<SD I/O suspend command */
@@ -6115,8 +6295,8 @@ typedef struct {
 #define SDIO_RESP4_CARDSTATUS4 ((uint32_t)0xFFFFFFFF) /*!<Card Status */
 
 /******************  Bit definition for SDIO_DTIMER register  *****************/
-#define SDIO_DTIMER_DATATIME                                                                  \
-    ((uint32_t)0xFFFFFFFF) /*!<Data timeout period.   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SDIO_DTIMER_DATATIME                                                                    \
+    ((uint32_t)0xFFFFFFFF) /*!<Data timeout period.   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
 
 /******************  Bit definition for SDIO_DLEN register  *******************/
@@ -6125,9 +6305,9 @@ typedef struct {
 /******************  Bit definition for SDIO_DCTRL register  ******************/
 #define SDIO_DCTRL_DTEN ((uint16_t)0x0001)  /*!<Data transfer enabled bit */
 #define SDIO_DCTRL_DTDIR ((uint16_t)0x0002) /*!<Data transfer direction selection */
-#define SDIO_DCTRL_DTMODE                                                                                             \
-    ((uint16_t)0x0004)                      /*!<Data transfer mode selection  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                               */
+#define SDIO_DCTRL_DTMODE                                                                          \
+    ((uint16_t)0x0004) /*!<Data transfer mode selection  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
 #define SDIO_DCTRL_DMAEN ((uint16_t)0x0008) /*!<DMA enabled bit */
 
 #define SDIO_DCTRL_DBLOCKSIZE ((uint16_t)0x00F0)   /*!<DBLOCKSIZE[3:0] bits (Data block size) */
@@ -6147,9 +6327,9 @@ typedef struct {
 /******************  Bit definition for SDIO_STA register  ********************/
 #define SDIO_STA_CCRCFAIL ((uint32_t)0x00000001) /*!<Command response received (CRC check failed) */
 #define SDIO_STA_DCRCFAIL ((uint32_t)0x00000002) /*!<Data block sent/received (CRC check failed) */
-#define SDIO_STA_CTIMEOUT                                                                                              \
-    ((uint32_t)0x00000004)                       /*!<Command response timeout  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                    */
+#define SDIO_STA_CTIMEOUT                                                                          \
+    ((uint32_t)0x00000004) /*!<Command response timeout  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define SDIO_STA_DTIMEOUT ((uint32_t)0x00000008) /*!<Data timeout */
 #define SDIO_STA_TXUNDERR ((uint32_t)0x00000010) /*!<Transmit FIFO underrun error */
 #define SDIO_STA_RXOVERR ((uint32_t)0x00000020)  /*!<Received FIFO overrun error */
@@ -6159,6 +6339,7 @@ typedef struct {
 #define SDIO_STA_STBITERR                                                                                              \
     ((uint32_t)0x00000200) /*!<Start bit not detected on all data signals in     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               wide bus mode */
 #define SDIO_STA_DBCKEND ((uint32_t)0x00000400) /*!<Data block sent/received (CRC check passed) */
 #define SDIO_STA_CMDACT ((uint32_t)0x00000800)  /*!<Command transfer in progress */
@@ -6166,10 +6347,12 @@ typedef struct {
 #define SDIO_STA_RXACT ((uint32_t)0x00002000)   /*!<Data receive in progress */
 #define SDIO_STA_TXFIFOHE                                                                                              \
     ((uint32_t)0x00004000) /*!<Transmit FIFO Half Empty: at least 8 words can  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               be written into the FIFO */
 #define SDIO_STA_RXFIFOHF                                                                                              \
     ((uint32_t)0x00008000) /*!<Receive FIFO Half Full: there are at least 8      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               words in the FIFO */
 #define SDIO_STA_TXFIFOF ((uint32_t)0x00010000) /*!<Transmit FIFO full */
 #define SDIO_STA_RXFIFOF ((uint32_t)0x00020000) /*!<Receive FIFO full */
@@ -6181,35 +6364,36 @@ typedef struct {
 #define SDIO_STA_CEATAEND                                                                                              \
     ((uint32_t)0x00800000) /*!<CE-ATA command completion signal received for     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               CMD61 */
 
 /*******************  Bit definition for SDIO_ICR register  *******************/
-#define SDIO_ICR_CCRCFAILC                                                                      \
-    ((uint32_t)0x00000001) /*!<CCRCFAIL flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SDIO_ICR_CCRCFAILC                                                                        \
+    ((uint32_t)0x00000001) /*!<CCRCFAIL flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
-#define SDIO_ICR_DCRCFAILC                                                                      \
-    ((uint32_t)0x00000002) /*!<DCRCFAIL flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SDIO_ICR_DCRCFAILC                                                                        \
+    ((uint32_t)0x00000002) /*!<DCRCFAIL flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
-#define SDIO_ICR_CTIMEOUTC                                                                      \
-    ((uint32_t)0x00000004) /*!<CTIMEOUT flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SDIO_ICR_CTIMEOUTC                                                                        \
+    ((uint32_t)0x00000004) /*!<CTIMEOUT flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
-#define SDIO_ICR_DTIMEOUTC                                                                      \
-    ((uint32_t)0x00000008) /*!<DTIMEOUT flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SDIO_ICR_DTIMEOUTC                                                                        \
+    ((uint32_t)0x00000008) /*!<DTIMEOUT flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
-#define SDIO_ICR_TXUNDERRC                                                                                            \
-    ((uint32_t)0x00000010)                       /*!<TXUNDERR flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                    */
+#define SDIO_ICR_TXUNDERRC                                                                        \
+    ((uint32_t)0x00000010) /*!<TXUNDERR flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define SDIO_ICR_RXOVERRC ((uint32_t)0x00000020) /*!<RXOVERR flag clear bit */
 #define SDIO_ICR_CMDRENDC ((uint32_t)0x00000040) /*!<CMDREND flag clear bit */
 #define SDIO_ICR_CMDSENTC ((uint32_t)0x00000080) /*!<CMDSENT flag clear bit */
 #define SDIO_ICR_DATAENDC ((uint32_t)0x00000100) /*!<DATAEND flag clear bit */
-#define SDIO_ICR_STBITERRC                                                                                            \
-    ((uint32_t)0x00000200)                       /*!<STBITERR flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                    */
+#define SDIO_ICR_STBITERRC                                                                        \
+    ((uint32_t)0x00000200) /*!<STBITERR flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define SDIO_ICR_DBCKENDC ((uint32_t)0x00000400) /*!<DBCKEND flag clear bit */
 #define SDIO_ICR_SDIOITC ((uint32_t)0x00400000)  /*!<SDIOIT flag clear bit */
-#define SDIO_ICR_CEATAENDC                                                                      \
-    ((uint32_t)0x00800000) /*!<CEATAEND flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SDIO_ICR_CEATAENDC                                                                        \
+    ((uint32_t)0x00800000) /*!<CEATAEND flag clear bit  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
 
 /******************  Bit definition for SDIO_MASK register  *******************/
@@ -6239,12 +6423,14 @@ typedef struct {
 #define SDIO_MASK_CEATAENDIE                                                                                           \
     ((uint32_t)0x00800000) /*!<CE-ATA command completion signal received         \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Interrupt Enable */
 
 /*****************  Bit definition for SDIO_FIFOCNT register  *****************/
 #define SDIO_FIFOCNT_FIFOCOUNT                                                                                         \
     ((uint32_t)0x00FFFFFF) /*!<Remaining number of words to be written to or     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               read from the FIFO */
 
 /******************  Bit definition for SDIO_FIFO register  *******************/
@@ -6272,8 +6458,8 @@ typedef struct {
 #define SPI_CR1_RXONLY ((uint16_t)0x0400)   /*!<Receive only */
 #define SPI_CR1_DFF ((uint16_t)0x0800)      /*!<Data Frame Format */
 #define SPI_CR1_CRCNEXT ((uint16_t)0x1000)  /*!<Transmit CRC next */
-#define SPI_CR1_CRCEN                                                                                \
-    ((uint16_t)0x2000) /*!<Hardware CRC calculation enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SPI_CR1_CRCEN                                                                                  \
+    ((uint16_t)0x2000) /*!<Hardware CRC calculation enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 #define SPI_CR1_BIDIOE ((uint16_t)0x4000)   /*!<Output enable in bidirectional mode */
 #define SPI_CR1_BIDIMODE ((uint16_t)0x8000) /*!<Bidirectional data mode enable */
@@ -6315,16 +6501,16 @@ typedef struct {
 #define SPI_I2SCFGR_DATLEN_0 ((uint16_t)0x0002) /*!<Bit 0 */
 #define SPI_I2SCFGR_DATLEN_1 ((uint16_t)0x0004) /*!<Bit 1 */
 
-#define SPI_I2SCFGR_CKPOL                                                                        \
-    ((uint16_t)0x0008) /*!<steady state clock polarity   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SPI_I2SCFGR_CKPOL                                                                          \
+    ((uint16_t)0x0008) /*!<steady state clock polarity   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 #define SPI_I2SCFGR_I2SSTD ((uint16_t)0x0030)   /*!<I2SSTD[1:0] bits (I2S standard selection) */
 #define SPI_I2SCFGR_I2SSTD_0 ((uint16_t)0x0010) /*!<Bit 0 */
 #define SPI_I2SCFGR_I2SSTD_1 ((uint16_t)0x0020) /*!<Bit 1 */
 
-#define SPI_I2SCFGR_PCMSYNC                                                                    \
-    ((uint16_t)0x0080) /*!<PCM frame synchronization   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SPI_I2SCFGR_PCMSYNC                                                                      \
+    ((uint16_t)0x0080) /*!<PCM frame synchronization   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 #define SPI_I2SCFGR_I2SCFG ((uint16_t)0x0300)   /*!<I2SCFG[1:0] bits (I2S configuration mode) */
@@ -6594,9 +6780,9 @@ typedef struct {
 #define TIM_CR1_CKD_1 ((uint16_t)0x0200) /*!<Bit 1 */
 
 /*******************  Bit definition for TIM_CR2 register  ********************/
-#define TIM_CR2_CCPC                                                                                                   \
-    ((uint16_t)0x0001)                  /*!<Capture/Compare Preloaded Control  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                           */
+#define TIM_CR2_CCPC                                                                                    \
+    ((uint16_t)0x0001) /*!<Capture/Compare Preloaded Control  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
 #define TIM_CR2_CCUS ((uint16_t)0x0004) /*!<Capture/Compare Control Update Selection */
 #define TIM_CR2_CCDS ((uint16_t)0x0008) /*!<Capture/Compare DMA Selection */
 
@@ -6606,20 +6792,20 @@ typedef struct {
 #define TIM_CR2_MMS_2 ((uint16_t)0x0040) /*!<Bit 2 */
 
 #define TIM_CR2_TI1S ((uint16_t)0x0080) /*!<TI1 Selection */
-#define TIM_CR2_OIS1                                                                                  \
-    ((uint16_t)0x0100) /*!<Output Idle state 1 (OC1 output)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_CR2_OIS1                                                                                    \
+    ((uint16_t)0x0100) /*!<Output Idle state 1 (OC1 output)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 #define TIM_CR2_OIS1N ((uint16_t)0x0200) /*!<Output Idle state 1 (OC1N output) */
-#define TIM_CR2_OIS2                                                                                  \
-    ((uint16_t)0x0400) /*!<Output Idle state 2 (OC2 output)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_CR2_OIS2                                                                                    \
+    ((uint16_t)0x0400) /*!<Output Idle state 2 (OC2 output)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 #define TIM_CR2_OIS2N ((uint16_t)0x0800) /*!<Output Idle state 2 (OC2N output) */
-#define TIM_CR2_OIS3                                                                                  \
-    ((uint16_t)0x1000) /*!<Output Idle state 3 (OC3 output)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_CR2_OIS3                                                                                    \
+    ((uint16_t)0x1000) /*!<Output Idle state 3 (OC3 output)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 #define TIM_CR2_OIS3N ((uint16_t)0x2000) /*!<Output Idle state 3 (OC3N output) */
-#define TIM_CR2_OIS4                                                                                  \
-    ((uint16_t)0x4000) /*!<Output Idle state 4 (OC4 output)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_CR2_OIS4                                                                                    \
+    ((uint16_t)0x4000) /*!<Output Idle state 4 (OC4 output)   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 /*******************  Bit definition for TIM_SMCR register  *******************/
@@ -6667,18 +6853,18 @@ typedef struct {
 
 /********************  Bit definition for TIM_SR register  ********************/
 #define TIM_SR_UIF ((uint16_t)0x0001) /*!<Update interrupt Flag */
-#define TIM_SR_CC1IF                                                                                  \
-    ((uint16_t)0x0002) /*!<Capture/Compare 1 interrupt Flag   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_SR_CC1IF                                                                                    \
+    ((uint16_t)0x0002) /*!<Capture/Compare 1 interrupt Flag   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define TIM_SR_CC2IF                                                                                  \
-    ((uint16_t)0x0004) /*!<Capture/Compare 2 interrupt Flag   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_SR_CC2IF                                                                                    \
+    ((uint16_t)0x0004) /*!<Capture/Compare 2 interrupt Flag   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define TIM_SR_CC3IF                                                                                  \
-    ((uint16_t)0x0008) /*!<Capture/Compare 3 interrupt Flag   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_SR_CC3IF                                                                                    \
+    ((uint16_t)0x0008) /*!<Capture/Compare 3 interrupt Flag   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
-#define TIM_SR_CC4IF                                                                                                   \
-    ((uint16_t)0x0010)                  /*!<Capture/Compare 4 interrupt Flag   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                           */
+#define TIM_SR_CC4IF                                                                                    \
+    ((uint16_t)0x0010) /*!<Capture/Compare 4 interrupt Flag   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
 #define TIM_SR_COMIF ((uint16_t)0x0020) /*!<COM interrupt Flag */
 #define TIM_SR_TIF ((uint16_t)0x0040)   /*!<Trigger interrupt Flag */
 #define TIM_SR_BIF ((uint16_t)0x0080)   /*!<Break interrupt Flag */
@@ -6724,8 +6910,8 @@ typedef struct {
 #define TIM_CCMR1_OC2M_1 ((uint16_t)0x2000) /*!<Bit 1 */
 #define TIM_CCMR1_OC2M_2 ((uint16_t)0x4000) /*!<Bit 2 */
 
-#define TIM_CCMR1_OC2CE                                                                            \
-    ((uint16_t)0x8000) /*!<Output Compare 2 Clear Enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_CCMR1_OC2CE                                                                              \
+    ((uint16_t)0x8000) /*!<Output Compare 2 Clear Enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 /*----------------------------------------------------------------------------*/
@@ -6763,8 +6949,8 @@ typedef struct {
 #define TIM_CCMR2_OC3M_1 ((uint16_t)0x0020) /*!<Bit 1 */
 #define TIM_CCMR2_OC3M_2 ((uint16_t)0x0040) /*!<Bit 2 */
 
-#define TIM_CCMR2_OC3CE                                                                            \
-    ((uint16_t)0x0080) /*!<Output Compare 3 Clear Enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_CCMR2_OC3CE                                                                              \
+    ((uint16_t)0x0080) /*!<Output Compare 3 Clear Enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 #define TIM_CCMR2_CC4S ((uint16_t)0x0300)   /*!<CC4S[1:0] bits (Capture/Compare 4 Selection) */
@@ -6779,8 +6965,8 @@ typedef struct {
 #define TIM_CCMR2_OC4M_1 ((uint16_t)0x2000) /*!<Bit 1 */
 #define TIM_CCMR2_OC4M_2 ((uint16_t)0x4000) /*!<Bit 2 */
 
-#define TIM_CCMR2_OC4CE                                                                            \
-    ((uint16_t)0x8000) /*!<Output Compare 4 Clear Enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_CCMR2_OC4CE                                                                              \
+    ((uint16_t)0x8000) /*!<Output Compare 4 Clear Enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 /*----------------------------------------------------------------------------*/
@@ -6806,28 +6992,28 @@ typedef struct {
 #define TIM_CCMR2_IC4F_3 ((uint16_t)0x8000) /*!<Bit 3 */
 
 /*******************  Bit definition for TIM_CCER register  *******************/
-#define TIM_CCER_CC1E                                                                                                  \
-    ((uint16_t)0x0001)                   /*!<Capture/Compare 1 output enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                            */
-#define TIM_CCER_CC1P ((uint16_t)0x0002) /*!<Capture/Compare 1 output Polarity */
+#define TIM_CCER_CC1E                                                                                  \
+    ((uint16_t)0x0001) /*!<Capture/Compare 1 output enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
+#define TIM_CCER_CC1P ((uint16_t)0x0002)  /*!<Capture/Compare 1 output Polarity */
 #define TIM_CCER_CC1NE ((uint16_t)0x0004) /*!<Capture/Compare 1 Complementary output enable */
 #define TIM_CCER_CC1NP ((uint16_t)0x0008) /*!<Capture/Compare 1 Complementary output Polarity */
-#define TIM_CCER_CC2E                                                                                                  \
-    ((uint16_t)0x0010)                   /*!<Capture/Compare 2 output enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                            */
-#define TIM_CCER_CC2P ((uint16_t)0x0020) /*!<Capture/Compare 2 output Polarity */
+#define TIM_CCER_CC2E                                                                                  \
+    ((uint16_t)0x0010) /*!<Capture/Compare 2 output enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
+#define TIM_CCER_CC2P ((uint16_t)0x0020)  /*!<Capture/Compare 2 output Polarity */
 #define TIM_CCER_CC2NE ((uint16_t)0x0040) /*!<Capture/Compare 2 Complementary output enable */
 #define TIM_CCER_CC2NP ((uint16_t)0x0080) /*!<Capture/Compare 2 Complementary output Polarity */
-#define TIM_CCER_CC3E                                                                                                  \
-    ((uint16_t)0x0100)                   /*!<Capture/Compare 3 output enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                            */
-#define TIM_CCER_CC3P ((uint16_t)0x0200) /*!<Capture/Compare 3 output Polarity */
+#define TIM_CCER_CC3E                                                                                  \
+    ((uint16_t)0x0100) /*!<Capture/Compare 3 output enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
+#define TIM_CCER_CC3P ((uint16_t)0x0200)  /*!<Capture/Compare 3 output Polarity */
 #define TIM_CCER_CC3NE ((uint16_t)0x0400) /*!<Capture/Compare 3 Complementary output enable */
 #define TIM_CCER_CC3NP ((uint16_t)0x0800) /*!<Capture/Compare 3 Complementary output Polarity */
-#define TIM_CCER_CC4E                                                                                                  \
-    ((uint16_t)0x1000)                   /*!<Capture/Compare 4 output enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                            */
-#define TIM_CCER_CC4P ((uint16_t)0x2000) /*!<Capture/Compare 4 output Polarity */
+#define TIM_CCER_CC4E                                                                                  \
+    ((uint16_t)0x1000) /*!<Capture/Compare 4 output enable   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
+#define TIM_CCER_CC4P ((uint16_t)0x2000)  /*!<Capture/Compare 4 output Polarity */
 #define TIM_CCER_CC4NP ((uint16_t)0x8000) /*!<Capture/Compare 4 Complementary output Polarity */
 
 /*******************  Bit definition for TIM_CNT register  ********************/
@@ -6870,9 +7056,9 @@ typedef struct {
 #define TIM_BDTR_LOCK_1 ((uint16_t)0x0200) /*!<Bit 1 */
 
 #define TIM_BDTR_OSSI ((uint16_t)0x0400) /*!<Off-State Selection for Idle mode */
-#define TIM_BDTR_OSSR                                                                                                 \
-    ((uint16_t)0x0800)                  /*!<Off-State Selection for Run mode  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                           */
+#define TIM_BDTR_OSSR                                                                                  \
+    ((uint16_t)0x0800) /*!<Off-State Selection for Run mode  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                          */
 #define TIM_BDTR_BKE ((uint16_t)0x1000) /*!<Break enable */
 #define TIM_BDTR_BKP ((uint16_t)0x2000) /*!<Break Polarity */
 #define TIM_BDTR_AOE ((uint16_t)0x4000) /*!<Automatic Output enable */
@@ -6894,8 +7080,8 @@ typedef struct {
 #define TIM_DCR_DBL_4 ((uint16_t)0x1000) /*!<Bit 4 */
 
 /*******************  Bit definition for TIM_DMAR register  *******************/
-#define TIM_DMAR_DMAB                                                                                \
-    ((uint16_t)0xFFFF) /*!<DMA register for burst accesses   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define TIM_DMAR_DMAB                                                                                  \
+    ((uint16_t)0xFFFF) /*!<DMA register for burst accesses   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 /*******************  Bit definition for TIM_OR register  *********************/
@@ -6945,8 +7131,8 @@ typedef struct {
 #define USART_CR1_WAKE ((uint16_t)0x0800)   /*!<Wakeup method */
 #define USART_CR1_M ((uint16_t)0x1000)      /*!<Word length */
 #define USART_CR1_UE ((uint16_t)0x2000)     /*!<USART Enable */
-#define USART_CR1_OVER8                                                                            \
-    ((uint16_t)0x8000) /*!<USART Oversampling by 8 enable  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define USART_CR1_OVER8                                                                              \
+    ((uint16_t)0x8000) /*!<USART Oversampling by 8 enable  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 
 /******************  Bit definition for USART_CR2 register  *******************/
@@ -6979,8 +7165,8 @@ typedef struct {
 #define USART_CR3_ONEBIT ((uint16_t)0x0800) /*!<USART One bit method enable */
 
 /******************  Bit definition for USART_GTPR register  ******************/
-#define USART_GTPR_PSC                                                                              \
-    ((uint16_t)0x00FF) /*!<PSC[7:0] bits (Prescaler value)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define USART_GTPR_PSC                                                                                \
+    ((uint16_t)0x00FF) /*!<PSC[7:0] bits (Prescaler value)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                           */
 #define USART_GTPR_PSC_0 ((uint16_t)0x0001) /*!<Bit 0 */
 #define USART_GTPR_PSC_1 ((uint16_t)0x0002) /*!<Bit 1 */
@@ -7087,27 +7273,35 @@ typedef struct {
 #define ETH_MACCR_IFG ((uint32_t)0x000E0000) /* Inter-frame gap */
 #define ETH_MACCR_IFG_96Bit                                                                                            \
     ((uint32_t)0x00000000) /* Minimum IFG between frames during transmission   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               is 96Bit */
 #define ETH_MACCR_IFG_88Bit                                                                                            \
     ((uint32_t)0x00020000) /* Minimum IFG between frames during transmission   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               is 88Bit */
 #define ETH_MACCR_IFG_80Bit                                                                                            \
     ((uint32_t)0x00040000) /* Minimum IFG between frames during transmission   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               is 80Bit */
 #define ETH_MACCR_IFG_72Bit                                                                                            \
     ((uint32_t)0x00060000) /* Minimum IFG between frames during transmission   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               is 72Bit */
 #define ETH_MACCR_IFG_64Bit                                                                                            \
     ((uint32_t)0x00080000) /* Minimum IFG between frames during transmission   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               is 64Bit */
 #define ETH_MACCR_IFG_56Bit                                                                                            \
     ((uint32_t)0x000A0000) /* Minimum IFG between frames during transmission   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               is 56Bit */
 #define ETH_MACCR_IFG_48Bit                                                                                            \
     ((uint32_t)0x000C0000) /* Minimum IFG between frames during transmission   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               is 48Bit */
 #define ETH_MACCR_IFG_40Bit                                                                                            \
     ((uint32_t)0x000E0000) /* Minimum IFG between frames during transmission   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               is 40Bit */
 #define ETH_MACCR_CSD ((uint32_t)0x00010000)  /* Carrier sense disable (during transmission) */
 #define ETH_MACCR_FES ((uint32_t)0x00004000)  /* Fast ethernet speed */
@@ -7116,16 +7310,19 @@ typedef struct {
 #define ETH_MACCR_DM ((uint32_t)0x00000800)   /* Duplex mode */
 #define ETH_MACCR_IPCO ((uint32_t)0x00000400) /* IP Checksum offload */
 #define ETH_MACCR_RD ((uint32_t)0x00000200)   /* Retry disable */
-#define ETH_MACCR_APCS                                                                              \
-    ((uint32_t)0x00000080) /* Automatic Pad/CRC stripping   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define ETH_MACCR_APCS                                                                                \
+    ((uint32_t)0x00000080) /* Automatic Pad/CRC stripping   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
 #define ETH_MACCR_BL                                                                                                   \
     ((uint32_t)0x00000060) /* Back-off limit: random integer number (r) of slot  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               time delays before rescheduling                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                                 a transmission attempt during retries after a    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               collision: 0 =< r <2^k */
 #define ETH_MACCR_BL_10 ((uint32_t)0x00000000) /* k = min (n, 10) */
 #define ETH_MACCR_BL_8 ((uint32_t)0x00000020)  /* k = min (n, 8) */
@@ -7138,23 +7335,26 @@ typedef struct {
 /* Bit definition for Ethernet MAC Frame Filter Register */
 #define ETH_MACFFR_RA ((uint32_t)0x80000000)  /* Receive all */
 #define ETH_MACFFR_HPF ((uint32_t)0x00000400) /* Hash or perfect filter */
-#define ETH_MACFFR_SAF                                                                                                 \
-    ((uint32_t)0x00000200)                     /* Source address filter enable \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                  */
+#define ETH_MACFFR_SAF                                                                               \
+    ((uint32_t)0x00000200) /* Source address filter enable \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
 #define ETH_MACFFR_SAIF ((uint32_t)0x00000100) /* SA inverse filtering */
-#define ETH_MACFFR_PCF                                                                             \
-    ((uint32_t)0x000000C0) /* Pass control frames: 3 cases \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define ETH_MACFFR_PCF                                                                               \
+    ((uint32_t)0x000000C0) /* Pass control frames: 3 cases \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
 #define ETH_MACFFR_PCF_BlockAll                                                                                        \
     ((uint32_t)0x00000040) /* MAC filters all control frames from reaching the   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               application */
 #define ETH_MACFFR_PCF_ForwardAll                                                                                      \
     ((uint32_t)0x00000080) /* MAC forwards all control frames to application     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               even if they fail the Address Filter */
 #define ETH_MACFFR_PCF_ForwardPassedAddrFilter                                                                        \
     ((uint32_t)0x000000C0) /* MAC forwards control frames that pass the       \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               Address Filter. */
 #define ETH_MACFFR_BFD ((uint32_t)0x00000020)  /* Broadcast frame disable */
 #define ETH_MACFFR_PAM ((uint32_t)0x00000010)  /* Pass all mutlicast */
@@ -7187,20 +7387,20 @@ typedef struct {
 /* Bit definition for Ethernet MAC Flow Control Register */
 #define ETH_MACFCR_PT ((uint32_t)0xFFFF0000)   /* Pause time */
 #define ETH_MACFCR_ZQPD ((uint32_t)0x00000080) /* Zero-quanta pause disable */
-#define ETH_MACFCR_PLT                                                                             \
-    ((uint32_t)0x00000030) /* Pause low threshold: 4 cases \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define ETH_MACFCR_PLT                                                                               \
+    ((uint32_t)0x00000030) /* Pause low threshold: 4 cases \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
 #define ETH_MACFCR_PLT_Minus4 ((uint32_t)0x00000000)   /* Pause time minus 4 slot times */
 #define ETH_MACFCR_PLT_Minus28 ((uint32_t)0x00000010)  /* Pause time minus 28 slot times */
 #define ETH_MACFCR_PLT_Minus144 ((uint32_t)0x00000020) /* Pause time minus 144 slot times */
 #define ETH_MACFCR_PLT_Minus256 ((uint32_t)0x00000030) /* Pause time minus 256 slot times */
-#define ETH_MACFCR_UPFD                                                                            \
-    ((uint32_t)0x00000008) /* Unicast pause frame detect   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define ETH_MACFCR_UPFD                                                                              \
+    ((uint32_t)0x00000008) /* Unicast pause frame detect   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
-#define ETH_MACFCR_RFCE                                                                                                \
-    ((uint32_t)0x00000004)                     /* Receive flow control enable  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                                                  */
-#define ETH_MACFCR_TFCE ((uint32_t)0x00000002) /* Transmit flow control enable */
+#define ETH_MACFCR_RFCE                                                                              \
+    ((uint32_t)0x00000004) /* Receive flow control enable  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              */
+#define ETH_MACFCR_TFCE ((uint32_t)0x00000002)   /* Transmit flow control enable */
 #define ETH_MACFCR_FCBBPA ((uint32_t)0x00000001) /* Flow control busy/backpressure activate */
 
 /* Bit definition for Ethernet MAC VLAN Tag Register */
@@ -7255,6 +7455,7 @@ typedef struct {
 #define ETH_MACA1HR_SA ((uint32_t)0x40000000) /* Source address */
 #define ETH_MACA1HR_MBC                                                                                                \
     ((uint32_t)0x3F000000) /* Mask byte control: bits to mask for comparison   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                        \
                               of the MAC Address bytes */
 #define ETH_MACA1HR_MBC_HBits15_8 ((uint32_t)0x20000000)  /* Mask MAC Address high reg bits [15:8] */
 #define ETH_MACA1HR_MBC_HBits7_0 ((uint32_t)0x10000000)   /* Mask MAC Address high reg bits [7:0] */
@@ -7313,67 +7514,79 @@ typedef struct {
 #define ETH_MMCRIR_RGUFS                                                                                               \
     ((uint32_t)0x00020000) /* Set when Rx good unicast frames counter reaches    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               half the maximum value */
 #define ETH_MMCRIR_RFAES                                                                                               \
     ((uint32_t)0x00000040) /* Set when Rx alignment error counter reaches half   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               the maximum value */
 #define ETH_MMCRIR_RFCES                                                                                               \
     ((uint32_t)0x00000020) /* Set when Rx crc error counter reaches half the     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               maximum value */
 
 /* Bit definition for Ethernet MMC Transmit Interrupt Register */
 #define ETH_MMCTIR_TGFS                                                                                               \
     ((uint32_t)0x00200000) /* Set when Tx good frame count counter reaches    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               half the maximum value */
 #define ETH_MMCTIR_TGFMSCS                                                                                             \
     ((uint32_t)0x00008000) /* Set when Tx good multi col counter reaches half    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               the maximum value */
 #define ETH_MMCTIR_TGFSCS                                                                                              \
     ((uint32_t)0x00004000) /* Set when Tx good single col counter reaches half   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               the maximum value */
 
 /* Bit definition for Ethernet MMC Receive Interrupt Mask Register */
 #define ETH_MMCRIMR_RGUFM                                                                                              \
     ((uint32_t)0x00020000) /* Mask the interrupt when Rx good unicast frames     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               counter reaches half the maximum value */
 #define ETH_MMCRIMR_RFAEM                                                                                              \
     ((uint32_t)0x00000040) /* Mask the interrupt when when Rx alignment error    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               counter reaches half the maximum value */
 #define ETH_MMCRIMR_RFCEM                                                                                              \
     ((uint32_t)0x00000020) /* Mask the interrupt when Rx crc error counter       \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               reaches half the maximum value */
 
 /* Bit definition for Ethernet MMC Transmit Interrupt Mask Register */
 #define ETH_MMCTIMR_TGFM                                                                                               \
     ((uint32_t)0x00200000) /* Mask the interrupt when Tx good frame count        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               counter reaches half the maximum value */
 #define ETH_MMCTIMR_TGFMSCM                                                                                           \
     ((uint32_t)0x00008000) /* Mask the interrupt when Tx good multi col       \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               counter reaches half the maximum value */
 #define ETH_MMCTIMR_TGFSCM                                                                                            \
     ((uint32_t)0x00004000) /* Mask the interrupt when Tx good single col      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               counter reaches half the maximum value */
 
 /* Bit definition for Ethernet MMC Transmitted Good Frames after Single
  * Collision Counter Register */
-#define ETH_MMCTGFSCCR_TGFSCC                                                                                      \
-    ((uint32_t)0xFFFFFFFF) /* Number of successfully transmitted frames    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                              after a single collision in Half-duplex      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define ETH_MMCTGFSCCR_TGFSCC                                                                                        \
+    ((uint32_t)0xFFFFFFFF) /* Number of successfully transmitted frames    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              after a single collision in Half-duplex      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               mode. */
 
 /* Bit definition for Ethernet MMC Transmitted Good Frames after More than a
  * Single Collision Counter Register */
-#define ETH_MMCTGFMSCCR_TGFMSCC                                                                                    \
-    ((uint32_t)0xFFFFFFFF) /* Number of successfully transmitted frames    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                              after more than a single collision in        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define ETH_MMCTGFMSCCR_TGFMSCC                                                                                      \
+    ((uint32_t)0xFFFFFFFF) /* Number of successfully transmitted frames    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              after more than a single collision in        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               Half-duplex mode. */
 
 /* Bit definition for Ethernet MMC Transmitted Good Frames Counter Register */
@@ -7387,6 +7600,7 @@ typedef struct {
  * Register */
 #define ETH_MMCRFAECR_RFAEC                                                                                           \
     ((uint32_t)0xFFFFFFFF) /* Number of frames received with alignment        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               (dribble) error */
 
 /* Bit definition for Ethernet MMC Received Good Unicast Frames Counter Register
@@ -7401,6 +7615,7 @@ typedef struct {
 #define ETH_PTPTSCR_TSCNT ((uint32_t)0x00030000) /* Time stamp clock node type */
 #define ETH_PTPTSSR_TSSMRME                                                                                           \
     ((uint32_t)0x00008000) /* Time stamp snapshot for message relevant to     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               master enable */
 #define ETH_PTPTSSR_TSSEME ((uint32_t)0x00004000)    /* Time stamp snapshot for event message enable */
 #define ETH_PTPTSSR_TSSIPV4FE ((uint32_t)0x00002000) /* Time stamp snapshot for IPv4 frames enable */
@@ -7408,13 +7623,16 @@ typedef struct {
 #define ETH_PTPTSSR_TSSPTPOEFE                                                                                         \
     ((uint32_t)0x00000800) /* Time stamp snapshot for PTP over ethernet frames   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               enable */
 #define ETH_PTPTSSR_TSPTPPSV2E                                                                                        \
     ((uint32_t)0x00000400) /* Time stamp PTP packet snooping for version2     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               format enable */
 #define ETH_PTPTSSR_TSSSR ((uint32_t)0x00000200) /* Time stamp Sub-seconds rollover */
 #define ETH_PTPTSSR_TSSARFE                                                                                           \
     ((uint32_t)0x00000100) /* Time stamp snapshot for all received frames     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                              \                                                                                       \
                               enable */
 
 #define ETH_PTPTSCR_TSARU ((uint32_t)0x00000020) /* Addend register update */
@@ -7435,8 +7653,8 @@ typedef struct {
 #define ETH_PTPTSLR_STSS ((uint32_t)0x7FFFFFFF)  /* System Time sub-seconds */
 
 /* Bit definition for Ethernet PTP Time Stamp High Update Register */
-#define ETH_PTPTSHUR_TSUS                                                                        \
-    ((uint32_t)0xFFFFFFFF) /* Time stamp update seconds  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define ETH_PTPTSHUR_TSUS                                                                          \
+    ((uint32_t)0xFFFFFFFF) /* Time stamp update seconds  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               */
 
 /* Bit definition for Ethernet PTP Time Stamp Low Update Register */
@@ -7468,50 +7686,62 @@ typedef struct {
 #define ETH_DMABMR_RDP_1Beat                                                                                           \
     ((uint32_t)0x00020000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 1 */
 #define ETH_DMABMR_RDP_2Beat                                                                                           \
     ((uint32_t)0x00040000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 2 */
 #define ETH_DMABMR_RDP_4Beat                                                                                           \
     ((uint32_t)0x00080000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 4 */
 #define ETH_DMABMR_RDP_8Beat                                                                                           \
     ((uint32_t)0x00100000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 8 */
 #define ETH_DMABMR_RDP_16Beat                                                                                          \
     ((uint32_t)0x00200000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 16 */
 #define ETH_DMABMR_RDP_32Beat                                                                                          \
     ((uint32_t)0x00400000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 32 */
 #define ETH_DMABMR_RDP_4xPBL_4Beat                                                                                     \
     ((uint32_t)0x01020000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 4 */
 #define ETH_DMABMR_RDP_4xPBL_8Beat                                                                                     \
     ((uint32_t)0x01040000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 8 */
 #define ETH_DMABMR_RDP_4xPBL_16Beat                                                                                    \
     ((uint32_t)0x01080000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 16 */
 #define ETH_DMABMR_RDP_4xPBL_32Beat                                                                                    \
     ((uint32_t)0x01100000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 32 */
 #define ETH_DMABMR_RDP_4xPBL_64Beat                                                                                    \
     ((uint32_t)0x01200000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 64 */
 #define ETH_DMABMR_RDP_4xPBL_128Beat                                                                                   \
     ((uint32_t)0x01400000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               RxDMA transaction is 128 */
 #define ETH_DMABMR_FB ((uint32_t)0x00010000)       /* Fixed Burst */
 #define ETH_DMABMR_RTPR ((uint32_t)0x0000C000)     /* Rx Tx priority ratio */
@@ -7523,50 +7753,62 @@ typedef struct {
 #define ETH_DMABMR_PBL_1Beat                                                                                           \
     ((uint32_t)0x00000100) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 1 */
 #define ETH_DMABMR_PBL_2Beat                                                                                           \
     ((uint32_t)0x00000200) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 2 */
 #define ETH_DMABMR_PBL_4Beat                                                                                           \
     ((uint32_t)0x00000400) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 4 */
 #define ETH_DMABMR_PBL_8Beat                                                                                           \
     ((uint32_t)0x00000800) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 8 */
 #define ETH_DMABMR_PBL_16Beat                                                                                          \
     ((uint32_t)0x00001000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 16 */
 #define ETH_DMABMR_PBL_32Beat                                                                                          \
     ((uint32_t)0x00002000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 32 */
 #define ETH_DMABMR_PBL_4xPBL_4Beat                                                                                     \
     ((uint32_t)0x01000100) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 4 */
 #define ETH_DMABMR_PBL_4xPBL_8Beat                                                                                     \
     ((uint32_t)0x01000200) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 8 */
 #define ETH_DMABMR_PBL_4xPBL_16Beat                                                                                    \
     ((uint32_t)0x01000400) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 16 */
 #define ETH_DMABMR_PBL_4xPBL_32Beat                                                                                    \
     ((uint32_t)0x01000800) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 32 */
 #define ETH_DMABMR_PBL_4xPBL_64Beat                                                                                    \
     ((uint32_t)0x01001000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 64 */
 #define ETH_DMABMR_PBL_4xPBL_128Beat                                                                                   \
     ((uint32_t)0x01002000) /* maximum number of beats to be transferred in one   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               TxDMA (or both) transaction is 128 */
 #define ETH_DMABMR_EDE ((uint32_t)0x00000080) /* Enhanced Descriptor Enable */
 #define ETH_DMABMR_DSL ((uint32_t)0x0000007C) /* Descriptor Skip Length */
@@ -7610,6 +7852,7 @@ typedef struct {
 #define ETH_DMASR_RPS_Queuing                                                                                          \
     ((uint32_t)0x000E0000) /* Running - queuing the recieve frame into host      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               memory */
 #define ETH_DMASR_NIS ((uint32_t)0x00010000)  /* Normal interrupt summary */
 #define ETH_DMASR_AIS ((uint32_t)0x00008000)  /* Abnormal interrupt summary */
@@ -7631,6 +7874,7 @@ typedef struct {
 #define ETH_DMAOMR_DTCEFD                                                                                              \
     ((uint32_t)0x04000000) /* Disable Dropping of TCP/IP checksum error frames   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                             * \                                                                                        \
+                            * \ \                                                                                                                     \
                               */
 #define ETH_DMAOMR_RSF ((uint32_t)0x02000000)  /* Receive store and forward */
 #define ETH_DMAOMR_DFRF ((uint32_t)0x01000000) /* Disable flushing of received frames */
@@ -7640,34 +7884,42 @@ typedef struct {
 #define ETH_DMAOMR_TTC_64Bytes                                                                                         \
     ((uint32_t)0x00000000) /* threshold level of the MTL Transmit FIFO is 64     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_TTC_128Bytes                                                                                        \
     ((uint32_t)0x00004000) /* threshold level of the MTL Transmit FIFO is 128    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_TTC_192Bytes                                                                                        \
     ((uint32_t)0x00008000) /* threshold level of the MTL Transmit FIFO is 192    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_TTC_256Bytes                                                                                        \
     ((uint32_t)0x0000C000) /* threshold level of the MTL Transmit FIFO is 256    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_TTC_40Bytes                                                                                         \
     ((uint32_t)0x00010000) /* threshold level of the MTL Transmit FIFO is 40     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_TTC_32Bytes                                                                                         \
     ((uint32_t)0x00014000) /* threshold level of the MTL Transmit FIFO is 32     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_TTC_24Bytes                                                                                         \
     ((uint32_t)0x00018000) /* threshold level of the MTL Transmit FIFO is 24     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_TTC_16Bytes                                                                                         \
     ((uint32_t)0x0001C000) /* threshold level of the MTL Transmit FIFO is 16     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_ST ((uint32_t)0x00002000)   /* Start/stop transmission command */
 #define ETH_DMAOMR_FEF ((uint32_t)0x00000080)  /* Forward error frames */
@@ -7676,18 +7928,22 @@ typedef struct {
 #define ETH_DMAOMR_RTC_64Bytes                                                                                         \
     ((uint32_t)0x00000000) /* threshold level of the MTL Receive FIFO is 64      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_RTC_32Bytes                                                                                         \
     ((uint32_t)0x00000008) /* threshold level of the MTL Receive FIFO is 32      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_RTC_96Bytes                                                                                         \
     ((uint32_t)0x00000010) /* threshold level of the MTL Receive FIFO is 96      \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_RTC_128Bytes                                                                                        \
     ((uint32_t)0x00000018) /* threshold level of the MTL Receive FIFO is 128     \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                               \                                                                                        \
+                              \ \                                                                                                                     \
                               Bytes */
 #define ETH_DMAOMR_OSF ((uint32_t)0x00000004) /* operate on second frame */
 #define ETH_DMAOMR_SR ((uint32_t)0x00000002)  /* Start/stop receive */

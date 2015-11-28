@@ -29,23 +29,27 @@
 
 #include <string.h>
 
-void print_initrd(struct inode* node, int indent) {
+void print_initrd(struct inode* node, int indent)
+{
     kprint(KPRINT_TRACE);
     for(int i = 0; i < indent; ++i)
         kprint(" ");
     kprint(node->name);
     kprint("\n");
 
-    if(inode_cdable(node)) {
+    if(inode_cdable(node))
+    {
         struct inode* head = node->dir.first;
-        while(head) {
+        while(head)
+        {
             print_initrd(head, indent + 2);
             head = head->next;
         }
     }
 }
 
-void export_ksymbols() {
+void export_ksymbols()
+{
     // ksymbols.h exports
     ksymbol_add("ksymbol_add", &ksymbol_add);
     ksymbol_add("ksymbol", &ksymbol);
@@ -81,7 +85,8 @@ void export_ksymbols() {
     ksymbol_add("vfs_rawptr", &vfs_rawptr);
 }
 
-int main() {
+int main()
+{
     int err;
 
     // Init the SWO debug module

@@ -48,7 +48,8 @@
 #define BLOCKS_COUNT ((1 << DEPTH) - 1)
 
 //! An enumeration for blocks statuses
-enum {
+enum
+{
     //!< The block is free to use
     F_FREE = 0x00,
     //!< The block is used
@@ -81,7 +82,8 @@ static int blocks_statuses[BLOCKS_COUNT];
 //! \param order The order of the block
 //! \param id The id of the block (in its order)
 //! \return The global id of the block
-static int block_id(int order, int id) {
+static int block_id(int order, int id)
+{
     if(order < 0 || order >= DEPTH)
         return -1;
     if(id < 0 || id >= blocks_count[order])
@@ -96,7 +98,8 @@ static int block_id(int order, int id) {
 //! \param id The id of the block (in its order)
 //! \return 0 if invalid order and/or id, a pointer
 //!         to the block's status otherwise
-static int* block_status(int order, int id) {
+static int* block_status(int order, int id)
+{
     int glob = block_id(order, id);
     if(glob < 0)
         return 0;
@@ -109,8 +112,10 @@ static int* block_status(int order, int id) {
 //! \param id The id of the block (in its order)
 //! \param status The value to write in the blocks' statuses
 //! \return 0 on success, -1 on failure
-static int mark_parents(int order, int id, int status) {
-    while(order != 0) {
+static int mark_parents(int order, int id, int status)
+{
+    while(order != 0)
+    {
         order -= 1;
         id >>= 1;
 
@@ -131,19 +136,22 @@ static int mark_parents(int order, int id, int status) {
 //! \param order The order of the block
 //! \param id The id of the block (in its order)
 //! \return 0 on success, -1 on failure
-static int mark_children(int order, int id, int status) {
+static int mark_children(int order, int id, int status)
+{
     order += 1;
     id <<= 1;
 
     if(order >= DEPTH)
         return 0;
 
-    for(int i = 0; i < 2; ++i) {
+    for(int i = 0; i < 2; ++i)
+    {
         int* s = block_status(order, id + i);
         if(!s)
             return -1;
 
-        if(*s != status) {
+        if(*s != status)
+        {
             *s = status;
             if(mark_children(order, id + i, status) < 0)
                 return -1;
@@ -158,15 +166,18 @@ static int mark_children(int order, int id, int status) {
 //! \param order Output parameter for the found block order
 //! \param id Output parameter for the found block id
 //! \param status Output parameter for the found block status
-static void find_used(int offset, int* order, int* id, int** status) {
-    for(int o = 0; o < DEPTH; ++o) {
+static void find_used(int offset, int* order, int* id, int** status)
+{
+    for(int o = 0; o < DEPTH; ++o)
+    {
         int i = offset / blocks_size[o];
 
         *status = block_status(o, i);
         if(!*status)
             return;
 
-        if(**status == F_USED) {
+        if(**status == F_USED)
+        {
             *order = o;
             *id = i;
             break;
@@ -177,14 +188,17 @@ static void find_used(int offset, int* order, int* id, int** status) {
 //! Allocate a block of memory.
 //! \param size The size of the block to allocate, in bytes
 //! \return The offset of the alloc'ed block in bytes, or -1 on failure
-static int alloc(int size) {
+static int alloc(int size)
+{
     if(size <= 0 || size > POOL_SIZE)
         return -1;
 
     // Seek for the associated order
     int order = -1;
-    for(int o = DEPTH - 1; o >= 0; --o) {
-        if(size <= blocks_size[o]) {
+    for(int o = DEPTH - 1; o >= 0; --o)
+    {
+        if(size <= blocks_size[o])
+        {
             order = o;
             break;
         }
@@ -197,12 +211,14 @@ static int alloc(int size) {
     // Search the first free block
     int id = -1;
     int* s;
-    for(int i = 0; i < blocks_count[order]; ++i) {
+    for(int i = 0; i < blocks_count[order]; ++i)
+    {
         s = block_status(order, i);
         if(!s)
             return -1;
 
-        if(*s == F_FREE) {
+        if(*s == F_FREE)
+        {
             id = i;
             break;
         }
@@ -227,7 +243,8 @@ static int alloc(int size) {
 //! Release a block of memory.
 //! \param offset The base offset of the block of memory to release
 //! \return 0 on success, -1 upon failure
-static int release(int offset) {
+static int release(int offset)
+{
     if(offset < 0 || offset >= POOL_SIZE)
         return -1;
 
@@ -249,7 +266,8 @@ static int release(int offset) {
         return -1;
 
     // Coalesce blocks
-    for(;;) {
+    for(;;)
+    {
         // Read my buddy's status
         int buddy = id ^ 1;
         int* s = block_status(order, buddy);
@@ -257,7 +275,8 @@ static int release(int offset) {
             return -1;
 
         // If my buddy is free, we can free our parent
-        if(*s == F_FREE) {
+        if(*s == F_FREE)
+        {
             order = order - 1;
             id = id / 2;
 
@@ -269,7 +288,8 @@ static int release(int offset) {
 
             if(order <= 0)
                 break;
-        } else
+        }
+        else
             break;
     }
 
@@ -277,7 +297,8 @@ static int release(int offset) {
 }
 
 //! Init the buddy allocator's internal variables.
-static void init() {
+static void init()
+{
     // Compute block sizes
     for(int o = 0; o < DEPTH; ++o)
         blocks_size[o] = POOL_SIZE >> o;
@@ -287,8 +308,10 @@ static void init() {
         blocks_count[o] = 1 << o;
 
     // Tag all blocks as free
-    for(int o = 0; o < DEPTH; ++o) {
-        for(int i = 0; i < blocks_count[o]; ++i) {
+    for(int o = 0; o < DEPTH; ++o)
+    {
+        for(int i = 0; i < blocks_count[o]; ++i)
+        {
             int id = block_id(o, i);
             blocks_statuses[id] = F_FREE;
         }
@@ -296,11 +319,14 @@ static void init() {
 }
 
 //! Print out the allocator's state.
-static void __attribute__((unused)) dump(void (*debug)(const char*, ...)) {
-    for(int o = 0; o < DEPTH; ++o) {
+static void __attribute__((unused)) dump(void (*debug)(const char*, ...))
+{
+    for(int o = 0; o < DEPTH; ++o)
+    {
         (*debug)("%2d [%04d]: ", o, blocks_size[o]);
 
-        for(int i = 0; i < blocks_count[o]; ++i) {
+        for(int i = 0; i < blocks_count[o]; ++i)
+        {
             int spaces = (1 << (DEPTH - 1 - o)) - 1;
             if(i == 0)
                 spaces /= 2;
@@ -330,13 +356,15 @@ static void __attribute__((unused)) dump(void (*debug)(const char*, ...)) {
 extern int _ld_kmalloc_start;
 static void* kmalloc_pool = (void*)&_ld_kmalloc_start;
 
-int kmalloc_init() {
+int kmalloc_init()
+{
     init();
 
     return 0;
 }
 
-void* kmalloc(int size) {
+void* kmalloc(int size)
+{
     int offset = alloc(size);
     if(offset < 0)
         return 0;
@@ -344,7 +372,8 @@ void* kmalloc(int size) {
     return kmalloc_pool + offset;
 }
 
-void* krealloc(void* ptr, int size) {
+void* krealloc(void* ptr, int size)
+{
     if(!size)
         return 0;
 
@@ -353,7 +382,8 @@ void* krealloc(void* ptr, int size) {
     if(!new_buf)
         return 0;
 
-    if(ptr) {
+    if(ptr)
+    {
         int offset = (int)(ptr - kmalloc_pool);
 
         // Seek for the used block mapped to this offset
@@ -382,7 +412,8 @@ void* krealloc(void* ptr, int size) {
     return new_buf;
 }
 
-void kfree(void* ptr) {
+void kfree(void* ptr)
+{
     if(!ptr)
         return;
 

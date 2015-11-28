@@ -165,6 +165,7 @@
   \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
   \ \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
   \ \ \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
+  \ \ \ \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
   This value must be a multiple of 0x200. */
 /******************************************************************************/
 
@@ -229,7 +230,8 @@ static void SystemInit_ExtMemCtl(void);
  * @param  None
  * @retval None
  */
-void SystemInit(void) {
+void SystemInit(void)
+{
 /* FPU settings ------------------------------------------------------------*/
 #if(__FPU_PRESENT == 1) && (__FPU_USED == 1)
     SCB->CPACR |= ((3UL << 10 * 2) | (3UL << 11 * 2)); /* set CP10 and CP11 Full Access */
@@ -314,13 +316,15 @@ void SystemInit(void) {
  * @param  None
  * @retval None
  */
-void SystemCoreClockUpdate(void) {
+void SystemCoreClockUpdate(void)
+{
     uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
 
     /* Get SYSCLK source -------------------------------------------------------*/
     tmp = RCC->CFGR & RCC_CFGR_SWS;
 
-    switch(tmp) {
+    switch(tmp)
+    {
         case 0x00: /* HSI used as system clock source */
             SystemCoreClock = HSI_VALUE;
             break;
@@ -335,10 +339,13 @@ void SystemCoreClockUpdate(void) {
             pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) >> 22;
             pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
 
-            if(pllsource != 0) {
+            if(pllsource != 0)
+            {
                 /* HSE used as PLL clock source */
                 pllvco = (HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
-            } else {
+            }
+            else
+            {
                 /* HSI used as PLL clock source */
                 pllvco = (HSI_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
             }
@@ -366,7 +373,8 @@ void SystemCoreClockUpdate(void) {
  * @param  None
  * @retval None
  */
-static void SetSysClock(void) {
+static void SetSysClock(void)
+{
     /******************************************************************************/
     /*            PLL (clocked by HSE) used as System clock source */
     /******************************************************************************/
@@ -376,18 +384,23 @@ static void SetSysClock(void) {
     RCC->CR |= ((uint32_t)RCC_CR_HSEON);
 
     /* Wait till HSE is ready and if Time out is reached exit */
-    do {
+    do
+    {
         HSEStatus = RCC->CR & RCC_CR_HSERDY;
         StartUpCounter++;
     } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
 
-    if((RCC->CR & RCC_CR_HSERDY) != RESET) {
+    if((RCC->CR & RCC_CR_HSERDY) != RESET)
+    {
         HSEStatus = (uint32_t)0x01;
-    } else {
+    }
+    else
+    {
         HSEStatus = (uint32_t)0x00;
     }
 
-    if(HSEStatus == (uint32_t)0x01) {
+    if(HSEStatus == (uint32_t)0x01)
+    {
         /* Select regulator voltage output Scale 1 mode, System frequency up to 168
          * MHz */
         RCC->APB1ENR |= RCC_APB1ENR_PWREN;
@@ -409,7 +422,8 @@ static void SetSysClock(void) {
         RCC->CR |= RCC_CR_PLLON;
 
         /* Wait till the main PLL is ready */
-        while((RCC->CR & RCC_CR_PLLRDY) == 0) {
+        while((RCC->CR & RCC_CR_PLLRDY) == 0)
+        {
         }
 
         /* Configure Flash prefetch, Instruction cache, Data cache and wait state */
@@ -422,10 +436,13 @@ static void SetSysClock(void) {
         /* Wait till the main PLL is used as system clock source */
         while((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL)
             ;
-        {}
-    } else { /* If HSE fails to start-up, the application will have wrong clock
-              configuration. User can add here some code to deal with this error
-              */
+        {
+        }
+    }
+    else
+    { /* If HSE fails to start-up, the application will have wrong clock
+       configuration. User can add here some code to deal with this error
+       */
     }
 }
 
@@ -446,7 +463,8 @@ static void SetSysClock(void) {
  * @param  None
  * @retval None
  */
-void SystemInit_ExtMemCtl(void) {
+void SystemInit_ExtMemCtl(void)
+{
     /*-- GPIOs Configuration
      * -----------------------------------------------------*/
     /*

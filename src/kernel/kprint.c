@@ -60,8 +60,10 @@ static kmutex itm_mutex = 0;
 //! Output a character to the ITM SWO port 0
 //! \param c The character to output
 //! \return 0 if the write succeeded, -1 otherwise
-static int itm_putc(int c) {
-    if((ITM->TCR & (0x01 << 0)) && (ITM->TER & (0x01 << 0))) {
+static int itm_putc(int c)
+{
+    if((ITM->TCR & (0x01 << 0)) && (ITM->TER & (0x01 << 0)))
+    {
         kmutex_lock(&itm_mutex);
 
         while(ITM->PORT[0].u32 == 0)
@@ -80,7 +82,8 @@ static int itm_putc(int c) {
 //// Public module's API ////
 /////////////////////////////
 
-int kprint_init() {
+int kprint_init()
+{
     CoreDebug->DEMCR |= (0x01 << 24); // TRCENA = 1
 
     *((unsigned int*)0xE0000FB0) = 0xC5ACCE55; // Unlock ITM registers
@@ -95,31 +98,40 @@ int kprint_init() {
     return 0;
 }
 
-void __attribute__((format(printf, 1, 2))) kprint(const char* fmt, ...) {
+void __attribute__((format(printf, 1, 2))) kprint(const char* fmt, ...)
+{
     va_list va;
     va_start(va, fmt);
 
     int len = strlen(fmt);
-    for(int i = 0; i < len; ++i) {
+    for(int i = 0; i < len; ++i)
+    {
         char c = fmt[i];
 
-        if(c == '%') {
+        if(c == '%')
+        {
             if(++i >= len)
                 break;
             c = fmt[i];
 
-            if(c == 's') {
+            if(c == 's')
+            {
                 const char* arg = va_arg(va, const char*);
-                if(!arg) {
+                if(!arg)
+                {
                     kprint("<null>");
-                } else {
+                }
+                else
+                {
                     int arg_len = strlen(arg);
                     for(int j = 0; j < arg_len; ++j)
                         itm_putc(arg[j]);
                 }
-            } else
+            }
+            else
                 itm_putc(c);
-        } else
+        }
+        else
             itm_putc(c);
     }
 

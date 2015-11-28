@@ -89,6 +89,7 @@ extern "C" {
 #define __INLINE                                                                                                       \
     inline /*!< inline keyword for IAR Compiler. Only available in High          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
               \                                                                                                        \
+              \ \                                                                                                                     \
               optimization mode! */
 
 #elif defined(__GNUC__)
@@ -182,8 +183,10 @@ extern "C" {
 
 /** \brief  Union type to access the Application Program Status Register (APSR).
  */
-typedef union {
-    struct {
+typedef union
+{
+    struct
+    {
 #if(__CORTEX_M != 0x04)
         uint32_t _reserved0 : 27; /*!< bit:  0..26  Reserved */
 #else
@@ -202,8 +205,10 @@ typedef union {
 
 /** \brief  Union type to access the Interrupt Program Status Register (IPSR).
  */
-typedef union {
-    struct {
+typedef union
+{
+    struct
+    {
         uint32_t ISR : 9;         /*!< bit:  0.. 8  Exception number                   */
         uint32_t _reserved0 : 23; /*!< bit:  9..31  Reserved */
     } b;                          /*!< Structure used for bit  access                  */
@@ -213,8 +218,10 @@ typedef union {
 /** \brief  Union type to access the Special-Purpose Program Status Registers
  * (xPSR).
  */
-typedef union {
-    struct {
+typedef union
+{
+    struct
+    {
         uint32_t ISR : 9; /*!< bit:  0.. 8  Exception number                   */
 #if(__CORTEX_M != 0x04)
         uint32_t _reserved0 : 15; /*!< bit:  9..23  Reserved */
@@ -236,8 +243,10 @@ typedef union {
 
 /** \brief  Union type to access the Control Registers (CONTROL).
  */
-typedef union {
-    struct {
+typedef union
+{
+    struct
+    {
         uint32_t nPRIV : 1;       /*!< bit:      0  Execution privilege in Thread mode */
         uint32_t SPSEL : 1;       /*!< bit:      1  Stack to be used                   */
         uint32_t FPCA : 1;        /*!< bit:      2  FP extension active flag           */
@@ -257,7 +266,8 @@ typedef union {
 /** \brief  Structure type to access the Nested Vectored Interrupt Controller
  * (NVIC).
  */
-typedef struct {
+typedef struct
+{
     __IO uint32_t ISER[1]; /*!< Offset: 0x000 (R/W)  Interrupt Set Enable Register */
     uint32_t RESERVED0[31];
     __IO uint32_t ICER[1]; /*!< Offset: 0x080 (R/W)  Interrupt Clear Enable Register */
@@ -280,7 +290,8 @@ typedef struct {
 
 /** \brief  Structure type to access the System Control Block (SCB).
  */
-typedef struct {
+typedef struct
+{
     __I uint32_t CPUID; /*!< Offset: 0x000 (R/ )  CPUID Base Register */
     __IO uint32_t ICSR; /*!< Offset: 0x004 (R/W)  Interrupt Control and State Register */
     uint32_t RESERVED0;
@@ -352,8 +363,8 @@ typedef struct {
 #define SCB_AIRCR_SYSRESETREQ_Pos 2                                  /*!< SCB AIRCR: SYSRESETREQ Position */
 #define SCB_AIRCR_SYSRESETREQ_Msk (1UL << SCB_AIRCR_SYSRESETREQ_Pos) /*!< SCB AIRCR: SYSRESETREQ Mask */
 
-#define SCB_AIRCR_VECTCLRACTIVE_Pos                                                    \
-    1 /*!< SCB AIRCR: VECTCLRACTIVE Position   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SCB_AIRCR_VECTCLRACTIVE_Pos                                                      \
+    1 /*!< SCB AIRCR: VECTCLRACTIVE Position   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
          */
 #define SCB_AIRCR_VECTCLRACTIVE_Msk (1UL << SCB_AIRCR_VECTCLRACTIVE_Pos) /*!< SCB AIRCR: VECTCLRACTIVE Mask */
 
@@ -388,7 +399,8 @@ typedef struct {
 
 /** \brief  Structure type to access the System Timer (SysTick).
  */
-typedef struct {
+typedef struct
+{
     __IO uint32_t CTRL; /*!< Offset: 0x000 (R/W)  SysTick Control and Status Register */
     __IO uint32_t LOAD; /*!< Offset: 0x004 (R/W)  SysTick Reload Value Register */
     __IO uint32_t VAL;  /*!< Offset: 0x008 (R/W)  SysTick Current Value Register */
@@ -447,8 +459,8 @@ typedef struct {
 #define CoreDebug_BASE (0xE000EDF0UL)      /*!< Core Debug Base Address */
 #define SysTick_BASE (SCS_BASE + 0x0010UL) /*!< SysTick Base Address              */
 #define NVIC_BASE (SCS_BASE + 0x0100UL)    /*!< NVIC Base Address                 */
-#define SCB_BASE                                                                                          \
-    (SCS_BASE + 0x0D00UL) /*!< System Control Block Base Address  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SCB_BASE                                                                                            \
+    (SCS_BASE + 0x0D00UL) /*!< System Control Block Base Address  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                              */
 
 #define SCB ((SCB_Type*)SCB_BASE)             /*!< SCB configuration struct           */
@@ -489,7 +501,8 @@ typedef struct {
 
     \param [in]      IRQn  Number of the external interrupt to enable
  */
-static __INLINE void NVIC_EnableIRQ(IRQn_Type IRQn) {
+static __INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
+{
     NVIC->ISER[0] = (1 << ((uint32_t)(IRQn) & 0x1F));
 }
 
@@ -501,7 +514,8 @@ static __INLINE void NVIC_EnableIRQ(IRQn_Type IRQn) {
 
     \param [in]      IRQn  Number of the external interrupt to disable
  */
-static __INLINE void NVIC_DisableIRQ(IRQn_Type IRQn) {
+static __INLINE void NVIC_DisableIRQ(IRQn_Type IRQn)
+{
     NVIC->ICER[0] = (1 << ((uint32_t)(IRQn) & 0x1F));
 }
 
@@ -515,7 +529,8 @@ static __INLINE void NVIC_DisableIRQ(IRQn_Type IRQn) {
     \return             0  Interrupt status is not pending
     \return             1  Interrupt status is pending
  */
-static __INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn) {
+static __INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn)
+{
     return ((uint32_t)((NVIC->ISPR[0] & (1 << ((uint32_t)(IRQn) & 0x1F))) ? 1 : 0));
 }
 
@@ -526,7 +541,8 @@ static __INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn) {
 
     \param [in]      IRQn  Number of the interrupt for set pending
  */
-static __INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn) {
+static __INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
+{
     NVIC->ISPR[0] = (1 << ((uint32_t)(IRQn) & 0x1F));
 }
 
@@ -537,7 +553,8 @@ static __INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn) {
 
     \param [in]      IRQn  Number of the interrupt for clear pending
  */
-static __INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn) {
+static __INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
+{
     NVIC->ICPR[0] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending interrupt */
 }
 
@@ -552,11 +569,15 @@ static __INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn) {
     \param [in]      IRQn  Number of the interrupt for set priority
     \param [in]  priority  Priority to set
  */
-static __INLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority) {
-    if(IRQn < 0) {
+static __INLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
+{
+    if(IRQn < 0)
+    {
         SCB->SHP[_SHP_IDX(IRQn)] = (SCB->SHP[_SHP_IDX(IRQn)] & ~(0xFF << _BIT_SHIFT(IRQn))) |
                                    (((priority << (8 - __NVIC_PRIO_BITS)) & 0xFF) << _BIT_SHIFT(IRQn));
-    } else {
+    }
+    else
+    {
         NVIC->IP[_IP_IDX(IRQn)] = (NVIC->IP[_IP_IDX(IRQn)] & ~(0xFF << _BIT_SHIFT(IRQn))) |
                                   (((priority << (8 - __NVIC_PRIO_BITS)) & 0xFF) << _BIT_SHIFT(IRQn));
     }
@@ -574,12 +595,15 @@ static __INLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority) {
     \param [in]   IRQn  Number of the interrupt for get priority
     \return             Interrupt Priority
  */
-static __INLINE uint32_t NVIC_GetPriority(IRQn_Type IRQn) {
+static __INLINE uint32_t NVIC_GetPriority(IRQn_Type IRQn)
+{
 
-    if(IRQn < 0) {
+    if(IRQn < 0)
+    {
         return ((uint32_t)((SCB->SHP[_SHP_IDX(IRQn)] >> _BIT_SHIFT(IRQn)) >> (8 - __NVIC_PRIO_BITS)));
     } /* get priority for Cortex-M0 system interrupts */
-    else {
+    else
+    {
         return ((uint32_t)((NVIC->IP[_IP_IDX(IRQn)] >> _BIT_SHIFT(IRQn)) >> (8 - __NVIC_PRIO_BITS)));
     } /* get priority for device specific interrupts  */
 }
@@ -588,7 +612,8 @@ static __INLINE uint32_t NVIC_GetPriority(IRQn_Type IRQn) {
 
     This function initiate a system reset request to reset the MCU.
  */
-static __INLINE void NVIC_SystemReset(void) {
+static __INLINE void NVIC_SystemReset(void)
+{
     __DSB(); /* Ensure all outstanding memory accesses included
                 buffered write are completed before reset */
     SCB->AIRCR = ((0x5FA << SCB_AIRCR_VECTKEY_Pos) | SCB_AIRCR_SYSRESETREQ_Msk);
@@ -618,7 +643,8 @@ static __INLINE void NVIC_SystemReset(void) {
     \return          0  Function succeeded
     \return          1  Function failed
  */
-static __INLINE uint32_t SysTick_Config(uint32_t ticks) {
+static __INLINE uint32_t SysTick_Config(uint32_t ticks)
+{
     if(ticks > SysTick_LOAD_RELOAD_Msk)
         return (1); /* Reload value impossible */
 

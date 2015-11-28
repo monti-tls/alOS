@@ -19,10 +19,12 @@
 #include "platform.h"
 #include "drivers/pendsv.h"
 
-void pendsv_init() {
+void pendsv_init()
+{
     SCB->SHP[10] = 14 << 4; // PRI_14 = 15
 }
 
-void pendsv_trigger() {
+void pendsv_trigger()
+{
     SCB->ICSR |= 0x01 << 28; // invoke PendSV handler
 }

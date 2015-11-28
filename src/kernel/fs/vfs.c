@@ -69,20 +69,24 @@ static struct inode* root = &_root;
 /////////////////////////////////////
 
 //! \return 0 if OK, -1 otherwise
-static int empty(struct inode** node) {
+static int empty(struct inode** node)
+{
     if(!node || !*node || !inode_cdable(*node))
         return -1;
 
     // For VFS-owned inodes, just delete them normally
-    if((*node)->superblock == superblock && inode_cdable(*node)) {
+    if((*node)->superblock == superblock && inode_cdable(*node))
+    {
         struct inode* head = (*node)->dir.first;
-        while(head) {
+        while(head)
+        {
             struct inode* next = head->next;
 
             if(empty(&head) < 0)
                 return -1;
 
-            if(head) {
+            if(head)
+            {
                 kfree(head->name);
                 kfree(head);
             }
@@ -93,7 +97,8 @@ static int empty(struct inode** node) {
         (*node)->dir.first = (*node)->dir.last = 0;
     }
     // For other FS, unmount them properly before deleting
-    else {
+    else
+    {
         if((*node)->superblock->umount(*node) < 0)
             return -1;
     }
@@ -104,7 +109,8 @@ static int empty(struct inode** node) {
 //! Unmount and release the VFS
 //! \param root The root node of the FS to release
 //! \return 0 if all went well, -1 otherwise
-static int o_umount(struct inode* root) {
+static int o_umount(struct inode* root)
+{
     if(!root)
         return -1;
 
@@ -114,7 +120,8 @@ static int o_umount(struct inode* root) {
     return 0;
 }
 
-static int o_mkdir(struct inode* node, const char* name) {
+static int o_mkdir(struct inode* node, const char* name)
+{
     if(!node || !inode_cdable(node) || !name)
         return -1;
 
@@ -147,14 +154,16 @@ static int o_mkdir(struct inode* node, const char* name) {
 //// Public module's API ////
 /////////////////////////////
 
-const char* vfs_filename(const char* name) {
+const char* vfs_filename(const char* name)
+{
     int len = strlen(name);
     char* clone = kmalloc(len + 1);
     strcpy(clone, name);
 
     const char* last;
     const char* pch = strtok(clone, "/");
-    while(pch != NULL) {
+    while(pch != NULL)
+    {
         last = pch;
         pch = strtok(0, "/");
     }
@@ -166,7 +175,8 @@ const char* vfs_filename(const char* name) {
     return name + off;
 }
 
-int vfs_path_clean(char* name) {
+int vfs_path_clean(char* name)
+{
     if(!name)
         return -1;
 
@@ -177,7 +187,8 @@ int vfs_path_clean(char* name) {
     return 0;
 }
 
-struct inode* vfs_find(const char* path) {
+struct inode* vfs_find(const char* path)
+{
     if(!path)
         return 0;
 
@@ -187,7 +198,8 @@ struct inode* vfs_find(const char* path) {
     return inode_find(root, path);
 }
 
-int vfs_umount(struct inode* root) {
+int vfs_umount(struct inode* root)
+{
     if(!root || !root->superblock)
         return -1;
 
@@ -197,7 +209,8 @@ int vfs_umount(struct inode* root) {
     return root->superblock->umount(root);
 }
 
-int vfs_mkdir(struct inode* node, const char* name) {
+int vfs_mkdir(struct inode* node, const char* name)
+{
     if(!node || !name || !node->superblock)
         return -1;
 
@@ -207,7 +220,8 @@ int vfs_mkdir(struct inode* node, const char* name) {
     return node->superblock->mkdir(node, name);
 }
 
-int vfs_rawptr(struct inode* node, void** ptr, int* size) {
+int vfs_rawptr(struct inode* node, void** ptr, int* size)
+{
     if(!node || !ptr || !size || !node->superblock)
         return -1;
 

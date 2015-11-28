@@ -37,7 +37,8 @@ typedef uint8_t elf32_char;
 /////////////////////////////
 
 //! elf32_header.e_ident size and byte offsets.
-enum {
+enum
+{
     //!< Size of the e_ident field
     EI_NIDENT = 16,
     //!< First byte of the magic number
@@ -61,7 +62,8 @@ static elf32_char elf32_magic[] = "\x7f"
                                   "ELF";
 
 //! elf32_header.e_ident values.
-enum {
+enum
+{
     //!< The elf file is 32 bit
     EI_CLASS_32BIT = 0x01,
     //!< Data is in little-endian
@@ -69,7 +71,8 @@ enum {
 };
 
 //! elf32_header.e_type values.
-enum {
+enum
+{
     //!< Invalid file type
     ET_NONE = 0x00,
     //!< Relocatable (object) file
@@ -83,13 +86,15 @@ enum {
 };
 
 //! elf32_header.e_machine values.
-enum {
+enum
+{
     //!< ARM target machine
     EM_ARM = 0x28
 };
 
 //! elf32_header.e_version values.
-enum {
+enum
+{
     //!< Invalid version
     EV_NONE = 0x00,
     //!< Current version
@@ -97,13 +102,15 @@ enum {
 };
 
 //! elf32_header.e_ehsize values.
-enum {
+enum
+{
     //!< Size in bytes of the elf32 header
     EEH_SIZE = 52
 };
 
 //! The ELF32 global header structure.
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     //!< Initial bytes mark
     elf32_char e_ident[EI_NIDENT];
     //!< Object file type (see ET_*)
@@ -141,7 +148,8 @@ typedef struct __attribute__((packed)) {
 ///////////////////////////////
 
 //! ELF32 section header indexes special values
-enum {
+enum
+{
     //!< Undefined or irrelevant index
     SHN_UNDEF = 0,
     //!< Symbols defined relative to this section
@@ -154,7 +162,8 @@ enum {
 };
 
 //! elf32_shdr.sh_type values.
-enum {
+enum
+{
     //!< Inactive section header entry
     SHT_NULL = 0x00,
     //!< Information defined by the program (such
@@ -183,7 +192,8 @@ enum {
 };
 
 //! elf32_shdr.sh_flags values.
-enum {
+enum
+{
     //!< Writable data during process execution
     SHF_WRITE = 0x01,
     //!< Occupies memory during execution of the program
@@ -193,7 +203,8 @@ enum {
 };
 
 //! The ELF32 section header structure.
-typedef struct {
+typedef struct
+{
     //!< Name of the section, as an index into
     //!<   the section header string
     elf32_word sh_name;
@@ -237,7 +248,8 @@ typedef struct {
 #define ELF32_ST_TYPE(st_info) ((st_info)&0xf)
 
 //! elf32_sym.info[bind] attributes values.
-enum {
+enum
+{
     //!< Not visible outside this object file
     STB_LOCAL = 0x00,
     //!< Visible outside this object file
@@ -247,7 +259,8 @@ enum {
 };
 
 //! elf32_sym.info[type] attribute values.
-enum {
+enum
+{
     //!< Not specified or invalid
     STT_NOTYPE = 0x00,
     //!< Associated with a data object
@@ -261,7 +274,8 @@ enum {
 };
 
 //! ELF32 Symbol table entry.
-typedef struct {
+typedef struct
+{
     //!< Index in the string symbol table
     //!<   for the symbol's name
     elf32_word st_name;
@@ -294,7 +308,8 @@ typedef struct {
 //! Get the type part of a relocation's info field.
 #define ELF32_R_TYPE(r_info) ((elf32_char)(r_info))
 
-enum {
+enum
+{
     //!< (S + A) | T
     R_ARM_ABS32 = 0x02,
     //!< ((S + A) | T) - P
@@ -302,7 +317,8 @@ enum {
 };
 
 //! An ELF32 relocation table entry.
-typedef struct {
+typedef struct
+{
     //!< The offset at which to apply the relocation
     //!<   action
     elf32_word r_offset;

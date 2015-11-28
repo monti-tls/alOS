@@ -32,7 +32,8 @@ struct file_node;
 //////////////////////////////
 
 //! Enumeration for the superblock_node.flags field
-enum {
+enum
+{
     //!< The filesystem is read-only
     FSF_RDONLY = 0x0001,
     //!< The filesystem physically resides in the ram
@@ -42,7 +43,8 @@ enum {
 //! A superblock node, used in the VFS to identify
 //!   the filesystem implementation to which an inode
 //!   subtree belongs to.
-struct superblock {
+struct superblock
+{
     //!< Name of the filesystem
     const char* fs_name;
     //!< Flags of the filesystem, from FSF_*
@@ -69,7 +71,8 @@ struct superblock {
 };
 
 //! A directory node structure.
-struct dir_node {
+struct dir_node
+{
     //!< Pointer to the first inode in the list
     struct inode* first;
     //!< Pointer to the last inode in the list
@@ -77,14 +80,16 @@ struct dir_node {
 };
 
 //! A file node structure.
-struct file_node {
+struct file_node
+{
     //! Filesystems will put their own data
     //!   structure here.
     void* fs_data;
 };
 
 //! Inode's type tag enumeration.
-enum {
+enum
+{
     //!< The inode is a simple file
     I_FILE = 0x01,
     //!< The inode is a directory
@@ -92,7 +97,8 @@ enum {
 };
 
 //! The inode structure
-struct inode {
+struct inode
+{
     //!< Type tag, from I_*
     int tag;
     //!< The name of the inode (ASCII,
@@ -101,7 +107,8 @@ struct inode {
 
     //!< An union of the different possible
     //!<   node values (deduced from the type tag)
-    union {
+    union
+    {
         struct dir_node dir;
         struct file_node file;
     };

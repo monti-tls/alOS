@@ -19,7 +19,8 @@
 #include "platform.h"
 #include "drivers/systick.h"
 
-void systick_init() {
+void systick_init()
+{
     SysTick->LOAD = 0x00014820;    // interrupt every 500 us (AHB prescaler is 1 so
                                    // its clock is 168 MHz)
     SysTick->VAL = 0x00000000;     // clear current value
@@ -30,10 +31,12 @@ void systick_init() {
     SCB->SHP[11] = 15 << 0x04; // PRI_15 = 16, minimal priority
 }
 
-void systick_start() {
+void systick_start()
+{
     SysTick->CTRL |= (0x01 << 0); // ENABLE = 1 (enabled)
 }
 
-void systick_stop() {
+void systick_stop()
+{
     SysTick->CTRL &= ~(0x01 << 0); // ENABLE = 0 (disabled)
 }

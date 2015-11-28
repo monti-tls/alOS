@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "drivers/svcall.h"
 
-void svcall_init() {
+void svcall_init()
+{
     SCB->SHP[7] = 13 << 4; // PRI_11 = 14
 }
