@@ -1,0 +1,27 @@
+Each module is compiled down to a .ko object file,
+that is copied in the initrd/modules/ directory (that's the modposting).
+Here is the example layout for a module :
+
+sample/
+├── inc
+├── Makefile -> modmake.mk
+├── module.mk
+└── src
+    └── main.c
+
+You can see that the Makefile is linked to the modules/modmake.mk, that just read
+the module.mk configuration file, that currently defines :
+
+MOD_NAME the module's name (must be the same as in the MODULE_NAME(..) macro)
+DEFINES  some define flags (preceded with -D...) to pass to the compiler
+CC_FLAGS additional flags to pass to gcc
+LD_FLAGS additional flags to pass to ld
+
+Every .c file present in any depth-level of the src directory will
+be built into the module.
+
+Available targets are :
+
+clean  remove all temporary and distribution files (including initrd/module ones)
+all    build and modpost
+format invoke clang-format on all found source files

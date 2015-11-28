@@ -1,0 +1,4 @@
+MOD_NAME = sample
+DEFINES  =
+CC_FLAGS =
+LD_FLAGS =

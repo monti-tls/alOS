@@ -1,0 +1,6 @@
+*.sublime-workspace
+bin
+bin/*
+obj
+obj/*
+initrd/modules/*
