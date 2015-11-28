@@ -23,13 +23,19 @@
 //// Module's definitions ////
 //////////////////////////////
 
+//! Type of a kernel mutex
 typedef unsigned int kmutex;
 
 /////////////////////////////
 //// Public module's API ////
 /////////////////////////////
 
+//! Lock a mutex (blocking call)
+//! \param mutex The mutex to lock
 void kmutex_lock(kmutex* mutex);
+
+//! Unlock a mutex
+//! \param mutex The mutex to unlock
 void kmutex_unlock(kmutex* mutex);
 
 #endif // ALOS_KMUTEX_H

@@ -49,7 +49,7 @@ static int o_mkdir(struct inode* node, const char* name);
 //// Module's internal variables ////
 /////////////////////////////////////
 
-//!< The VFS superblock (because VFS has its own operations).
+//! The VFS superblock (because VFS has its own operations).
 static struct superblock _superblock = {
     "vfs",
     0,

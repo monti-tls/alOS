@@ -50,15 +50,15 @@
 //! An enumeration for blocks statuses
 enum
 {
-    //!< The block is free to use
+    //! The block is free to use
     F_FREE = 0x00,
-    //!< The block is used
+    //! The block is used
     F_USED = 0x01,
-    //!< The block is unusable because it is part
-    //!<   of a bigger used block
+    //! The block is unusable because it is part
+    //!   of a bigger used block
     F_BLOCKED_BY_PARENT = 0x02,
-    //!< The block is unusable because some of
-    //!<   its child blocks are used
+    //! The block is unusable because some of
+    //!   its child blocks are used
     F_BLOCKED_BY_CHILD = 0x04
 };
 

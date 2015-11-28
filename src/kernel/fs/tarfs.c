@@ -40,40 +40,40 @@
 //! Enumeration for tar_header.typeflag field.
 enum
 {
-    //!< The tar entry is a file
+    //! The tar entry is a file
     TF_FILE = '0',
-    //!< The tar entry is a directory
+    //! The tar entry is a directory
     TF_DIRECTORY = '5'
 };
 
 //! The tar header structure.
 typedef struct
 {
-    //!< Path of the file (or directory)
+    //! Path of the file (or directory)
     char path[100];
-    //!< Chmod stuff (N/U)
+    //! Chmod stuff (N/U)
     char mode[8];
-    //!< User id (N/U)
+    //! User id (N/U)
     char uid[8];
-    //!< Group id (N/U)
+    //! Group id (N/U)
     char gid[8];
-    //!< ASCII-encoded size
+    //! ASCII-encoded size
     char size[12];
-    //!< Modification time (N/U)
+    //! Modification time (N/U)
     char mtime[12];
-    //!< Checksum (N/U)
+    //! Checksum (N/U)
     char chksum[8];
-    //!< Flag designating the type of the entry,
-    //!<   see TF_*
+    //! Flag designating the type of the entry,
+    //!   see TF_*
     char typeflag;
 } tar_header;
 
 //! The file data (for file_node.fs_data)
 struct file_data
 {
-    //!< Size (in bytes) of the file
+    //! Size (in bytes) of the file
     int size;
-    //!< Pointer to the data in the file
+    //! Pointer to the data in the file
     char* data;
 };
 

@@ -34,9 +34,9 @@ struct file_node;
 //! Enumeration for the superblock_node.flags field
 enum
 {
-    //!< The filesystem is read-only
+    //! The filesystem is read-only
     FSF_RDONLY = 0x0001,
-    //!< The filesystem physically resides in the ram
+    //! The filesystem physically resides in the ram
     FSF_RAM = 0x0002
 };
 
@@ -45,26 +45,26 @@ enum
 //!   subtree belongs to.
 struct superblock
 {
-    //!< Name of the filesystem
+    //! Name of the filesystem
     const char* fs_name;
-    //!< Flags of the filesystem, from FSF_*
+    //! Flags of the filesystem, from FSF_*
     int flags;
 
-    //! Below are function pointers to the filesystem's
-    //!   available operations.
+    // Below are function pointers to the filesystem's
+    //   available operations.
 
-    //!< Unmount the filesystem from this node
-    //!< Releases all child inodes, but *not* the mount point
-    //!< Also releases the associated superblock
-    //!< (MANDATORY)
+    //! Unmount the filesystem from this node
+    //! Releases all child inodes, but *not* the mount point
+    //! Also releases the associated superblock
+    //! (MANDATORY)
     int (*umount)(struct inode*);
 
-    //!< Create a directory in the given inode
-    //!< (unless FSF_READONLY)
+    //! Create a directory in the given inode
+    //! (unless FSF_READONLY)
     int (*mkdir)(struct inode*, const char*);
 
-    //!< Get a raw pointer to the file's data
-    //!< (FSF_RAM only)
+    //! Get a raw pointer to the file's data
+    //! (FSF_RAM only)
     int (*rawptr)(struct inode*, void**, int*);
 
     // @TODO: more operations here
@@ -73,9 +73,9 @@ struct superblock
 //! A directory node structure.
 struct dir_node
 {
-    //!< Pointer to the first inode in the list
+    //! Pointer to the first inode in the list
     struct inode* first;
-    //!< Pointer to the last inode in the list
+    //! Pointer to the last inode in the list
     struct inode* last;
 };
 
@@ -90,34 +90,34 @@ struct file_node
 //! Inode's type tag enumeration.
 enum
 {
-    //!< The inode is a simple file
+    //! The inode is a simple file
     I_FILE = 0x01,
-    //!< The inode is a directory
+    //! The inode is a directory
     I_DIRECTORY = 0x02
 };
 
 //! The inode structure
 struct inode
 {
-    //!< Type tag, from I_*
+    //!Type tag, from I_*
     int tag;
-    //!< The name of the inode (ASCII,
-    //!<   null-terminated)
+    //! The name of the inode (ASCII,
+    //!   null-terminated)
     char* name;
 
-    //!< An union of the different possible
-    //!<   node values (deduced from the type tag)
+    //! An union of the different possible
+    //!   node values (deduced from the type tag)
     union
     {
         struct dir_node dir;
         struct file_node file;
     };
 
-    //!< Pointer to the next inode in the same scope
+    //! Pointer to the next inode in the same scope
     struct inode* next;
 
-    //!< A pointer to this inode's superblock
-    //!< (must be set for all inodes)
+    //! A pointer to this inode's superblock
+    //! (must be set for all inodes)
     struct superblock* superblock;
 };
 

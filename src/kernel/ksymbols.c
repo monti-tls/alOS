@@ -40,9 +40,9 @@
 //! The internal kernel symbol structure.
 typedef struct
 {
-    //!< Name of the kernel symbol (must be unique)
+    //! Name of the kernel symbol (must be unique)
     const char* name;
-    //!< Location of the kernel symbol
+    //! Location of the kernel symbol
     void* location;
 } symbol;
 
@@ -50,7 +50,12 @@ typedef struct
 //// Module's internal variables ////
 /////////////////////////////////////
 
+//! Number of available entries in the kernel's symbol
+//!   table. This does NOT represent the number of valid
+//!   symbols.
 static int symbols_table_size = 0;
+
+//! Start address of the kernel's smbol table.
 static symbol* symbols_table = 0;
 
 /////////////////////////////////////

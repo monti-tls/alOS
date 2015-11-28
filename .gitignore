@@ -4,3 +4,5 @@ bin/*
 obj
 obj/*
 initrd/modules/*
+doxygen
+doxygen/*

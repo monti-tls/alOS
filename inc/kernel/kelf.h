@@ -23,6 +23,8 @@
 //// Module's forward declarations ////
 ///////////////////////////////////////
 
+//! Opaque struct representing a loaded
+//!   ELF binary in the memory
 typedef struct kelf kelf;
 
 /////////////////////////////

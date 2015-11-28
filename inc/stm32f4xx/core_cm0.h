@@ -90,6 +90,7 @@ extern "C" {
     inline /*!< inline keyword for IAR Compiler. Only available in High          \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
               \                                                                                                        \
               \ \                                                                                                                     \
+              \ \ \                                                                                                                     \
               optimization mode! */
 
 #elif defined(__GNUC__)
@@ -363,8 +364,8 @@ typedef struct
 #define SCB_AIRCR_SYSRESETREQ_Pos 2                                  /*!< SCB AIRCR: SYSRESETREQ Position */
 #define SCB_AIRCR_SYSRESETREQ_Msk (1UL << SCB_AIRCR_SYSRESETREQ_Pos) /*!< SCB AIRCR: SYSRESETREQ Mask */
 
-#define SCB_AIRCR_VECTCLRACTIVE_Pos                                                      \
-    1 /*!< SCB AIRCR: VECTCLRACTIVE Position   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SCB_AIRCR_VECTCLRACTIVE_Pos                                                        \
+    1 /*!< SCB AIRCR: VECTCLRACTIVE Position   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
          */
 #define SCB_AIRCR_VECTCLRACTIVE_Msk (1UL << SCB_AIRCR_VECTCLRACTIVE_Pos) /*!< SCB AIRCR: VECTCLRACTIVE Mask */
 
@@ -459,8 +460,8 @@ typedef struct
 #define CoreDebug_BASE (0xE000EDF0UL)      /*!< Core Debug Base Address */
 #define SysTick_BASE (SCS_BASE + 0x0010UL) /*!< SysTick Base Address              */
 #define NVIC_BASE (SCS_BASE + 0x0100UL)    /*!< NVIC Base Address                 */
-#define SCB_BASE                                                                                            \
-    (SCS_BASE + 0x0D00UL) /*!< System Control Block Base Address  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SCB_BASE                                                                                              \
+    (SCS_BASE + 0x0D00UL) /*!< System Control Block Base Address  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                              */
 
 #define SCB ((SCB_Type*)SCB_BASE)             /*!< SCB configuration struct           */

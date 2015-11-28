@@ -44,34 +44,34 @@ struct kelf
 {
     union
     {
-        //!< A raw pointer to the beginning of
-        //!<   the elf blob
+        //! A raw pointer to the beginning of
+        //!   the elf blob
         void* raw;
-        //!< A pointer to the header of the elf blob
+        //! A pointer to the header of the elf blob
         elf32_header* header;
     };
 
-    //!< The section header string table header
+    //! The section header string table header
     elf32_shdr* shstrtab;
-    //!< The symbol table header
+    //! The symbol table header
     elf32_shdr* symtab;
-    //!< The symbol's name string table header
+    //! The symbol's name string table header
     elf32_shdr* symstrtab;
 
-    //!< An array containing all sections header
-    //!<   indexes with the SHF_ALLOC flag set,
-    //!<   thus directly contributing to the process image
+    //! An array containing all sections header
+    //!   indexes with the SHF_ALLOC flag set,
+    //!   thus directly contributing to the process image
     elf32_word* allocsh;
-    //!< Size of the allocsh array
+    //! Size of the allocsh array
     elf32_word allocshnum;
 
-    //!< Start address of sections in the program's
-    //!<   memory image
+    //! Start address of sections in the program's
+    //!   memory image
     elf32_off* progmem_shoff;
 
-    //!< Size in bytes of the program memory image
+    //! Size in bytes of the program memory image
     elf32_word progmem_size;
-    //!< Program's memory image
+    //! Program's memory image
     char* progmem;
 };
 

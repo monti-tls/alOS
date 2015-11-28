@@ -12,6 +12,7 @@ TMP_DIR = obj
 BIN_DIR = bin
 IRD_DIR = initrd
 MOD_DIR = modules
+DOX_DIR = doxygen
 
 # Configuration
 PRODUCT = alOS
@@ -74,10 +75,15 @@ initrd_img: all_modules $(IRD_FILE)
 all_modules: | $(MOD_DIR)
 	@$(MAKE) --no-print-directory -C $(MOD_DIR)
 
+.PHONY: doxygen
+doxygen:
+	@doxygen Doxyfile
+
 .PHONY: clean
 clean: modules
 	@rm -rf $(BIN_DIR) $(TMP_DIR)
 	@$(MAKE) --no-print-directory -C $(MOD_DIR) $@
+	@rm -rf $(DOX_DIR)
 
 .PHONY: format
 format: $(C_FMT) $(H_FMT)

@@ -7,20 +7,25 @@
 //// Module's definitions ////
 //////////////////////////////
 
+//! Encode a module's version into the internal format
 #define MOD_VER_NUMBER(major, minor, revision) ((major) << 28) | ((minor) << 16) | (revision)
 
+//! Create a version string
 #define MOD_VER_STRING(major, minor, revision) #major "." #minor "-r" #revision
 
+//! Specify the module's version (must be used in all modules)
 #define MOD_VERSION(major, minor, revision)               \
     int mod_ver = MOD_VER_NUMBER(major, minor, revision); \
     char mod_ver_string[] = MOD_VER_STRING(major, minor, revision);
 
+//! Specify the module's name (must be used in all modules)
 #define MOD_NAME(name) char mod_name[] = name;
 
 ///////////////////////////////////////
 //// Module's forward declarations ////
 ///////////////////////////////////////
 
+//! Opaque struct representing a kernel module
 typedef struct kmodule kmodule;
 
 /////////////////////////////
