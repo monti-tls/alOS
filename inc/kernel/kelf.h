@@ -32,10 +32,24 @@ typedef struct kelf kelf;
 /////////////////////////////
 
 //! Load and prepare for execution an elf blob
-//!   from memory
+//!   from memory. If some relocations haven't been
+//!   resolved, kelf_needs_fix() will return 1, and one
+//!   must call kelf_fix_relocations() once all required
+//!   symbols has been exported.
 //! \param raw A pointer to the raw elf blob buffer
 //! \return A kernel elf object, 0 if error(s) occured
 kelf* kelf_load(void* raw);
+
+//! Get the relocation state of the kernel elf.
+//! \param elf The elf to work on
+//! \return 0 if all relocations are satisfied in the elf,
+//!         1 if not, -1 if error(s) occured
+int kelf_needs_fix(kelf* elf);
+
+//! Fix all relocations in a kernel elf
+//! \param elf The elf object to patch
+//! \return 0 if OK, -1 if there remains unsatisfied relocations
+int kelf_fix_relocations(kelf* elf);
 
 //! Unload and release a kernel elf object
 //! \param elf The elf object to release

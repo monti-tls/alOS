@@ -127,11 +127,9 @@ int main()
     print_initrd(initrd_in, 0);
     kprint(KPRINT_TRACE "===================\n");
 
-    // Load the module 'sample'
-    kmodule_insert("a", 1);
+    kmodule_insert("sample", 1);
 
-    // Unload the module he depends on
-    kmodule_remove("b", 1);
+    kmodule_remove("sample", 0);
 
     // Unmount the FS
     if(vfs_umount(root_in) < 0)

@@ -22,6 +22,8 @@
 #include "kernel/ksymbols.h"
 #include <string.h>
 
+#include "kernel/kprint.h"
+
 ///////////////////////////
 //// Module parameters ////
 ///////////////////////////
@@ -73,6 +75,15 @@ struct kelf
     elf32_word progmem_size;
     //! Program's memory image
     char* progmem;
+
+    //! Two-dimensional array representing the relocation
+    //!   statuses (1 if satisfied, 0 otherwise). First dimension
+    //!   is the section (in order), second is relocation id.
+    int** rels_statuses;
+    //! Size of the above array
+    int rels_statuses_size;
+    //! Set to 1 if not all relocations are satisfied
+    int needs_fix;
 };
 
 ///////////////////////////////////////
@@ -90,6 +101,16 @@ static elf32_sym* symbol(struct kelf* elf, elf32_word id);
 static const char* symbol_name(struct kelf* elf, elf32_sym* sym);
 static int alloc_progmem(struct kelf* elf);
 static int load_progmem_section(struct kelf* elf, elf32_word id);
+static int load_progmem(struct kelf* elf);
+static elf32_addr symbol_addr(struct kelf* elf, elf32_sym* sym);
+static int alloc_rels_statuses(struct kelf* elf);
+static int free_rels_statuses(struct kelf* elf);
+static int* rel_status(struct kelf* elf, int sid, int rid);
+static int do_rel_for_section(struct kelf* elf, elf32_shdr* shdr, elf32_rel* rel);
+static int do_rels_for_section(struct kelf* elf, elf32_shdr* shdr, int sid);
+static int do_rels(struct kelf* elf);
+static int load(struct kelf* elf);
+static int unload(struct kelf* elf);
 
 /////////////////////////////////////
 //// Module's internal variables ////
@@ -463,10 +484,93 @@ static elf32_addr symbol_addr(struct kelf* elf, elf32_sym* sym)
         if(!name)
             return 0;
 
-        return (elf32_addr)ksymbol(name);
+        return (elf32_addr) ksymbol(name);
     }
 
     return S;
+}
+
+//! Allocate the relocation status table, and set
+//!   all relocations' status to 'not done' (i.e 0)
+//! \param elf The elf to work on
+//! \return 0 if OK, -1 otherwise
+static int alloc_rels_statuses(struct kelf* elf)
+{
+    if (!elf || !elf->progmem)
+        return -1;
+
+    int nsections = 0;
+
+    // Get the number of relocation sections
+    for(elf32_word i = 0; i < elf->header->e_shnum; ++i)
+    {
+        elf32_shdr* shdr = section(elf, i);
+        if(shdr->sh_type != SHT_REL)
+            continue;
+        ++nsections;
+    }
+
+    // Allocate main array
+    elf->rels_statuses_size = nsections;
+    elf->rels_statuses = kmalloc(nsections * sizeof(int*));
+    if (!elf->rels_statuses)
+        return -1;
+
+    int sid = 0;
+    for(elf32_word i = 0; i < elf->header->e_shnum; ++i)
+    {
+        elf32_shdr* shdr = section(elf, i);
+        if(shdr->sh_type != SHT_REL)
+            continue;
+
+        // Number of relocations in this section
+        int nrels = shdr->sh_size / shdr->sh_entsize;
+
+        // Allocate array
+        elf->rels_statuses[sid] = kmalloc(sizeof(int));
+        if (!elf->rels_statuses[sid])
+            return -1;
+
+        // Set all relocation statuses to 'not done'
+        for (int rid = 0; rid < nrels; ++rid)
+            elf->rels_statuses[sid][rid] = 0;
+
+        ++sid;
+    }
+
+    return 0;
+}
+
+//! Release the relocations' statuses table
+//! \param elf The elf blob to work on
+//! \return 0 if OK, -1 otherwise
+static int free_rels_statuses(struct kelf* elf)
+{
+    if (!elf || !elf->rels_statuses)
+        return -1;
+
+    for (int sid = 0; sid < elf->rels_statuses_size; ++sid)
+    {
+        kfree(elf->rels_statuses[sid]);
+    }
+
+    kfree(elf->rels_statuses);
+
+    return 0;
+}
+
+//! Get a pointer to the status of a relocation, given
+//!   its relocation section id and relocation id
+//! \param elf The elf to work on
+//! \param sid The relocation section id (*not* the elf section id)
+//! \param rid The relocation id inside its own section
+//! \return A pointer to the relocation's status, 0 if error(s) occured
+static int* rel_status(struct kelf* elf, int sid, int rid)
+{
+    if (!elf || !elf->rels_statuses || sid >= elf->rels_statuses_size)
+        return 0;
+
+    return elf->rels_statuses[sid] + rid;
 }
 
 //! Apply a relocation to the process' image
@@ -548,20 +652,33 @@ static int do_rel_for_section(struct kelf* elf, elf32_shdr* shdr, elf32_rel* rel
 //! \param elf The elf blob to work on
 //! \param shdr The relocation section header
 //! \return 0 if suceeded, -1 otherwise
-static int do_rels_for_section(struct kelf* elf, elf32_shdr* shdr)
+static int do_rels_for_section(struct kelf* elf, elf32_shdr* shdr, int sid)
 {
     if(!elf || !shdr || shdr->sh_type != SHT_REL || !elf->progmem)
         return -1;
 
+    int ok = 0;
+
+    int rid = 0;
     for(elf32_word i = 0; i < shdr->sh_size / shdr->sh_entsize; ++i)
     {
         elf32_rel* rel = (elf32_rel*)(elf->raw + shdr->sh_offset + i * shdr->sh_entsize);
 
-        if(do_rel_for_section(elf, shdr, rel) < 0)
+        // 'rid' is the number of the relocation, in order
+        int* status = rel_status(elf, sid, rid++);
+        if (!status)
             return -1;
+
+        if (*status == 0)
+        {
+            if(do_rel_for_section(elf, shdr, rel) < 0)
+                ok = -1;
+            else
+                *status = 1;
+        }
     }
 
-    return 0;
+    return ok;
 }
 
 //! Apply all relocations for the given elf blob
@@ -572,24 +689,27 @@ static int do_rels(struct kelf* elf)
     if(!elf || !elf->progmem)
         return -1;
 
+    int ok = 0;
+    int sid = 0;
     for(elf32_word i = 0; i < elf->header->e_shnum; ++i)
     {
         elf32_shdr* shdr = section(elf, i);
         if(shdr->sh_type != SHT_REL)
             continue;
 
-        if(do_rels_for_section(elf, shdr) < 0)
-            return -1;
+        // 'sid' is the number of the relocation section, in order
+        if(do_rels_for_section(elf, shdr, sid++) < 0)
+            ok = -1;
     }
 
-    return 0;
+    return ok;
 }
 
 //! Perform the whole elf loading process :
 //!   - check it for defects
 //!   - find relevant sections
 //!   - allocate process image
-//!   - apply relocations
+//!   - note that it does NOT apply any rellocations
 //! \param elf The elf blob to load
 //! \return 0 on success, -1 otherwise
 static int load(struct kelf* elf)
@@ -611,7 +731,7 @@ static int load(struct kelf* elf)
         return -1;
     if(load_progmem(elf) < 0)
         return -1;
-    if(do_rels(elf) < 0)
+    if (alloc_rels_statuses(elf) < 0)
         return -1;
 
     return 0;
@@ -626,6 +746,7 @@ static int unload(struct kelf* elf)
     if(!elf)
         return -1;
 
+    free_rels_statuses(elf);
     kfree(elf->progmem);
     kfree(elf->progmem_shoff);
     kfree(elf->allocsh);
@@ -648,6 +769,9 @@ static int unload(struct kelf* elf)
 
 struct kelf* kelf_load(void* raw)
 {
+    if (!raw)
+        return 0;
+
     struct kelf* elf = kmalloc(sizeof(struct kelf));
     elf->raw = raw;
 
@@ -658,7 +782,29 @@ struct kelf* kelf_load(void* raw)
         return 0;
     }
 
+    elf->needs_fix = (do_rels(elf) < 0) ? 1 : 0;
+
     return elf;
+}
+
+int kelf_needs_fix(kelf* elf)
+{
+    if (!elf)
+        return -1;
+
+    return elf->needs_fix;
+}
+
+int kelf_fix_relocations(kelf* elf)
+{
+    if (!elf)
+        return -1;
+
+    if (do_rels(elf) < 0)
+        return -1;
+
+    elf->needs_fix = 0;
+    return 0;
 }
 
 void kelf_unload(struct kelf* elf)

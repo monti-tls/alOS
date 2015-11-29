@@ -15,9 +15,9 @@ DIST_PATH   = $(KERNEL_ROOT)/initrd/modules/
 include module.mk
 
 # Mandatory CC flags
-CC_FLAGS += -std=c11 -fno-common
+CC_FLAGS += -std=c11 -fno-common -O0
 CC_FLAGS += -mlong-calls -mword-relocations
-CC_FLAGS += $(DEFINES) -I$(INC_DIR)
+CC_FLAGS += $(DEFINES) -I$(INC_DIR) -I$(KERNEL_ROOT)/inc
 
 # Format flags
 FMT_FLAGS = -i -style=file

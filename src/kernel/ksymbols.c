@@ -19,6 +19,8 @@
 #include "kernel/ksymbols.h"
 #include "kernel/kmalloc.h"
 
+#include "kernel/kprint.h"
+
 #include <string.h>
 
 ///////////////////////////

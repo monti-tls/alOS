@@ -1,0 +1,4 @@
+MOD_NAME = depmod
+DEFINES  =
+CC_FLAGS =
+LD_FLAGS =
