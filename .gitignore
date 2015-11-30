@@ -6,3 +6,4 @@ obj/*
 initrd/modules/*
 doxygen
 doxygen/*
+*.pyc

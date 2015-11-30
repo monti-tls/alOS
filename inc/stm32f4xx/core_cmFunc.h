@@ -31,12 +31,12 @@
   @{
  */
 
-#if defined(                                                                                                       \
-    __CC_ARM) /*------------------RealView Compiler                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#if defined(                                                                                                           \
+    __CC_ARM) /*------------------RealView Compiler                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                  -----------------*/
 /* ARM armcc specific functions */
 
-#if(__ARMCC_VERSION < 400677)
+#if (__ARMCC_VERSION < 400677)
 #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 #endif
 
@@ -176,7 +176,7 @@ static __INLINE void __set_PRIMASK(uint32_t priMask)
     __regPriMask = (priMask);
 }
 
-#if(__CORTEX_M >= 0x03)
+#if (__CORTEX_M >= 0x03)
 
 /** \brief  Enable FIQ
 
@@ -242,7 +242,7 @@ static __INLINE void __set_FAULTMASK(uint32_t faultMask)
 
 #endif /* (__CORTEX_M >= 0x03) */
 
-#if(__CORTEX_M == 0x04)
+#if (__CORTEX_M == 0x04)
 
 /** \brief  Get FPSCR
 
@@ -253,7 +253,7 @@ static __INLINE void __set_FAULTMASK(uint32_t faultMask)
  */
 static __INLINE uint32_t __get_FPSCR(void)
 {
-#if(__FPU_PRESENT == 1) && (__FPU_USED == 1)
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
     register uint32_t __regfpscr __ASM("fpscr");
     return (__regfpscr);
 #else
@@ -270,7 +270,7 @@ static __INLINE uint32_t __get_FPSCR(void)
  */
 static __INLINE void __set_FPSCR(uint32_t fpscr)
 {
-#if(__FPU_PRESENT == 1) && (__FPU_USED == 1)
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
     register uint32_t __regfpscr __ASM("fpscr");
     __regfpscr = (fpscr);
 #endif
@@ -449,7 +449,7 @@ __attribute__((always_inline)) static __INLINE void __set_PRIMASK(uint32_t priMa
     __ASM volatile("MSR primask, %0" : : "r"(priMask));
 }
 
-#if(__CORTEX_M >= 0x03)
+#if (__CORTEX_M >= 0x03)
 
 /** \brief  Enable FIQ
 
@@ -523,7 +523,7 @@ __attribute__((always_inline)) static __INLINE void __set_FAULTMASK(uint32_t fau
 
 #endif /* (__CORTEX_M >= 0x03) */
 
-#if(__CORTEX_M == 0x04)
+#if (__CORTEX_M == 0x04)
 
 /** \brief  Get FPSCR
 
@@ -534,7 +534,7 @@ __attribute__((always_inline)) static __INLINE void __set_FAULTMASK(uint32_t fau
  */
 __attribute__((always_inline)) static __INLINE uint32_t __get_FPSCR(void)
 {
-#if(__FPU_PRESENT == 1) && (__FPU_USED == 1)
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
     uint32_t result;
 
     __ASM volatile("VMRS %0, fpscr" : "=r"(result));
@@ -553,7 +553,7 @@ __attribute__((always_inline)) static __INLINE uint32_t __get_FPSCR(void)
  */
 __attribute__((always_inline)) static __INLINE void __set_FPSCR(uint32_t __attribute__((unused)) fpscr)
 {
-#if(__FPU_PRESENT == 1) && (__FPU_USED == 1)
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
     __ASM volatile("VMSR fpscr, %0" : : "r"(fpscr));
 #endif
 }

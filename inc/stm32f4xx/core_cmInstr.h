@@ -31,12 +31,12 @@
   @{
 */
 
-#if defined(                                                                                                       \
-    __CC_ARM) /*------------------RealView Compiler                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#if defined(                                                                                                           \
+    __CC_ARM) /*------------------RealView Compiler                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                  -----------------*/
 /* ARM armcc specific functions */
 
-#if(__ARMCC_VERSION < 400677)
+#if (__ARMCC_VERSION < 400677)
 #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 #endif
 
@@ -126,7 +126,7 @@ static __INLINE __ASM int32_t __REVSH(int32_t value)
     revsh r0, r0 bx lr
 }
 
-#if(__CORTEX_M >= 0x03)
+#if (__CORTEX_M >= 0x03)
 
 /** \brief  Reverse bit order of value
 
@@ -362,7 +362,7 @@ __attribute__((always_inline)) static __INLINE int32_t __REVSH(int32_t value)
     return (result);
 }
 
-#if(__CORTEX_M >= 0x03)
+#if (__CORTEX_M >= 0x03)
 
 /** \brief  Reverse bit order of value
 

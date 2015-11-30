@@ -116,9 +116,9 @@ void gpio_select_af(GPIO_TypeDef* port, uint8_t pin, uint8_t afno)
     uint32_t id = pin < 8 ? pin : pin - 8;
 
     uint8_t i;
-    for(i = 0; i < 4; ++i)
+    for (i = 0; i < 4; ++i)
     {
-        if((afno >> i) & 0x01)
+        if ((afno >> i) & 0x01)
             port->AFR[off] |= (0x01 << (4 * id + i));
         else
             port->AFR[off] &= ~(0x01 << (4 * id + i));
@@ -132,7 +132,7 @@ uint8_t gpio_read(GPIO_TypeDef* port, uint8_t pin)
 
 void gpio_write(GPIO_TypeDef* port, uint8_t pin, uint8_t val)
 {
-    if(val != 0)
+    if (val != 0)
         port->ODR |= (0x01 << pin);
     else
         port->ODR &= ~(0x01 << pin);

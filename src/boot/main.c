@@ -32,15 +32,15 @@
 void print_initrd(struct inode* node, int indent)
 {
     kprint(KPRINT_TRACE);
-    for(int i = 0; i < indent; ++i)
+    for (int i = 0; i < indent; ++i)
         kprint(" ");
     kprint(node->name);
     kprint("\n");
 
-    if(inode_cdable(node))
+    if (inode_cdable(node))
     {
         struct inode* head = node->dir.first;
-        while(head)
+        while (head)
         {
             print_initrd(head, indent + 2);
             head = head->next;
@@ -85,6 +85,21 @@ void export_ksymbols()
     ksymbol_add("vfs_rawptr", &vfs_rawptr);
 }
 
+/* TODO list :
+ *  - design and implement smart fault handlers
+ *  - find some sort of user I/O (better than SWO)
+ *  - learn about scheduler strategies
+ *  - design the multithreading framework :
+ *     - schedulers can be changed with modules (with a default
+ *       round-robin (if that's the word))
+ *     - design the 'task' structure
+ *     - don't forget FPU registers (use a per-task flag)
+ *     - support kernel threads creation (with special API)
+ *     - support user-space process creation (using kelf)
+ *  - design a proper system call system
+ *  - implement a complete kprint (with %*s and al.)
+ */
+
 int main()
 {
     int err;
@@ -94,7 +109,7 @@ int main()
 
     // Init memory allocation
     err = kmalloc_init();
-    if(err < 0)
+    if (err < 0)
         kprint(KPRINT_ERR "kmalloc_init() failed\n");
     else
         kprint(KPRINT_MSG "memory allocator initialized\n");
@@ -109,7 +124,7 @@ int main()
     // Mkdir initrd mount point
     err = vfs_mkdir(root_in, "initrd");
     struct inode* initrd_in = vfs_find("/initrd");
-    if(err < 0 || !initrd_in)
+    if (err < 0 || !initrd_in)
         kprint(KPRINT_ERR "unable to mkdir initrd mount point\n");
     else
         kprint(KPRINT_MSG "initrd mount point created\n");
@@ -117,7 +132,7 @@ int main()
     // Mount the initrd filesystem
     extern int _ld_initrd_start;
     err = tarfs_mount(initrd_in, &_ld_initrd_start);
-    if(err < 0)
+    if (err < 0)
         kprint(KPRINT_ERR "unable to mount initrd\n");
     else
         kprint(KPRINT_MSG "initrd mounted\n");
@@ -132,7 +147,7 @@ int main()
     kmodule_remove("sample", 0);
 
     // Unmount the FS
-    if(vfs_umount(root_in) < 0)
+    if (vfs_umount(root_in) < 0)
         kprint(KPRINT_ERR "unable to unmount rootfs\n");
     else
         kprint(KPRINT_MSG "unmounted rootfs\n");

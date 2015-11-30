@@ -80,10 +80,10 @@ static struct kmodule* module_list_last = 0;
 //! \return 0 if OK, -1 otherwise
 static int module_list_add(kmodule* mod)
 {
-    if(!mod)
+    if (!mod)
         return -1;
 
-    if(!module_list_last)
+    if (!module_list_last)
     {
         module_list_first = module_list_last = mod;
     }
@@ -92,7 +92,7 @@ static int module_list_add(kmodule* mod)
         module_list_last->next = mod;
         module_list_last = mod;
     }
-    
+
     mod->next = 0;
 
     return 0;
@@ -103,20 +103,20 @@ static int module_list_add(kmodule* mod)
 //! \return 0 if OK, -1 otherwise
 static int module_list_remove(kmodule* mod)
 {
-    if(!mod)
+    if (!mod)
         return -1;
 
     kmodule* last = 0;
-    for(kmodule* m = module_list_first; m; last = m, m = m->next)
+    for (kmodule* m = module_list_first; m; last = m, m = m->next)
     {
-        if(m == mod)
+        if (m == mod)
         {
             // We remove the last module
-            if(m == module_list_last)
+            if (m == module_list_last)
                 module_list_last = last;
 
             // We remove the first module
-            if(!last)
+            if (!last)
                 module_list_first = m->next;
             // Otherwise
             else
@@ -135,12 +135,12 @@ static int module_list_remove(kmodule* mod)
 //! \return The module if found, 0 otherwise
 static kmodule* module_list_by_name(const char* name)
 {
-    if(!name)
+    if (!name)
         return 0;
 
-    for(kmodule* m = module_list_first; m; m = m->next)
+    for (kmodule* m = module_list_first; m; m = m->next)
     {
-        if(strcmp(m->name, name) == 0)
+        if (strcmp(m->name, name) == 0)
             return m;
     }
 
@@ -152,7 +152,7 @@ static kmodule* module_list_by_name(const char* name)
 //! \return 0 if all symbols has been resolved, -1 otherwise
 static int get_symbols(struct kmodule* mod)
 {
-    if(!mod || !mod->elf)
+    if (!mod || !mod->elf)
         return -1;
 
     mod->name = (const char*)kelf_symbol(mod->elf, "mod_name");
@@ -164,7 +164,7 @@ static int get_symbols(struct kmodule* mod)
     mod->init = (int (*)())kelf_symbol(mod->elf, "mod_init");
     mod->fini = (int (*)())kelf_symbol(mod->elf, "mod_fini");
 
-    if(mod->name && mod->ver && mod->ver_string && mod->depends && mod->depends_size && mod->init && mod->fini)
+    if (mod->name && mod->ver && mod->ver_string && mod->depends && mod->depends_size && mod->init && mod->fini)
         return 0;
 
     return -1;
@@ -176,10 +176,10 @@ static int get_symbols(struct kmodule* mod)
 //! \return 0 if OK, -1 otherwise
 int insert_raw(kmodule* mod)
 {
-    if(!mod || !mod->init)
+    if (!mod || !mod->init)
         return -1;
 
-    if(mod->init() < 0)
+    if (mod->init() < 0)
         return -1;
 
     return 0;
@@ -191,7 +191,7 @@ int insert_raw(kmodule* mod)
 //! \return 0 if OK, -1 otherwise
 int remove_raw(kmodule* mod)
 {
-    if(!mod || !mod->fini)
+    if (!mod || !mod->fini)
         return -1;
 
     int err = mod->fini();
@@ -207,17 +207,17 @@ int remove_raw(kmodule* mod)
 //!        (eventually) needed dependencies
 kmodule* insert(kelf* elf, int load_dependencies)
 {
-    if(!elf)
+    if (!elf)
         return 0;
 
     // Allocate memory
     kmodule* mod = kmalloc(sizeof(struct kmodule));
-    if(!mod)
+    if (!mod)
         return 0;
     mod->elf = elf;
 
     // Resolve mandatory module symbols
-    if(get_symbols(mod) < 0)
+    if (get_symbols(mod) < 0)
     {
         kprint(KPRINT_ERR "    module '%s' not loaded: malformed symbols\n", mod->name);
         kelf_unload(mod->elf);
@@ -226,10 +226,10 @@ kmodule* insert(kelf* elf, int load_dependencies)
     }
 
     // Dependency checking
-    for(int i = 0; i < *mod->depends_size; ++i)
+    for (int i = 0; i < *mod->depends_size; ++i)
     {
         const char* dep = mod->depends[i];
-        if(!dep)
+        if (!dep)
         {
             kelf_unload(mod->elf);
             kfree(mod);
@@ -237,12 +237,12 @@ kmodule* insert(kelf* elf, int load_dependencies)
         }
 
         kmodule* depmod = module_list_by_name(dep);
-        if(!depmod)
+        if (!depmod)
         {
             int err = 0;
 
             // Don't load anything as requested
-            if(!load_dependencies)
+            if (!load_dependencies)
             {
                 err = 1;
             }
@@ -250,14 +250,14 @@ kmodule* insert(kelf* elf, int load_dependencies)
             else
             {
                 kprint(KPRINT_TRACE "    loading dependency '%s'\n", dep);
-                if(kmodule_insert(dep, 1) == 0)
+                if (kmodule_insert(dep, 1) == 0)
                 {
                     err = 1;
                 }
             }
 
             // Dependency failure
-            if(err)
+            if (err)
             {
                 kprint(KPRINT_ERR "    module '%s' not loaded: unresolved dependency '%s'\n", mod->name, dep);
                 kelf_unload(mod->elf);
@@ -280,7 +280,7 @@ kmodule* insert(kelf* elf, int load_dependencies)
         get_symbols(mod);
     }
 
-    if(insert_raw(mod) < 0)
+    if (insert_raw(mod) < 0)
     {
         kprint(KPRINT_ERR "    module '%s' not loaded: internal error\n", mod->name);
         kelf_unload(mod->elf);
@@ -288,7 +288,7 @@ kmodule* insert(kelf* elf, int load_dependencies)
         return 0;
     }
 
-    if(module_list_add(mod) < 0)
+    if (module_list_add(mod) < 0)
     {
         kprint(KPRINT_ERR "    module '%s' not loaded: unable to add to list\n", mod->name);
         kelf_unload(mod->elf);
@@ -303,21 +303,21 @@ kmodule* insert(kelf* elf, int load_dependencies)
 //! Remove a module from the kernel
 int remove(kmodule* mod, int unload_dependencies)
 {
-    if(!mod)
+    if (!mod)
         return -1;
 
     // Find all reverse dependencies
-    for(kmodule* m = module_list_first; m; m = m->next)
+    for (kmodule* m = module_list_first; m; m = m->next)
     {
-        for(int i = 0; i < *m->depends_size; ++i)
+        for (int i = 0; i < *m->depends_size; ++i)
         {
             const char* dep = m->depends[i];
-            if(strcmp(dep, mod->name) == 0)
+            if (strcmp(dep, mod->name) == 0)
             {
                 int err = 0;
 
                 // Don't unload anything
-                if(!unload_dependencies)
+                if (!unload_dependencies)
                 {
                     err = 1;
                 }
@@ -325,14 +325,14 @@ int remove(kmodule* mod, int unload_dependencies)
                 else
                 {
                     kprint(KPRINT_TRACE "    unloading reverse dependency '%s'\n", m->name);
-                    if(remove(m, 1) < 0)
+                    if (remove(m, 1) < 0)
                     {
                         err = 1;
                     }
                 }
 
                 // Reverse dependency failure
-                if(err)
+                if (err)
                 {
                     kprint(KPRINT_ERR "    failed to unload module '%s': '%s' depends on this module\n", mod->name, m->name);
                     return -1;
@@ -342,14 +342,14 @@ int remove(kmodule* mod, int unload_dependencies)
     }
 
     // Remove module from list
-    if(module_list_remove(mod) < 0)
+    if (module_list_remove(mod) < 0)
     {
         kprint(KPRINT_ERR "    failed to unload module '%s': unable to remove from list\n", mod->name);
         return -1;
     }
 
     // Unload module
-    if(remove_raw(mod) < 0)
+    if (remove_raw(mod) < 0)
     {
         kprint(KPRINT_ERR "    failed to unload module '%s': internal error\n", mod->name);
         return -1;
@@ -373,7 +373,7 @@ kmodule* kmodule_insert(const char* name, int load_dependencies)
     const char* folder = "/initrd/modules/";
     const char* ext = ".ko";
     char* path = kmalloc(strlen(folder) + strlen(name) + strlen(ext) + 1);
-    if(!path)
+    if (!path)
     {
         kprint(KPRINT_ERR "    failed to load module '%s': kmalloc error", name);
         return 0;
@@ -385,20 +385,20 @@ kmodule* kmodule_insert(const char* name, int load_dependencies)
     path[strlen(folder) + strlen(name) + strlen(ext)] = '\0';
 
     struct inode* in = vfs_find(path);
-    if(!in)
+    if (!in)
     {
         kprint(KPRINT_ERR "    failed to load module '%s': file '%s' does not exists\n", name, path);
         return 0;
     }
 
-    if(vfs_rawptr(in, (void**)&data, &size) < 0 || !*data)
+    if (vfs_rawptr(in, (void**)&data, &size) < 0 || !*data)
     {
         kprint(KPRINT_ERR "    failed to load module '%s': unable to read '%s'\n", name, path);
         return 0;
     }
 
     kelf* elf = kelf_load(data);
-    if(!elf)
+    if (!elf)
     {
         kprint(KPRINT_ERR "    failed to load module '%s': ELF error\n", name);
         return 0;
@@ -412,13 +412,13 @@ kmodule* kmodule_insert(const char* name, int load_dependencies)
 
 int kmodule_remove(const char* name, int unload_dependencies)
 {
-    if(!name)
+    if (!name)
         return -1;
 
     kprint(KPRINT_TRACE "=== unloading module '%s'\n", name);
 
     kmodule* mod = module_list_by_name(name);
-    if(!mod)
+    if (!mod)
     {
         kprint(KPRINT_ERR "    failed to unload module '%s': no such module\n", name);
         return -1;

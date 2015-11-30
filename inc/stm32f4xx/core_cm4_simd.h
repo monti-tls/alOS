@@ -39,8 +39,8 @@ extern "C" {
   @{
 */
 
-#if defined(                                                                                                     \
-    __CC_ARM) /*------------------RealView Compiler                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#if defined(                                                                                                         \
+    __CC_ARM) /*------------------RealView Compiler                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                  -----------------*/
 /* ARM armcc specific functions */
 
@@ -694,7 +694,7 @@ __attribute__((always_inline)) static __INLINE uint32_t __QSUB(uint32_t op1, uin
 (                                                                                           \
         {                                                                                          \
         uint32_t __RES, __ARG1 = (ARG1), __ARG2 = (ARG2);                                          \
-        if(ARG3 == 0)                                                                              \
+        if (ARG3 == 0)                                                                             \
             __ASM("pkhtb %0, %1, %2" : "=r"(__RES) : "r"(__ARG1), "r"(__ARG2));                    \
         else                                                                                       \
             __ASM("pkhtb %0, %1, %2, asr %3" : "=r"(__RES) : "r"(__ARG1), "r"(__ARG2), "I"(ARG3)); \

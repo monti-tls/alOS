@@ -167,6 +167,8 @@
   \ \ \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
   \ \ \ \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
+  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
+  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \                                                                                                                     \
   This value must be a multiple of 0x200. */
 /******************************************************************************/
 
@@ -234,7 +236,7 @@ static void SystemInit_ExtMemCtl(void);
 void SystemInit(void)
 {
 /* FPU settings ------------------------------------------------------------*/
-#if(__FPU_PRESENT == 1) && (__FPU_USED == 1)
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
     SCB->CPACR |= ((3UL << 10 * 2) | (3UL << 11 * 2)); /* set CP10 and CP11 Full Access */
 #endif
 
@@ -324,7 +326,7 @@ void SystemCoreClockUpdate(void)
     /* Get SYSCLK source -------------------------------------------------------*/
     tmp = RCC->CFGR & RCC_CFGR_SWS;
 
-    switch(tmp)
+    switch (tmp)
     {
         case 0x00: /* HSI used as system clock source */
             SystemCoreClock = HSI_VALUE;
@@ -340,7 +342,7 @@ void SystemCoreClockUpdate(void)
             pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) >> 22;
             pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
 
-            if(pllsource != 0)
+            if (pllsource != 0)
             {
                 /* HSE used as PLL clock source */
                 pllvco = (HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
@@ -389,9 +391,9 @@ static void SetSysClock(void)
     {
         HSEStatus = RCC->CR & RCC_CR_HSERDY;
         StartUpCounter++;
-    } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+    } while ((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
 
-    if((RCC->CR & RCC_CR_HSERDY) != RESET)
+    if ((RCC->CR & RCC_CR_HSERDY) != RESET)
     {
         HSEStatus = (uint32_t)0x01;
     }
@@ -400,7 +402,7 @@ static void SetSysClock(void)
         HSEStatus = (uint32_t)0x00;
     }
 
-    if(HSEStatus == (uint32_t)0x01)
+    if (HSEStatus == (uint32_t)0x01)
     {
         /* Select regulator voltage output Scale 1 mode, System frequency up to 168
          * MHz */
@@ -423,7 +425,7 @@ static void SetSysClock(void)
         RCC->CR |= RCC_CR_PLLON;
 
         /* Wait till the main PLL is ready */
-        while((RCC->CR & RCC_CR_PLLRDY) == 0)
+        while ((RCC->CR & RCC_CR_PLLRDY) == 0)
         {
         }
 
@@ -435,7 +437,7 @@ static void SetSysClock(void)
         RCC->CFGR |= RCC_CFGR_SW_PLL;
 
         /* Wait till the main PLL is used as system clock source */
-        while((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL)
+        while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL)
             ;
         {
         }

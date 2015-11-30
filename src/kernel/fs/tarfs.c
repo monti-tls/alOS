@@ -98,13 +98,13 @@ struct file_data
 //! \return The parsed size, -1 if error(s) occured
 static int ascii_size(const char* ascii)
 {
-    if(!ascii)
+    if (!ascii)
         return -1;
 
     int size = 0;
     int count = 1;
 
-    for(int j = 11; j > 0; j--, count *= 8)
+    for (int j = 11; j > 0; j--, count *= 8)
         size += ((ascii[j - 1] - '0') * count);
 
     return size;
@@ -117,11 +117,11 @@ static int ascii_size(const char* ascii)
 static int next_header_offset(tar_header* header)
 {
     int size = ascii_size(header->size);
-    if(size < 0)
+    if (size < 0)
         return -1;
 
     int off = ((size / 512) + 1) * 512;
-    if(size % 512)
+    if (size % 512)
         off += 512;
     return off;
 }
@@ -135,26 +135,26 @@ static int next_header_offset(tar_header* header)
 //! \return 0 if OK, -1 otherwise
 static int empty(struct inode** node)
 {
-    if(!node || !*node)
+    if (!node || !*node)
         return -1;
 
-    if((*node)->tag == I_FILE)
+    if ((*node)->tag == I_FILE)
     {
         kfree((*node)->file.fs_data);
         kfree(*node);
         *node = 0;
     }
-    else if(inode_cdable(*node))
+    else if (inode_cdable(*node))
     {
         struct inode* head = (*node)->dir.first;
-        while(head)
+        while (head)
         {
             struct inode* next = head->next;
 
-            if(empty(&head) < 0)
+            if (empty(&head) < 0)
                 return -1;
 
-            if(head)
+            if (head)
                 kfree(head);
 
             head = next;
@@ -171,10 +171,10 @@ static int empty(struct inode** node)
 //! \return 0 if all went well, -1 otherwise
 static int o_umount(struct inode* root)
 {
-    if(!root)
+    if (!root)
         return -1;
 
-    if(empty(&root) < 0)
+    if (empty(&root) < 0)
         return -1;
 
     kfree(root->superblock);
@@ -189,11 +189,11 @@ static int o_umount(struct inode* root)
 //! \return 0 if OK, -1 otherwise
 static int o_rawptr(struct inode* node, void** ptr, int* size)
 {
-    if(!node || node->tag != I_FILE || !ptr || !size)
+    if (!node || node->tag != I_FILE || !ptr || !size)
         return -1;
 
     struct file_data* file = (struct file_data*)node->file.fs_data;
-    if(!file)
+    if (!file)
         return -1;
 
     *ptr = file->data;
@@ -208,7 +208,7 @@ static int o_rawptr(struct inode* node, void** ptr, int* size)
 
 int tarfs_mount(struct inode* root, void* tarblob)
 {
-    if(!root || !tarblob)
+    if (!root || !tarblob)
         return -1;
 
     // Configure the fs' superblock
@@ -224,15 +224,15 @@ int tarfs_mount(struct inode* root, void* tarblob)
 
     // First pass, create directories inodes
     int offset = 0;
-    for(int i = 0;; i++)
+    for (int i = 0;; i++)
     {
         // Get the current header, stop at end
         tar_header* header = (tar_header*)(tarblob + offset);
-        if(*header->path == '\0')
+        if (*header->path == '\0')
             break;
 
         // We only care about directories for now
-        if(header->typeflag == TF_DIRECTORY)
+        if (header->typeflag == TF_DIRECTORY)
         {
             // Get the parent directory if the current one,
             //   this approach works because GNU tar puts
@@ -242,7 +242,7 @@ int tarfs_mount(struct inode* root, void* tarblob)
             // test/b
             // test/b/c
             struct inode* parent = inode_parent_dir(root, header->path);
-            if(!parent)
+            if (!parent)
             {
                 return -1;
             }
@@ -260,7 +260,7 @@ int tarfs_mount(struct inode* root, void* tarblob)
             dir->dir.first = dir->dir.last = 0;
 
             // Insert this inode in its parent's list
-            if(!parent->dir.first)
+            if (!parent->dir.first)
                 parent->dir.first = parent->dir.last = dir;
             else
                 parent->dir.last = (parent->dir.last->next = dir);
@@ -271,19 +271,19 @@ int tarfs_mount(struct inode* root, void* tarblob)
 
     // Second pass, register files
     offset = 0;
-    for(int i = 0;; i++)
+    for (int i = 0;; i++)
     {
         // Get the current header, stop at end
         tar_header* header = (tar_header*)(tarblob + offset);
-        if(*header->path == '\0')
+        if (*header->path == '\0')
             break;
 
-        if(header->typeflag == TF_FILE)
+        if (header->typeflag == TF_FILE)
         {
             // Get the inode's parent directory, now
             //   that they are created
             struct inode* parent = inode_parent_dir(root, header->path);
-            if(!parent)
+            if (!parent)
             {
                 return -1;
             }
@@ -301,7 +301,7 @@ int tarfs_mount(struct inode* root, void* tarblob)
             file->file.fs_data = fs_data;
 
             // Insert the inode in its parent's linked list
-            if(!parent->dir.first)
+            if (!parent->dir.first)
                 parent->dir.first = parent->dir.last = file;
             else
                 parent->dir.last = (parent->dir.last->next = file);

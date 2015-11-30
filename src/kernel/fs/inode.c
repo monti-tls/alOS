@@ -63,7 +63,7 @@
 
 int inode_cdable(struct inode* node)
 {
-    if(!node)
+    if (!node)
         return 0;
 
     return node->tag == I_DIRECTORY;
@@ -71,13 +71,13 @@ int inode_cdable(struct inode* node)
 
 struct inode* inode_find_child(struct inode* root, const char* name)
 {
-    if(!root || !inode_cdable(root) || !name)
+    if (!root || !inode_cdable(root) || !name)
         return 0;
 
     struct inode* head = root->dir.first;
-    while(head)
+    while (head)
     {
-        if(strcmp(head->name, name) == 0)
+        if (strcmp(head->name, name) == 0)
             break;
 
         head = head->next;
@@ -88,7 +88,7 @@ struct inode* inode_find_child(struct inode* root, const char* name)
 
 struct inode* inode_parent_dir(struct inode* head, const char* path)
 {
-    if(!head || !path)
+    if (!head || !path)
         return 0;
 
     // Build up a clone of the path to work
@@ -99,7 +99,7 @@ struct inode* inode_parent_dir(struct inode* head, const char* path)
 
     // Extract first token and loop
     const char* pch = strtok(clone, "/");
-    while(pch != NULL)
+    while (pch != NULL)
     {
         // Attempt to cd into the directory
         struct inode* tail = inode_find_child(head, pch);
@@ -109,10 +109,10 @@ struct inode* inode_parent_dir(struct inode* head, const char* path)
 
         // If there is no match, fail if
         //   we've not yet reached the filename
-        if(!tail || !pch)
+        if (!tail || !pch)
         {
             // Fail if we hit a non-found directory
-            if(pch)
+            if (pch)
                 head = 0;
 
             break;
@@ -120,7 +120,7 @@ struct inode* inode_parent_dir(struct inode* head, const char* path)
         else
         {
             // Stop if we reached a file
-            if(!inode_cdable(tail))
+            if (!inode_cdable(tail))
                 break;
 
             head = tail;
@@ -134,11 +134,11 @@ struct inode* inode_parent_dir(struct inode* head, const char* path)
 
 struct inode* inode_find(struct inode* root, const char* path)
 {
-    if(!root || !path)
+    if (!root || !path)
         return 0;
 
     struct inode* head = inode_parent_dir(root, path);
-    if(!head)
+    if (!head)
         return 0;
 
     return inode_find_child(head, vfs_filename(path));

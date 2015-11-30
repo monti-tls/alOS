@@ -14,13 +14,16 @@
 #define _MOD_VER_STRING(major, minor, revision) #major "." #minor "-r" #revision
 
 //! (PRIVATE) Get the number of variadic arguments in a macro
-#define _MOD_NDEPS(...) (sizeof((void*[]){0, ##__VA_ARGS__})/sizeof(void*) - 1)
+#define _MOD_NDEPS(...) (sizeof((void* []){0, ##__VA_ARGS__}) / sizeof(void*) - 1)
 
 //! (PRIVATE) Build an array of any number of strings
-#define _MOD_DEPS(list...) { list }
+#define _MOD_DEPS(list...) \
+    {                      \
+        list               \
+    }
 
 //! Specify the module's version (must be used in all modules)
-#define MOD_VERSION(major, minor, revision)               \
+#define MOD_VERSION(major, minor, revision)                \
     int mod_ver = _MOD_VER_NUMBER(major, minor, revision); \
     char mod_ver_string[] = _MOD_VER_STRING(major, minor, revision);
 
@@ -28,7 +31,7 @@
 #define MOD_NAME(name) char mod_name[] = name;
 
 //! Specify the module's dependencies as a name list (must be set in all modules)
-#define MOD_DEPENDS(...) \
+#define MOD_DEPENDS(...)                            \
     int mod_depends_size = _MOD_NDEPS(__VA_ARGS__); \
     const char* mod_depends[] = _MOD_DEPS(__VA_ARGS__);
 

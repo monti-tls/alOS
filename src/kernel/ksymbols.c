@@ -71,9 +71,9 @@ static symbol* symbols_table = 0;
 static symbol* add_symbol()
 {
     // Attempt to find an unused slot
-    for(int i = 0; i < symbols_table_size; ++i)
+    for (int i = 0; i < symbols_table_size; ++i)
     {
-        if(!symbols_table[i].name || !symbols_table[i].location)
+        if (!symbols_table[i].name || !symbols_table[i].location)
         {
             return symbols_table + i;
         }
@@ -86,11 +86,11 @@ static symbol* add_symbol()
     // Realloc
     int new_size = symbols_table_size + BULK_SIZE;
     symbols_table = krealloc(symbols_table, new_size * sizeof(symbol));
-    if(!symbols_table)
+    if (!symbols_table)
         return 0;
 
     // Nullify unused symbols
-    for(int i = symbols_table_size; i < new_size; ++i)
+    for (int i = symbols_table_size; i < new_size; ++i)
     {
         symbols_table[i].name = 0;
         symbols_table[i].location = 0;
@@ -106,17 +106,17 @@ static symbol* add_symbol()
 static void __attribute__((unused)) dump(void (*debug)(const char*, ...))
 {
     int i;
-    for(i = 0; i < symbols_table_size; ++i)
+    for (i = 0; i < symbols_table_size; ++i)
     {
         symbol* sym = symbols_table + i;
-        if(!sym->name || !sym->location)
+        if (!sym->name || !sym->location)
             continue;
 
         (*debug)("%25s @ %8x\n", sym->name, sym->location);
     }
 
     int more = symbols_table_size - i - 1;
-    if(more > 0)
+    if (more > 0)
         (*debug)("~~~ %d more unused slots ~~~\n", more);
 }
 
@@ -126,12 +126,12 @@ static void __attribute__((unused)) dump(void (*debug)(const char*, ...))
 
 int ksymbol_add(const char* name, void* location)
 {
-    if(!name || !location)
+    if (!name || !location)
         return -1;
 
     // Access the next element in the symbol table
     symbol* sym = add_symbol(symbols_table_size);
-    if(!sym)
+    if (!sym)
         return -1;
 
     sym->name = name;
@@ -142,16 +142,16 @@ int ksymbol_add(const char* name, void* location)
 
 int ksymbol_remove(const char* name)
 {
-    if(!name)
+    if (!name)
         return -1;
 
-    for(int i = 0; i < symbols_table_size; ++i)
+    for (int i = 0; i < symbols_table_size; ++i)
     {
         symbol* sym = symbols_table + i;
-        if(!sym->name || !sym->location)
+        if (!sym->name || !sym->location)
             continue;
 
-        if(strcmp(sym->name, name) == 0)
+        if (strcmp(sym->name, name) == 0)
         {
             sym->name = 0;
             sym->location = 0;
@@ -163,16 +163,16 @@ int ksymbol_remove(const char* name)
 
 void* ksymbol(const char* name)
 {
-    if(!name)
+    if (!name)
         return 0;
 
-    for(int i = 0; i < symbols_table_size; ++i)
+    for (int i = 0; i < symbols_table_size; ++i)
     {
         symbol* sym = symbols_table + i;
-        if(!sym->name || !sym->location)
+        if (!sym->name || !sym->location)
             continue;
 
-        if(strcmp(sym->name, name) == 0)
+        if (strcmp(sym->name, name) == 0)
             return sym->location;
     }
 

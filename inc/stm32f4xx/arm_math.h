@@ -447,7 +447,7 @@ static __INLINE uint32_t __CLZ(q31_t data)
     uint32_t count = 0;
     uint32_t mask = 0x80000000;
 
-    while((data & mask) == 0)
+    while ((data & mask) == 0)
     {
         count += 1u;
         mask = mask >> 1u;
@@ -469,7 +469,7 @@ static __INLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, q31_t* pRecipTable)
     uint32_t index, i;
     uint32_t signBits;
 
-    if(in > 0)
+    if (in > 0)
     {
         signBits = __CLZ(in) - 1;
     }
@@ -490,7 +490,7 @@ static __INLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, q31_t* pRecipTable)
 
     /* calculation of reciprocal value */
     /* running approximation for two iterations */
-    for(i = 0u; i < 2u; i++)
+    for (i = 0u; i < 2u; i++)
     {
         tempVal = (q31_t)(((q63_t)in * out) >> 31u);
         tempVal = 0x7FFFFFFF - tempVal;
@@ -516,7 +516,7 @@ static __INLINE uint32_t arm_recip_q15(q15_t in, q15_t* dst, q15_t* pRecipTable)
     uint32_t index = 0, i = 0;
     uint32_t signBits = 0;
 
-    if(in > 0)
+    if (in > 0)
     {
         signBits = __CLZ(in) - 17;
     }
@@ -537,7 +537,7 @@ static __INLINE uint32_t arm_recip_q15(q15_t in, q15_t* dst, q15_t* pRecipTable)
 
     /* calculation of reciprocal value */
     /* running approximation for two iterations */
-    for(i = 0; i < 2; i++)
+    for (i = 0; i < 2; i++)
     {
         tempVal = (q15_t)(((q31_t)in * out) >> 15);
         tempVal = 0x7FFF - tempVal;
@@ -563,16 +563,16 @@ static __INLINE q31_t __SSAT(q31_t x, uint32_t y)
     uint32_t i;
 
     posMax = 1;
-    for(i = 0; i < (y - 1); i++)
+    for (i = 0; i < (y - 1); i++)
     {
         posMax = posMax * 2;
     }
 
-    if(x > 0)
+    if (x > 0)
     {
         posMax = (posMax - 1);
 
-        if(x > posMax)
+        if (x > posMax)
         {
             x = posMax;
         }
@@ -581,7 +581,7 @@ static __INLINE q31_t __SSAT(q31_t x, uint32_t y)
     {
         negMin = -posMax;
 
-        if(x < negMin)
+        if (x < negMin)
         {
             x = negMin;
         }
@@ -4799,13 +4799,13 @@ static __INLINE float32_t arm_linear_interp_f32(arm_linear_interp_instance_f32* 
     /* Calculation of index */
     i = (x - S->x1) / xSpacing;
 
-    if(i < 0)
+    if (i < 0)
     {
         /* Iniatilize output for below specified range as least output value of
          * table */
         y = pYData[0];
     }
-    else if(i >= S->nValues)
+    else if (i >= S->nValues)
     {
         /* Iniatilize output for above specified range as last output value of table
          */
@@ -4856,11 +4856,11 @@ static __INLINE q31_t arm_linear_interp_q31(q31_t* pYData, q31_t x, uint32_t nVa
     /* Index value calculation */
     index = ((x & 0xFFF00000) >> 20);
 
-    if(index >= (nValues - 1))
+    if (index >= (nValues - 1))
     {
         return (pYData[nValues - 1]);
     }
-    else if(index < 0)
+    else if (index < 0)
     {
         return (pYData[0]);
     }
@@ -4913,11 +4913,11 @@ static __INLINE q15_t arm_linear_interp_q15(q15_t* pYData, q31_t x, uint32_t nVa
     /* Index value calculation */
     index = ((x & 0xFFF00000) >> 20u);
 
-    if(index >= (nValues - 1))
+    if (index >= (nValues - 1))
     {
         return (pYData[nValues - 1]);
     }
-    else if(index < 0)
+    else if (index < 0)
     {
         return (pYData[0]);
     }
@@ -4968,11 +4968,11 @@ static __INLINE q7_t arm_linear_interp_q7(q7_t* pYData, q31_t x, uint32_t nValue
     /* Index value calculation */
     index = ((x & 0xFFF00000) >> 20u);
 
-    if(index >= (nValues - 1))
+    if (index >= (nValues - 1))
     {
         return (pYData[nValues - 1]);
     }
-    else if(index < 0)
+    else if (index < 0)
     {
         return (pYData[0]);
     }
@@ -5095,11 +5095,11 @@ q15_t arm_cos_q15(q15_t x);
 
 static __INLINE arm_status arm_sqrt_f32(float32_t in, float32_t* pOut)
 {
-    if(in > 0)
+    if (in > 0)
     {
 
 //	#if __FPU_USED
-#if(__FPU_USED == 1) && defined(__CC_ARM)
+#if (__FPU_USED == 1) && defined(__CC_ARM)
         *pOut = __sqrtf(in);
 #else
         *pOut = sqrtf(in);
@@ -5159,7 +5159,7 @@ static __INLINE void
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
         /* copy the input sample to the circular buffer */
         circBuffer[wOffset] = *src;
@@ -5169,7 +5169,7 @@ static __INLINE void
 
         /* Circularly update wOffset.  Watch out for positive and negative value */
         wOffset += bufferInc;
-        if(wOffset >= L)
+        if (wOffset >= L)
             wOffset -= L;
 
         /* Decrement the loop counter */
@@ -5204,7 +5204,7 @@ static __INLINE void arm_circularRead_f32(int32_t* circBuffer,
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
         /* copy the sample from the circular buffer to the destination buffer */
         *dst = circBuffer[rOffset];
@@ -5212,7 +5212,7 @@ static __INLINE void arm_circularRead_f32(int32_t* circBuffer,
         /* Update the input pointer */
         dst += dstInc;
 
-        if(dst == (int32_t*)dst_end)
+        if (dst == (int32_t*)dst_end)
         {
             dst = dst_base;
         }
@@ -5220,7 +5220,7 @@ static __INLINE void arm_circularRead_f32(int32_t* circBuffer,
         /* Circularly update rOffset.  Watch out for positive and negative value  */
         rOffset += bufferInc;
 
-        if(rOffset >= L)
+        if (rOffset >= L)
         {
             rOffset -= L;
         }
@@ -5250,7 +5250,7 @@ static __INLINE void
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
         /* copy the input sample to the circular buffer */
         circBuffer[wOffset] = *src;
@@ -5260,7 +5260,7 @@ static __INLINE void
 
         /* Circularly update wOffset.  Watch out for positive and negative value */
         wOffset += bufferInc;
-        if(wOffset >= L)
+        if (wOffset >= L)
             wOffset -= L;
 
         /* Decrement the loop counter */
@@ -5296,7 +5296,7 @@ static __INLINE void arm_circularRead_q15(q15_t* circBuffer,
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
         /* copy the sample from the circular buffer to the destination buffer */
         *dst = circBuffer[rOffset];
@@ -5304,7 +5304,7 @@ static __INLINE void arm_circularRead_q15(q15_t* circBuffer,
         /* Update the input pointer */
         dst += dstInc;
 
-        if(dst == (q15_t*)dst_end)
+        if (dst == (q15_t*)dst_end)
         {
             dst = dst_base;
         }
@@ -5312,7 +5312,7 @@ static __INLINE void arm_circularRead_q15(q15_t* circBuffer,
         /* Circularly update wOffset.  Watch out for positive and negative value */
         rOffset += bufferInc;
 
-        if(rOffset >= L)
+        if (rOffset >= L)
         {
             rOffset -= L;
         }
@@ -5342,7 +5342,7 @@ static __INLINE void
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
         /* copy the input sample to the circular buffer */
         circBuffer[wOffset] = *src;
@@ -5352,7 +5352,7 @@ static __INLINE void
 
         /* Circularly update wOffset.  Watch out for positive and negative value */
         wOffset += bufferInc;
-        if(wOffset >= L)
+        if (wOffset >= L)
             wOffset -= L;
 
         /* Decrement the loop counter */
@@ -5388,7 +5388,7 @@ static __INLINE void arm_circularRead_q7(q7_t* circBuffer,
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
         /* copy the sample from the circular buffer to the destination buffer */
         *dst = circBuffer[rOffset];
@@ -5396,7 +5396,7 @@ static __INLINE void arm_circularRead_q7(q7_t* circBuffer,
         /* Update the input pointer */
         dst += dstInc;
 
-        if(dst == (q7_t*)dst_end)
+        if (dst == (q7_t*)dst_end)
         {
             dst = dst_base;
         }
@@ -5404,7 +5404,7 @@ static __INLINE void arm_circularRead_q7(q7_t* circBuffer,
         /* Circularly update rOffset.  Watch out for positive and negative value */
         rOffset += bufferInc;
 
-        if(rOffset >= L)
+        if (rOffset >= L)
         {
             rOffset -= L;
         }
@@ -5973,7 +5973,7 @@ static __INLINE float32_t arm_bilinear_interp_f32(const arm_bilinear_interp_inst
 
     /* Care taken for table outside boundary */
     /* Returns zero output when values are outside table boundary */
-    if(xIndex < 0 || xIndex > (S->numRows - 1) || yIndex < 0 || yIndex > (S->numCols - 1))
+    if (xIndex < 0 || xIndex > (S->numRows - 1) || yIndex < 0 || yIndex > (S->numCols - 1))
     {
         return (0);
     }
@@ -6042,7 +6042,7 @@ static __INLINE q31_t arm_bilinear_interp_q31(arm_bilinear_interp_instance_q31* 
 
     /* Care taken for table outside boundary */
     /* Returns zero output when values are outside table boundary */
-    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    if (rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
     {
         return (0);
     }
@@ -6114,7 +6114,7 @@ static __INLINE q15_t arm_bilinear_interp_q15(arm_bilinear_interp_instance_q15* 
 
     /* Care taken for table outside boundary */
     /* Returns zero output when values are outside table boundary */
-    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    if (rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
     {
         return (0);
     }
@@ -6189,7 +6189,7 @@ static __INLINE q7_t arm_bilinear_interp_q7(arm_bilinear_interp_instance_q7* S, 
 
     /* Care taken for table outside boundary */
     /* Returns zero output when values are outside table boundary */
-    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    if (rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
     {
         return (0);
     }

@@ -91,6 +91,8 @@ extern "C" {
               \                                                                                                        \
               \ \                                                                                                                     \
               \ \ \                                                                                                                     \
+              \ \ \ \                                                                                                                     \
+              \ \ \ \ \                                                                                                                     \
               optimization mode! */
 
 #elif defined(__GNUC__)
@@ -188,7 +190,7 @@ typedef union
 {
     struct
     {
-#if(__CORTEX_M != 0x04)
+#if (__CORTEX_M != 0x04)
         uint32_t _reserved0 : 27; /*!< bit:  0..26  Reserved */
 #else
         uint32_t _reserved0 : 16; /*!< bit:  0..15  Reserved */
@@ -224,7 +226,7 @@ typedef union
     struct
     {
         uint32_t ISR : 9; /*!< bit:  0.. 8  Exception number                   */
-#if(__CORTEX_M != 0x04)
+#if (__CORTEX_M != 0x04)
         uint32_t _reserved0 : 15; /*!< bit:  9..23  Reserved */
 #else
         uint32_t _reserved0 : 7;  /*!< bit:  9..15  Reserved */
@@ -364,8 +366,8 @@ typedef struct
 #define SCB_AIRCR_SYSRESETREQ_Pos 2                                  /*!< SCB AIRCR: SYSRESETREQ Position */
 #define SCB_AIRCR_SYSRESETREQ_Msk (1UL << SCB_AIRCR_SYSRESETREQ_Pos) /*!< SCB AIRCR: SYSRESETREQ Mask */
 
-#define SCB_AIRCR_VECTCLRACTIVE_Pos                                                        \
-    1 /*!< SCB AIRCR: VECTCLRACTIVE Position   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SCB_AIRCR_VECTCLRACTIVE_Pos                                                            \
+    1 /*!< SCB AIRCR: VECTCLRACTIVE Position   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
          */
 #define SCB_AIRCR_VECTCLRACTIVE_Msk (1UL << SCB_AIRCR_VECTCLRACTIVE_Pos) /*!< SCB AIRCR: VECTCLRACTIVE Mask */
 
@@ -460,8 +462,8 @@ typedef struct
 #define CoreDebug_BASE (0xE000EDF0UL)      /*!< Core Debug Base Address */
 #define SysTick_BASE (SCS_BASE + 0x0010UL) /*!< SysTick Base Address              */
 #define NVIC_BASE (SCS_BASE + 0x0100UL)    /*!< NVIC Base Address                 */
-#define SCB_BASE                                                                                              \
-    (SCS_BASE + 0x0D00UL) /*!< System Control Block Base Address  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+#define SCB_BASE                                                                                                  \
+    (SCS_BASE + 0x0D00UL) /*!< System Control Block Base Address  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
                              */
 
 #define SCB ((SCB_Type*)SCB_BASE)             /*!< SCB configuration struct           */
@@ -572,7 +574,7 @@ static __INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
  */
 static __INLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
 {
-    if(IRQn < 0)
+    if (IRQn < 0)
     {
         SCB->SHP[_SHP_IDX(IRQn)] = (SCB->SHP[_SHP_IDX(IRQn)] & ~(0xFF << _BIT_SHIFT(IRQn))) |
                                    (((priority << (8 - __NVIC_PRIO_BITS)) & 0xFF) << _BIT_SHIFT(IRQn));
@@ -599,7 +601,7 @@ static __INLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
 static __INLINE uint32_t NVIC_GetPriority(IRQn_Type IRQn)
 {
 
-    if(IRQn < 0)
+    if (IRQn < 0)
     {
         return ((uint32_t)((SCB->SHP[_SHP_IDX(IRQn)] >> _BIT_SHIFT(IRQn)) >> (8 - __NVIC_PRIO_BITS)));
     } /* get priority for Cortex-M0 system interrupts */
@@ -619,7 +621,7 @@ static __INLINE void NVIC_SystemReset(void)
                 buffered write are completed before reset */
     SCB->AIRCR = ((0x5FA << SCB_AIRCR_VECTKEY_Pos) | SCB_AIRCR_SYSRESETREQ_Msk);
     __DSB(); /* Ensure completion of memory access */
-    while(1)
+    while (1)
         ; /* wait until reset */
 }
 
@@ -632,7 +634,7 @@ static __INLINE void NVIC_SystemReset(void)
   @{
  */
 
-#if(__Vendor_SysTickConfig == 0)
+#if (__Vendor_SysTickConfig == 0)
 
 /** \brief  System Tick Configuration
 
@@ -646,7 +648,7 @@ static __INLINE void NVIC_SystemReset(void)
  */
 static __INLINE uint32_t SysTick_Config(uint32_t ticks)
 {
-    if(ticks > SysTick_LOAD_RELOAD_Msk)
+    if (ticks > SysTick_LOAD_RELOAD_Msk)
         return (1); /* Reload value impossible */
 
     SysTick->LOAD = (ticks & SysTick_LOAD_RELOAD_Msk) - 1;       /* set reload register */

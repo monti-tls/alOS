@@ -22,8 +22,6 @@
 #include "kernel/ksymbols.h"
 #include <string.h>
 
-#include "kernel/kprint.h"
-
 ///////////////////////////
 //// Module parameters ////
 ///////////////////////////
@@ -128,24 +126,24 @@ static int unload(struct kelf* elf);
 static int header_check(struct kelf* elf)
 {
     // Magic check
-    for(int i = EI_MAG0; i <= EI_MAG3; ++i)
-        if(elf->header->e_ident[i] != elf32_magic[i - EI_MAG0])
+    for (int i = EI_MAG0; i <= EI_MAG3; ++i)
+        if (elf->header->e_ident[i] != elf32_magic[i - EI_MAG0])
             return -1;
 
     // Type check
-    if(elf->header->e_type != ET_REL)
+    if (elf->header->e_type != ET_REL)
         return -1;
 
     // Machine check
-    if(elf->header->e_machine != EM_ARM)
+    if (elf->header->e_machine != EM_ARM)
         return -1;
 
     // Version check
-    if(elf->header->e_version != EV_CURRENT)
+    if (elf->header->e_version != EV_CURRENT)
         return -1;
 
     // Consistency size check
-    if(elf->header->e_ehsize != EEH_SIZE)
+    if (elf->header->e_ehsize != EEH_SIZE)
         return -1;
 
     return 0;
@@ -157,15 +155,15 @@ static int header_check(struct kelf* elf)
 //!         SHN_UNDEF upon failure
 static int find_shstrtab(struct kelf* elf)
 {
-    if(!elf)
+    if (!elf)
         return SHN_UNDEF;
 
     // Get the string section header index
-    if(elf->header->e_shstrndx == SHN_UNDEF)
+    if (elf->header->e_shstrndx == SHN_UNDEF)
         return SHN_UNDEF;
 
     elf->shstrtab = section(elf, elf->header->e_shstrndx);
-    if(!elf->shstrtab)
+    if (!elf->shstrtab)
         return SHN_UNDEF;
 
     return elf->header->e_shstrndx;
@@ -177,16 +175,16 @@ static int find_shstrtab(struct kelf* elf)
 //!         SHN_UNDEF otherwise
 static int find_symtab(struct kelf* elf)
 {
-    if(!elf)
+    if (!elf)
         return SHN_UNDEF;
 
-    for(int i = 0; i < elf->header->e_shnum; ++i)
+    for (int i = 0; i < elf->header->e_shnum; ++i)
     {
         elf32_shdr* shdr = section(elf, i);
-        if(!shdr)
+        if (!shdr)
             break;
 
-        if(shdr->sh_type == SHT_SYMTAB)
+        if (shdr->sh_type == SHT_SYMTAB)
         {
             elf->symtab = shdr;
             return i;
@@ -202,11 +200,11 @@ static int find_symtab(struct kelf* elf)
 //!         SHN_UNDEF otherwise
 static int find_symstrtab(struct kelf* elf)
 {
-    if(!elf || !elf->symtab)
+    if (!elf || !elf->symtab)
         return SHN_UNDEF;
 
     elf->symstrtab = section(elf, elf->symtab->sh_link);
-    if(!elf->symstrtab)
+    if (!elf->symstrtab)
         return -1;
 
     return elf->symtab->sh_link;
@@ -218,39 +216,39 @@ static int find_symstrtab(struct kelf* elf)
 //! \return The number of found sections, -1 on error
 static int find_allocsh(struct kelf* elf)
 {
-    if(!elf)
+    if (!elf)
         return -1;
 
     // Get the count of sections
     elf32_word count = 0;
-    for(elf32_word i = 0; i < elf->header->e_shnum; ++i)
+    for (elf32_word i = 0; i < elf->header->e_shnum; ++i)
     {
         elf32_shdr* shdr = section(elf, i);
-        if(!shdr)
+        if (!shdr)
             return -1;
 
-        if(shdr->sh_flags & SHF_ALLOC)
+        if (shdr->sh_flags & SHF_ALLOC)
             ++count;
     }
 
-    if(!count)
+    if (!count)
         return 0;
 
     // Allocate the array
     elf->allocshnum = count;
     elf->allocsh = kmalloc(elf->allocshnum * sizeof(elf32_word));
-    if(!elf->allocsh)
+    if (!elf->allocsh)
         return -1;
 
     // Fill the array
     count = 0;
-    for(elf32_word i = 0; i < elf->header->e_shnum; ++i)
+    for (elf32_word i = 0; i < elf->header->e_shnum; ++i)
     {
         elf32_shdr* shdr = section(elf, i);
-        if(!shdr)
+        if (!shdr)
             return -1;
 
-        if(shdr->sh_flags & SHF_ALLOC)
+        if (shdr->sh_flags & SHF_ALLOC)
             elf->allocsh[count++] = i;
     }
 
@@ -263,7 +261,7 @@ static int find_allocsh(struct kelf* elf)
 //! \return A pointer to the section header, 0 if error(s) occured
 static elf32_shdr* section(struct kelf* elf, elf32_word id)
 {
-    if(!elf || id >= elf->header->e_shnum)
+    if (!elf || id >= elf->header->e_shnum)
         return 0;
 
     void* shbase = elf->raw + elf->header->e_shoff;
@@ -278,7 +276,7 @@ static elf32_shdr* section(struct kelf* elf, elf32_word id)
 //! \return The address of the string, 0 upon failure
 static const char* section_name(struct kelf* elf, elf32_shdr* shdr)
 {
-    if(!elf || !elf->shstrtab)
+    if (!elf || !elf->shstrtab)
         return 0;
 
     return (const char*)(elf->raw + elf->shstrtab->sh_offset + shdr->sh_name);
@@ -290,7 +288,7 @@ static const char* section_name(struct kelf* elf, elf32_shdr* shdr)
 //! \return A pointer to the symbol, 0 upon failure
 static elf32_sym* symbol(struct kelf* elf, elf32_word id)
 {
-    if(!elf || !elf->symtab)
+    if (!elf || !elf->symtab)
         return 0;
 
     return (elf32_sym*)(elf->raw + elf->symtab->sh_offset + id * elf->symtab->sh_entsize);
@@ -302,19 +300,19 @@ static elf32_sym* symbol(struct kelf* elf, elf32_word id)
 //! \return The symbol's name, 0 if error(s) occured
 static const char* symbol_name(struct kelf* elf, elf32_sym* sym)
 {
-    if(!elf || !sym || !elf->symstrtab)
+    if (!elf || !sym || !elf->symstrtab)
         return 0;
 
     elf32_word st_type = ELF32_ST_TYPE(sym->st_info);
 
-    if(st_type == STT_SECTION)
+    if (st_type == STT_SECTION)
     {
         elf32_shdr* shdr = section(elf, sym->st_shndx);
         return section_name(elf, shdr);
     }
     else
     {
-        if(sym->st_name > elf->symstrtab->sh_size)
+        if (sym->st_name > elf->symstrtab->sh_size)
             return 0;
 
         return (const char*)(elf->raw + elf->symstrtab->sh_offset + sym->st_name);
@@ -329,27 +327,27 @@ static const char* symbol_name(struct kelf* elf, elf32_sym* sym)
 //! \return 0 if succeeded, -1 if failed
 static int alloc_progmem(struct kelf* elf)
 {
-    if(!elf || !elf->allocsh)
+    if (!elf || !elf->allocsh)
         return -1;
 
     // Allocate the section offsets table
     elf->progmem_shoff = kmalloc(elf->allocshnum * sizeof(elf32_off));
-    if(!elf->progmem_shoff)
+    if (!elf->progmem_shoff)
         return -1;
 
     // Compute properly aligned section offsets
     elf32_off off = 0;
-    for(elf32_word i = 0; i < elf->allocshnum; ++i)
+    for (elf32_word i = 0; i < elf->allocshnum; ++i)
     {
         // Get the required alignment for this section
         elf32_shdr* shdr = section(elf, elf->allocsh[i]);
-        if(!shdr)
+        if (!shdr)
             return -1;
         elf32_word align = shdr->sh_addralign;
 
         // If the required alignment is not even
         //   ensured by kmalloc, fuck off
-        if(align > KMALLOC_ALIGNMENT)
+        if (align > KMALLOC_ALIGNMENT)
             return -1;
 
         // Properly align initial address (we know 0 offset
@@ -370,7 +368,7 @@ static int alloc_progmem(struct kelf* elf)
     // Allocate the required amout of program memory
     elf->progmem_size = off;
     elf->progmem = kmalloc(elf->progmem_size);
-    if(!elf->progmem)
+    if (!elf->progmem)
         return -1;
 
     return 0;
@@ -383,30 +381,30 @@ static int alloc_progmem(struct kelf* elf)
 //! \return 0 if succeeded, -1 if failed
 static int load_progmem_section(struct kelf* elf, elf32_word id)
 {
-    if(!elf || !elf->progmem || id >= elf->allocshnum)
+    if (!elf || !elf->progmem || id >= elf->allocshnum)
         return -1;
 
     elf32_shdr* shdr = section(elf, elf->allocsh[id]);
-    if(!shdr)
+    if (!shdr)
         return -1;
     elf32_off off = elf->progmem_shoff[id];
 
     // Usually this will be the .bss section, those
     //   are meant to be initialized with zeroes
-    if(shdr->sh_type == SHT_NOBITS)
+    if (shdr->sh_type == SHT_NOBITS)
     {
-        for(elf32_off i = 0; i < shdr->sh_size; ++i)
+        for (elf32_off i = 0; i < shdr->sh_size; ++i)
         {
             elf->progmem[off + i] = 0;
         }
     }
     // Those are .text, .data and .rodata sections
     // Here we don't mind about read-only sections
-    else if(shdr->sh_type == SHT_PROGBITS)
+    else if (shdr->sh_type == SHT_PROGBITS)
     {
         char* sdata = (char*)(elf->raw + shdr->sh_offset);
 
-        for(elf32_off i = 0; i < shdr->sh_size; ++i)
+        for (elf32_off i = 0; i < shdr->sh_size; ++i)
         {
             elf->progmem[off + i] = sdata[i];
         }
@@ -425,12 +423,12 @@ static int load_progmem_section(struct kelf* elf, elf32_word id)
 //! \return 0 on success, -1 upon failure
 static int load_progmem(struct kelf* elf)
 {
-    if(!elf || !elf->progmem)
+    if (!elf || !elf->progmem)
         return -1;
 
-    for(elf32_word i = 0; i < elf->allocshnum; ++i)
+    for (elf32_word i = 0; i < elf->allocshnum; ++i)
     {
-        if(load_progmem_section(elf, i) < 0)
+        if (load_progmem_section(elf, i) < 0)
             return -1;
     }
 
@@ -443,7 +441,7 @@ static int load_progmem(struct kelf* elf)
 //! \return The address of the symbol if found, 0 instead
 static elf32_addr symbol_addr(struct kelf* elf, elf32_sym* sym)
 {
-    if(!elf || !sym || !elf->progmem)
+    if (!elf || !sym || !elf->progmem)
         return 0;
 
     // Get symbol type
@@ -451,9 +449,9 @@ static elf32_addr symbol_addr(struct kelf* elf, elf32_sym* sym)
 
     // Get the symbol's section address
     elf32_addr st_shaddr = 0x00;
-    for(elf32_word i = 0; i < elf->allocshnum; ++i)
+    for (elf32_word i = 0; i < elf->allocshnum; ++i)
     {
-        if(elf->allocsh[i] == sym->st_shndx)
+        if (elf->allocsh[i] == sym->st_shndx)
             st_shaddr = ((elf32_addr)elf->progmem) + elf->progmem_shoff[i];
     }
 
@@ -461,30 +459,30 @@ static elf32_addr symbol_addr(struct kelf* elf, elf32_sym* sym)
     elf32_addr S;
 
     // For data or code symbols, S = section offset + value
-    if(st_type == STT_OBJECT || st_type == STT_FUNC)
+    if (st_type == STT_OBJECT || st_type == STT_FUNC)
     {
-        if(!st_shaddr)
+        if (!st_shaddr)
             return 0;
 
         S = (st_shaddr + sym->st_value) & ~0x01;
     }
     // For sections, S = section_offset
-    else if(st_type == STT_SECTION)
+    else if (st_type == STT_SECTION)
     {
-        if(!st_shaddr)
+        if (!st_shaddr)
             return 0;
 
         S = st_shaddr & ~0x01;
     }
     // For other symbols (externs, ...), attempt to resolve them
     //   them from kernel symbols
-    else if(st_type == STT_NOTYPE)
+    else if (st_type == STT_NOTYPE)
     {
         const char* name = symbol_name(elf, sym);
-        if(!name)
+        if (!name)
             return 0;
 
-        return (elf32_addr) ksymbol(name);
+        return (elf32_addr)ksymbol(name);
     }
 
     return S;
@@ -502,10 +500,10 @@ static int alloc_rels_statuses(struct kelf* elf)
     int nsections = 0;
 
     // Get the number of relocation sections
-    for(elf32_word i = 0; i < elf->header->e_shnum; ++i)
+    for (elf32_word i = 0; i < elf->header->e_shnum; ++i)
     {
         elf32_shdr* shdr = section(elf, i);
-        if(shdr->sh_type != SHT_REL)
+        if (shdr->sh_type != SHT_REL)
             continue;
         ++nsections;
     }
@@ -517,10 +515,10 @@ static int alloc_rels_statuses(struct kelf* elf)
         return -1;
 
     int sid = 0;
-    for(elf32_word i = 0; i < elf->header->e_shnum; ++i)
+    for (elf32_word i = 0; i < elf->header->e_shnum; ++i)
     {
         elf32_shdr* shdr = section(elf, i);
-        if(shdr->sh_type != SHT_REL)
+        if (shdr->sh_type != SHT_REL)
             continue;
 
         // Number of relocations in this section
@@ -580,7 +578,7 @@ static int* rel_status(struct kelf* elf, int sid, int rid)
 //! \return 0 on success, -1 otherwise
 static int do_rel_for_section(struct kelf* elf, elf32_shdr* shdr, elf32_rel* rel)
 {
-    if(!elf || !shdr || shdr->sh_type != SHT_REL || !elf->progmem || !rel)
+    if (!elf || !shdr || shdr->sh_type != SHT_REL || !elf->progmem || !rel)
         return -1;
 
     // Get relocation parameters
@@ -589,33 +587,33 @@ static int do_rel_for_section(struct kelf* elf, elf32_shdr* shdr, elf32_rel* rel
 
     // Get the relocation's section address
     elf32_addr r_shaddr = 0x00;
-    for(elf32_word i = 0; i < elf->allocshnum; ++i)
+    for (elf32_word i = 0; i < elf->allocshnum; ++i)
     {
-        if(elf->allocsh[i] == shdr->sh_info)
+        if (elf->allocsh[i] == shdr->sh_info)
             r_shaddr = ((elf32_addr)elf->progmem) + elf->progmem_shoff[i];
     }
 
     elf32_sym* sym = symbol(elf, r_sym);
-    if(!sym)
+    if (!sym)
         return -1;
 
     elf32_word T = ELF32_ST_TYPE(sym->st_info) == STT_FUNC ? 0x01 : 0x00;
 
     elf32_addr S = symbol_addr(elf, sym);
-    if(!S)
+    if (!S)
         return -1;
 
     // Location to relocate
     elf32_word* P = (elf32_word*)(r_shaddr + rel->r_offset);
 
     // Simple 32-bit word relocation
-    if(r_type == R_ARM_ABS32)
+    if (r_type == R_ARM_ABS32)
     {
         elf32_word A = *P;
         *P = (S + A) | T;
     }
     // Thumb call relocation
-    else if(r_type == R_ARM_THM_CALL)
+    else if (r_type == R_ARM_THM_CALL)
     {
         elf32_half upper_insn = ((elf32_half*)P)[0];
         elf32_half lower_insn = ((elf32_half*)P)[1];
@@ -627,7 +625,7 @@ static int do_rel_for_section(struct kelf* elf, elf32_shdr* shdr, elf32_rel* rel
         elf32_sword off = (s << 24) | ((~(j1 ^ s) & 1) << 23) | ((~(j2 ^ s) & 1) << 22) |
                           ((upper_insn & 0x03ff) << 12) | ((lower_insn & 0x07ff) << 1);
 
-        if(off & 0x01000000)
+        if (off & 0x01000000)
             off -= 0x02000000;
 
         off += S - (elf32_word)P;
@@ -654,13 +652,13 @@ static int do_rel_for_section(struct kelf* elf, elf32_shdr* shdr, elf32_rel* rel
 //! \return 0 if suceeded, -1 otherwise
 static int do_rels_for_section(struct kelf* elf, elf32_shdr* shdr, int sid)
 {
-    if(!elf || !shdr || shdr->sh_type != SHT_REL || !elf->progmem)
+    if (!elf || !shdr || shdr->sh_type != SHT_REL || !elf->progmem)
         return -1;
 
     int ok = 0;
 
     int rid = 0;
-    for(elf32_word i = 0; i < shdr->sh_size / shdr->sh_entsize; ++i)
+    for (elf32_word i = 0; i < shdr->sh_size / shdr->sh_entsize; ++i)
     {
         elf32_rel* rel = (elf32_rel*)(elf->raw + shdr->sh_offset + i * shdr->sh_entsize);
 
@@ -671,7 +669,7 @@ static int do_rels_for_section(struct kelf* elf, elf32_shdr* shdr, int sid)
 
         if (*status == 0)
         {
-            if(do_rel_for_section(elf, shdr, rel) < 0)
+            if (do_rel_for_section(elf, shdr, rel) < 0)
                 ok = -1;
             else
                 *status = 1;
@@ -686,19 +684,19 @@ static int do_rels_for_section(struct kelf* elf, elf32_shdr* shdr, int sid)
 //! \return 0 on success, -1 otherwise
 static int do_rels(struct kelf* elf)
 {
-    if(!elf || !elf->progmem)
+    if (!elf || !elf->progmem)
         return -1;
 
     int ok = 0;
     int sid = 0;
-    for(elf32_word i = 0; i < elf->header->e_shnum; ++i)
+    for (elf32_word i = 0; i < elf->header->e_shnum; ++i)
     {
         elf32_shdr* shdr = section(elf, i);
-        if(shdr->sh_type != SHT_REL)
+        if (shdr->sh_type != SHT_REL)
             continue;
 
         // 'sid' is the number of the relocation section, in order
-        if(do_rels_for_section(elf, shdr, sid++) < 0)
+        if (do_rels_for_section(elf, shdr, sid++) < 0)
             ok = -1;
     }
 
@@ -714,22 +712,22 @@ static int do_rels(struct kelf* elf)
 //! \return 0 on success, -1 otherwise
 static int load(struct kelf* elf)
 {
-    if(!elf)
+    if (!elf)
         return -1;
 
-    if(header_check(elf) < 0)
+    if (header_check(elf) < 0)
         return -1;
-    if(find_shstrtab(elf) == SHN_UNDEF)
+    if (find_shstrtab(elf) == SHN_UNDEF)
         return -1;
-    if(find_symtab(elf) == SHN_UNDEF)
+    if (find_symtab(elf) == SHN_UNDEF)
         return -1;
-    if(find_symstrtab(elf) == SHN_UNDEF)
+    if (find_symstrtab(elf) == SHN_UNDEF)
         return -1;
-    if(find_allocsh(elf) < 0)
+    if (find_allocsh(elf) < 0)
         return -1;
-    if(alloc_progmem(elf) < 0)
+    if (alloc_progmem(elf) < 0)
         return -1;
-    if(load_progmem(elf) < 0)
+    if (load_progmem(elf) < 0)
         return -1;
     if (alloc_rels_statuses(elf) < 0)
         return -1;
@@ -743,7 +741,7 @@ static int load(struct kelf* elf)
 //! \return 0 if suceeded, -1 otherwise
 static int unload(struct kelf* elf)
 {
-    if(!elf)
+    if (!elf)
         return -1;
 
     free_rels_statuses(elf);
@@ -775,7 +773,7 @@ struct kelf* kelf_load(void* raw)
     struct kelf* elf = kmalloc(sizeof(struct kelf));
     elf->raw = raw;
 
-    if(load(elf) < 0)
+    if (load(elf) < 0)
     {
         kfree(elf->raw);
         kfree(elf);
@@ -809,7 +807,7 @@ int kelf_fix_relocations(kelf* elf)
 
 void kelf_unload(struct kelf* elf)
 {
-    if(!elf)
+    if (!elf)
         return;
 
     unload(elf);
@@ -819,21 +817,21 @@ void kelf_unload(struct kelf* elf)
 
 void* kelf_symbol(struct kelf* elf, const char* name)
 {
-    if(!elf || !name)
+    if (!elf || !name)
         return 0;
 
-    for(elf32_word i = 0; i < elf->symtab->sh_size / elf->symtab->sh_entsize; ++i)
+    for (elf32_word i = 0; i < elf->symtab->sh_size / elf->symtab->sh_entsize; ++i)
     {
         elf32_sym* sym = symbol(elf, i);
-        if(!sym)
+        if (!sym)
             return 0;
 
-        if(strcmp(symbol_name(elf, sym), name) == 0)
+        if (strcmp(symbol_name(elf, sym), name) == 0)
         {
             elf32_word addr = symbol_addr(elf, sym);
-            if(addr)
+            if (addr)
             {
-                if(ELF32_ST_TYPE(sym->st_info) == STT_FUNC)
+                if (ELF32_ST_TYPE(sym->st_info) == STT_FUNC)
                     addr |= 1;
             }
             return (void*)addr;

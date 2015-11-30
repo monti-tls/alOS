@@ -10,20 +10,20 @@ void dependency();
 
 int mod_init()
 {
-	kprint(KPRINT_MSG "depmod:init\n");
-	ksymbol_add("dependency", dependency);
+    kprint(KPRINT_MSG "depmod:init\n");
+    ksymbol_add("dependency", dependency);
 
-	return 0;
+    return 0;
 }
 
 int mod_fini()
 {
-	kprint(KPRINT_MSG "depmod:fini\n");
+    kprint(KPRINT_MSG "depmod:fini\n");
 
-	return 0;
+    return 0;
 }
 
 void dependency()
 {
-	kprint(KPRINT_MSG "depmod::dependency\n");
+    kprint(KPRINT_MSG "depmod::dependency\n");
 }
