@@ -25,7 +25,7 @@ LD_FLAGS =
 
 # Mandatory CC flags
 CC_FLAGS += -std=c11 -g -O0
-CC_FLAGS += -Wall -Wextra
+CC_FLAGS += -Wall -Wextra -fasm -Wno-unused-function
 CC_FLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
 CC_FLAGS += -mfloat-abi=soft
 CC_FLAGS += $(DEFINES)

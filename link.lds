@@ -120,7 +120,6 @@ SECTIONS
         . = ALIGN(4);
         _ld_initrd_start = .;
         *(.initrd)
-        _ld_initrd_end = .;
 
         . = ALIGN(4);
         _ld_data_end = .;        /* define a global symbol at data end */
@@ -142,6 +141,15 @@ SECTIONS
         __bss_end__ = _ld_bss_end;
     } >RAM
 
+    /* Dynamic memory allocation region */
+    .malloc_reserved :
+    {
+        . = ALIGN(KMALLOC_ALIGNMENT);
+        _ld_kmalloc_start = .;
+        . = . + KMALLOC_POOL_SIZE;
+        _ld_malloc_end = .;
+    } >RAM
+
     /* User_heap_stack section, used to check that there is enough RAM left */
     ._user_heap_stack :
     {
@@ -151,14 +159,6 @@ SECTIONS
         . = . + _ld_min_heap_size;
         . = . + _ld_min_stack_size;
         . = ALIGN(4);
-    } >RAM
-
-    .malloc_reserved :
-    {
-        . = ALIGN(KMALLOC_ALIGNMENT);
-        _ld_kmalloc_start = .;
-        . = . + KMALLOC_POOL_SIZE;
-        _ld_malloc_end = .;
     } >RAM
 
     /* MEMORY_bank1 section, code must be located here explicitly            */

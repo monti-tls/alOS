@@ -44,6 +44,7 @@ flags = [
     '-Wall',
     '-Wextra',
     '-std=c11',
+    '-fasm'
 ]
 
 

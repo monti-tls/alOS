@@ -97,7 +97,6 @@ void export_ksymbols()
  *     - support kernel threads creation (with special API)
  *     - support user-space process creation (using kelf)
  *  - design a proper system call system
- *  - implement a complete kprint (with %*s and al.)
  */
 
 int main()
