@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALOS_KSCHED_H
-#define ALOS_KSCHED_H
+#ifndef ALOS_KSCHED_PRIMITIVES_H
+#define ALOS_KSCHED_PRIMITIVES_H
 
 #include "platform.h"
 
@@ -39,7 +39,7 @@ extern void write_psp(uint32_t* psp);
 
 //! Push the software-saved frame onto the stack, this
 //!   helper is used to initialize stacks
-extern void push_sw_frame(uint32_t psp);
+extern uint32_t* push_sw_frame(uint32_t* sp);
 
 //! Push the software-saved register frame onto
 //!   the stack. This helper is used before
@@ -54,4 +54,4 @@ extern void ctx_pop();
 //! Enter thread mode (by exiting interrupt mode)
 extern void thread_mode();
 
-#endif // ALOS_KSCHED_H
+#endif // ALOS_KSCHED_PRIMITIVES_H
