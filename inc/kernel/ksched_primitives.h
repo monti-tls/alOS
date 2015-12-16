@@ -27,11 +27,11 @@
 
 //! Read the main stack pointer (MSP)
 //! \return The msp value
-extern uint32_t read_msp();
+extern uint32_t* read_msp();
 
 //! Read the process stack pointer (PSP)
 //! \return The psp value
-extern uint32_t read_psp();
+extern uint32_t* read_psp();
 
 //! Write a value to the process stack pointer (PSP)
 //! \param psp The value to write to psp
@@ -44,12 +44,12 @@ extern uint32_t* push_sw_frame(uint32_t* sp);
 //! Push the software-saved register frame onto
 //!   the stack. This helper is used before
 //!   switching stack pointers to save the task's state
-extern void ctx_push();
+extern void ctx_save();
 
 //! Pop the software-saved register frame onto
 //!   the stack. This helper is used after
 //!   switching stack pointers to restore the task's state
-extern void ctx_pop();
+extern void ctx_load();
 
 //! Enter thread mode (by exiting interrupt mode)
 extern void thread_mode();

@@ -19,16 +19,18 @@
 #include "kernel/ksched.h"
 #include "kernel/ksched_primitives.h"
 #include "kernel/kmalloc.h"
+#include "drivers/systick.h"
+#include "drivers/pendsv.h"
 
 ///////////////////////////
 //// Module parameters ////
 ///////////////////////////
 
-//! Size (in words) of the kernel stack's
+//! Size (in words) of the kernel stack
 //!   size
 #define KERNEL_STACK_SIZE 256
 
-//! Size (in words) of each task's stack's
+//! Size (in words) of each task's stack
 //!   size
 #define TASK_STACK_SIZE 128
 
@@ -78,6 +80,10 @@ static struct ktask* new_task(int pid, const char* name, void* start, void* exit
 static int init_stack();
 static void* alloc_stack_page();
 static int free_stack_page(void*);
+static int next_pid();
+static int spawn(const char* name, void* start, void* exit, void* arg);
+static int schedule();
+static void context_switch();
 
 /////////////////////////////////////
 //// Module's internal variables ////
@@ -97,6 +103,13 @@ static struct ktask* tasks_list = 0;
 //!   correctly, and is potentially modified after
 //!   each scheduling interrupt
 static struct ktask* current_task = 0;
+
+//! Contains the current scheduling policy
+//! This can be modified at run time using the
+//!   appropriate handler
+//! If not modified at all, the default round-robin
+//!   handler is used
+static struct ksched_policy* policy = 0;
 
 /////////////////////////////////////
 //// Module's internal functions ////
@@ -211,7 +224,7 @@ static int init_stack()
 //! \return The usable address of a stack page,
 //!         *not* the starting address of the page
 //!         (as some data is stored at the beginning)
-void* alloc_stack_page()
+static void* alloc_stack_page()
 {
 	for (int i = 0; i < MAX_TASKS; ++i)
 	{
@@ -227,7 +240,7 @@ void* alloc_stack_page()
 //! Release a stack page
 //! \param The stack page *usable* address
 //! \return 0 if OK, -1 otherwise
-int free_stack_page(void* page)
+static int free_stack_page(void* page)
 {
 	if (!page)
 		return -1;
@@ -243,6 +256,122 @@ int free_stack_page(void* page)
 	return 0;
 }
 
+//! Find out the next free pid
+//! \return The next free pid, -1 if no available or if
+//!         other error(s) occured
+static int next_pid()
+{
+    if (!tasks_list)
+        return -1;
+
+    for (int pid = 1; pid < MAX_TASKS + 1; ++pid)
+    {
+        int used = 0;
+
+        for (struct ktask* task = tasks_list->next; task != tasks_list; task = task->next)
+        {
+            if (!task)
+                return -1;
+
+            if (task->pid == pid)
+            {
+                used = 1;
+                break;
+            }
+        }
+
+        if (!used)
+            return pid;
+    }
+
+    return -1;
+}
+
+//! Spawn a task, that is create it and add it to the
+//!   scheduling list
+//! \param name Name of the task
+//! \param start Start address of the task
+//! \param exit Exit handler address of the task
+//! \param arg Argument to pass to the task (eventually)
+//! \return The pid of the spawned task, -1 if error(s) occured
+static int spawn(const char* name, void* start, void* exit, void* arg)
+{
+    if (!tasks_list || !policy)
+        return -1;
+
+    int pid = next_pid();
+    if (pid < 0)
+        return -1;
+
+    struct ktask* task = new_task(pid, name, start, exit, arg);
+    if (!task)
+        return -1;
+
+    if (tasks_add(task) < 0)
+        return -1;
+
+    if (policy->init_sched_data(task) < 0)
+        return -1;
+
+    return pid;
+}
+
+//! Schedule the next task to run and switch to it
+//! This uses the scheduling service provided by the current
+//!   policy to determine the next task to run
+//! It then simply switch tasks and modify the current task pointer
+//! \return 0 if all went well, -1 otherwise
+static int schedule()
+{
+    if (!tasks_list || !policy)
+        return -1;
+
+    // Determine the next task to run using the policy
+    struct ktask* next = current_task;
+    if (policy->schedule(tasks_list, &next) < 0)
+        return -1;
+
+    // Switch tasks if needed
+    // It's as simple as that because we're currently
+    //   in kernel mode (so we use the msp)
+    if (next != current_task)
+    {
+        uint32_t* psp = read_psp();
+        write_psp(psp);
+
+        current_task = next;
+    }
+
+    return 0;
+}
+
+//! Perform a context switch, that is, save the current
+//!   task context, call the scheduler (this switched stack
+//!   pointers and sets current task) and restore the task context
+//! Then returns into the new task in thread mode
+//! This function is bound to appropriate interrupt handlers
+static void __attribute__((naked)) context_switch()
+{
+    ctx_save();
+    schedule();
+    ctx_load();
+    thread_mode();
+}
+
+////////////////////////////
+//// Interrupt handlers ////
+////////////////////////////
+
+//! Systick IRQ handler, alias of our context switch routine
+//! This one is used to periodically call the scheduler and
+//!   switch between tasks
+void __attribute__((alias("context_switch"))) irq_systick_handler();
+
+//! PendSV iRQ handler, alias of our context switch routine
+//! This one is used to trigger a schedule immediately (for example
+//!   just after a task died)
+void __attribute__((alias("context_switch"))) irq_pendsv_handler();
+
 /////////////////////////////
 //// Public module's API ////
 /////////////////////////////
@@ -253,11 +382,11 @@ int ksched_init()
         return -1;
 
     // Init the stack's layout
-    if (!init_stack())
+    if (init_stack() < 0)
     	return -1;
 
     // Create and setup the root task
-    struct ktask* root = (struct ktask*)kmalloc(sizeof(struct ktask));
+    struct ktask* root = (struct ktask*) kmalloc(sizeof(struct ktask));
     if (!root)
         return -1;
 
@@ -270,20 +399,30 @@ int ksched_init()
 
     tasks_list = root;
 
-    // init() :
-    //   spawn init task, schedule()
-    //
-    // spawn() :
-    //   create task using new_task()
-    //   register with tasks_add()
-    //
+    // Init Systick and PendSV stuff
+    systick_init();
+    pendsv_init();
+
     // fork() :
     //  create using new_task(), copying all stuff
     //  register with tasks_add()
-    //
-    // schedule() : (called with Systick plus PendSV)
-    //   call policy->schedule()
-    //   update ?
+
+    return 0;
+}
+
+struct ktask* ksched_task_by_pid(int pid)
+{
+    if (!tasks_list)
+        return 0;
+
+    for (struct ktask* task = tasks_list->next; task != tasks_list; task = task->next)
+    {
+        if (!task)
+            return 0;
+
+        if (task->pid == pid)
+            return task;
+    }
 
     return 0;
 }

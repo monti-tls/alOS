@@ -27,6 +27,8 @@
 #include "kernel/fs/vfs.h"
 #include "kernel/fs/tarfs.h"
 
+#include "kernel/ksched.h"
+
 #include <string.h>
 
 void print_initrd(struct inode* node, int indent)
@@ -34,8 +36,7 @@ void print_initrd(struct inode* node, int indent)
     kprint(KPRINT_TRACE);
     for (int i = 0; i < indent; ++i)
         kprint(" ");
-    kprint(node->name);
-    kprint("\n");
+    kprint("%s\n", node->name);
 
     if (inode_cdable(node))
     {
@@ -143,7 +144,13 @@ int main()
 
     kmodule_insert("sample", 1);
 
-    kmodule_remove("sample", 0);
+    err = ksched_init();
+    if (err < 0)
+        kprint(KPRINT_ERR "failed to init the scheduler\n");
+    else
+        kprint(KPRINT_MSG "scheduler succesfully initialized\n");
+
+    /*kmodule_remove("sample", 0);
 
     // Unmount the FS
     if (vfs_umount(root_in) < 0)
@@ -151,5 +158,5 @@ int main()
     else
         kprint(KPRINT_MSG "unmounted rootfs\n");
 
-    return 0;
+    return 0;*/
 }
