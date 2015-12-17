@@ -100,6 +100,15 @@ void export_ksymbols()
  *  - design a proper system call system
  */
 
+void thread(void* arg)
+{
+    int c = (int) arg + 1;
+    for (int i = 0; ; ++i)
+    {
+        c *= i;
+    }
+}
+
 int main()
 {
     int err;
@@ -149,6 +158,10 @@ int main()
         kprint(KPRINT_ERR "failed to init the scheduler\n");
     else
         kprint(KPRINT_MSG "scheduler succesfully initialized\n");
+
+    err = ksched_spawn("[thread]", (void*) &thread, 0);
+    if (err < 0)
+        kprint(KPRINT_ERR "failed to spawn the first task =(\n");
 
     /*kmodule_remove("sample", 0);
 

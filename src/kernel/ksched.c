@@ -84,6 +84,9 @@ static int next_pid();
 static int spawn(const char* name, void* start, void* exit, void* arg);
 static int schedule();
 static void context_switch();
+static int rr_init_sched_data(struct ktask* task);
+static int rr_schedule(struct ktask* tasks_list, struct ktask** current);
+static int h_exit();
 
 /////////////////////////////////////
 //// Module's internal variables ////
@@ -104,12 +107,22 @@ static struct ktask* tasks_list = 0;
 //!   each scheduling interrupt
 static struct ktask* current_task = 0;
 
+//! The default, extra simple round-robin scheduling
+//!   policy, shipped with this scheduler
+static struct ksched_policy rr_policy =
+{
+    0, // no insert()
+    0, // no remove()
+    &rr_init_sched_data,
+    &rr_schedule
+};
+
 //! Contains the current scheduling policy
 //! This can be modified at run time using the
 //!   appropriate handler
 //! If not modified at all, the default round-robin
 //!   handler is used
-static struct ksched_policy* policy = 0;
+static struct ksched_policy* current_policy = &rr_policy;
 
 /////////////////////////////////////
 //// Module's internal functions ////
@@ -296,7 +309,7 @@ static int next_pid()
 //! \return The pid of the spawned task, -1 if error(s) occured
 static int spawn(const char* name, void* start, void* exit, void* arg)
 {
-    if (!tasks_list || !policy)
+    if (!tasks_list || !current_policy)
         return -1;
 
     int pid = next_pid();
@@ -310,7 +323,7 @@ static int spawn(const char* name, void* start, void* exit, void* arg)
     if (tasks_add(task) < 0)
         return -1;
 
-    if (policy->init_sched_data(task) < 0)
+    if (current_policy->init_sched_data(task) < 0)
         return -1;
 
     return pid;
@@ -323,23 +336,47 @@ static int spawn(const char* name, void* start, void* exit, void* arg)
 //! \return 0 if all went well, -1 otherwise
 static int schedule()
 {
-    if (!tasks_list || !policy)
+    if (!tasks_list || !current_policy)
         return -1;
 
-    // Determine the next task to run using the policy
-    struct ktask* next = current_task;
-    if (policy->schedule(tasks_list, &next) < 0)
-        return -1;
-
-    // Switch tasks if needed
-    // It's as simple as that because we're currently
-    //   in kernel mode (so we use the msp)
-    if (next != current_task)
+    // At the very first scheduling event,
+    //   no task is ccurrently executed, so
+    //   we just setup our stack pointer
+    if (!current_task)
     {
-        uint32_t* psp = read_psp();
-        write_psp(psp);
+        // If we don't have any task to run,
+        //   don't do bad stuff 
+        if (tasks_list->next == tasks_list)
+            return -1;
 
-        current_task = next;
+        // Setup the current task
+        current_task = tasks_list->next;
+
+        // Write the stack pointer, the initial
+        //   stack frame was crafted in spawn(),
+        //   and this context will be loaded
+        //   when we have returned in context_switch()
+        write_psp(current_task->sp);
+    }
+    // All other times, we just do normal stuff
+    else
+    {
+        // Determine the next task to run using
+        //   the scheduling policy
+        struct ktask* next = current_task;
+        if (current_policy->schedule(tasks_list, &next) < 0)
+            return -1;
+
+        // Switch tasks if needed
+        // It's as simple as that because we're currently
+        //   in kernel mode (so we use the msp)
+        if (next != current_task)
+        {
+            uint32_t* psp = read_psp();
+            write_psp(psp);
+
+            current_task = next;
+        }
     }
 
     return 0;
@@ -348,7 +385,7 @@ static int schedule()
 //! Perform a context switch, that is, save the current
 //!   task context, call the scheduler (this switched stack
 //!   pointers and sets current task) and restore the task context
-//! Then returns into the new task in thread mode
+//! It then returns into the new task in thread mode
 //! This function is bound to appropriate interrupt handlers
 static void __attribute__((naked)) context_switch()
 {
@@ -356,6 +393,63 @@ static void __attribute__((naked)) context_switch()
     schedule();
     ctx_load();
     thread_mode();
+}
+
+//! This is the policy-specific task data initializer
+//!   for the default shipped round-robin scheduling policy
+//! \param task The task to setup
+//! \return 0 if OK, -1 otherwise
+static int rr_init_sched_data(struct ktask* task)
+{
+    if (!task)
+        return -1;
+
+    task->sched_data = 0;
+    return 0;
+}
+
+//! This is the actual scheduling function for the
+//!   default shipped round-robin scheduling policy
+//! \param tasks_list A pointer to the tasks list
+//! \param current Output pointer to the current task,
+//!                this function will eventually change
+//!                it if a new task was selected for running
+static int rr_schedule(struct ktask* tasks_list, struct ktask** current)
+{
+    if (!tasks_list || !current)
+        return -1;
+
+    // If no task was running, we have a problem
+    if (!*current)
+        return -1;
+
+    // Just loop in the tasks list
+    *current = (*current)->next;
+
+    // Remember that the very first task is a dummy one,
+    //   so be careful not to set it current
+    if (*current == tasks_list)
+        *current = (*current)->next;
+
+    return 0;
+}
+
+//! This is the default task exit handler
+//! \return Does not returns if exiting happened
+//!         properly. Otherwise, return -1
+static int h_exit()
+{
+    if (!current_task)
+        return -1;
+
+    if (tasks_remove(current_task) < 0)
+        return -1;
+
+    // Trigger a PendSV interruption, that will
+    //   call context_switch() artificially
+    pendsv_trigger();
+
+    return 0;
 }
 
 ////////////////////////////
@@ -367,7 +461,7 @@ static void __attribute__((naked)) context_switch()
 //!   switch between tasks
 void __attribute__((alias("context_switch"))) irq_systick_handler();
 
-//! PendSV iRQ handler, alias of our context switch routine
+//! PendSV IRQ handler, alias of our context switch routine
 //! This one is used to trigger a schedule immediately (for example
 //!   just after a task died)
 void __attribute__((alias("context_switch"))) irq_pendsv_handler();
@@ -395,13 +489,15 @@ int ksched_init()
     root->sched_data = 0;
     root->page = 0;
     root->sp = 0;
-    root->prev = root->next = 0;
+    root->prev = root->next = root;
 
     tasks_list = root;
 
     // Init Systick and PendSV stuff
     systick_init();
     pendsv_init();
+
+    current_task = 0;
 
     // fork() :
     //  create using new_task(), copying all stuff
@@ -425,4 +521,60 @@ struct ktask* ksched_task_by_pid(int pid)
     }
 
     return 0;
+}
+
+int ksched_change_policy(struct ksched_policy* policy)
+{
+    if (!policy)
+        return -1;
+
+    // Notify old policy about its removal
+    if (current_policy->remove)
+    {
+        if (current_policy->remove() < 0)
+            return -1;
+    }
+
+    // Switch policies
+    current_policy = policy;
+
+    // Notify new policy about its insertion
+    if (current_policy->insert)
+    {
+        if (current_policy->insert() < 0)
+            return -1;
+    }
+
+    // Reset all tasks' policy-specific data
+    for (struct ktask* task = tasks_list->next; task != tasks_list; task = task->next)
+    {
+        if (task->sched_data)
+        {
+            kfree(task->sched_data);
+            if (current_policy->init_sched_data(task) < 0)
+                return -1;
+        }
+    }
+
+    return 0;
+}
+
+int ksched_spawn(const char* name, void* start, void* arg)
+{
+    if (!tasks_list || !current_policy || !name || !start)
+        return -1;
+
+    int pid;
+    if ((pid = spawn(name, start, (void*) &h_exit, arg)) < 0)
+        return -1;
+
+    // The very first time, start the Systick and
+    //   trigger a context switch
+    if (!current_task)
+    {
+        systick_start();
+        pendsv_trigger();
+    }
+
+    return pid;
 }

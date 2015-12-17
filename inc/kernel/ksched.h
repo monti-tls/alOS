@@ -64,6 +64,16 @@ struct ktask
 //!   this module's services.
 struct ksched_policy
 {
+    //! This function is called (if not null) when the scheduling
+    //!   policy is inserted into the system (use it to register
+    //!   symbols for example)
+    int (*insert)();
+    
+    //! This function is called (if not null) when the scheduling
+    //!   policy is removed froom the system (use it to un-register
+    //!   symbols for example)
+    int (*remove)();
+
     //! Callback for the scheduler-specific data initialization
     //!   (ktask.sched_data member), this data is de-initialized
     //!   automatically by this module
@@ -82,6 +92,8 @@ struct ksched_policy
 
 //! Initialize the kernel scheduler, do not launch any
 //!   task for now.
+//! The scheduling policy is initially set to the default one, a very
+//!   simple round-robin scheduler
 //! \return 0 if scheduler is initialized OK, -1 otherwise
 int ksched_init();
 
@@ -90,5 +102,25 @@ int ksched_init();
 //! \param pid The pid to search
 //! \return The found task, 0 if not found
 struct ktask* ksched_task_by_pid(int pid);
+
+//! Change the current scheduling policy
+//! This resets any policy-specific data in all tasks,
+//!   resetting them to the default values using
+//!   ksched_policy.init_sched_data
+//! \param policy The new scheduling policy to adopt
+//! \return 0 if all went well, -1 otherwise
+int ksched_change_policy(struct ksched_policy* policy);
+
+//! Spawn a task
+//! This is used as a basic service by kernel threads
+//!   and user program loading
+//! The first call to this function will start the scheduler,
+//!   and therefore never return (if succesful)
+//! \param name ASCII string containing the name of the task,
+//!             must not be allocated
+//! \param start Start address to jump to when starting the task
+//! \param An eventual argument to pass to the task
+//! \return The pid (> 1) of the spawned task if OK, -1 otherwise
+int ksched_spawn(const char* name, void* start, void* arg);
 
 #endif // ALOS_KSCHED_H
