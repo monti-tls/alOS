@@ -35,7 +35,7 @@
 #define TASK_STACK_SIZE 128
 
 //! Base address of the stack
-#define STACK_BASE ((void*) 0x20000000)
+#define STACK_BASE ((void*)0x20000000)
 
 //! Size of the stack (in bytes)
 #define STACK_SIZE 0x00020000
@@ -53,7 +53,7 @@
 ////////////////////////////////
 
 #if (MAX_TASKS <= 3)
-# error "Not enough space for such big stack pages"
+#error "Not enough space for such big stack pages"
 #endif
 
 //////////////////////////////
@@ -66,8 +66,8 @@
 //!   stack page allocation
 enum
 {
-	//! The page is currently being used by a task
-	SPF_USED = 0x01
+    //! The page is currently being used by a task
+    SPF_USED = 0x01
 };
 
 ///////////////////////////////////////
@@ -93,7 +93,7 @@ static int h_exit();
 /////////////////////////////////////
 
 //! Address of the very end of the stack
-static uint32_t* stack_top = (uint32_t*) (STACK_BASE + STACK_SIZE);
+static uint32_t* stack_top = (uint32_t*)(STACK_BASE + STACK_SIZE);
 
 //! All active tasks are stored in a doubly
 //!   (cyclic) linked list
@@ -109,13 +109,10 @@ static struct ktask* current_task = 0;
 
 //! The default, extra simple round-robin scheduling
 //!   policy, shipped with this scheduler
-static struct ksched_policy rr_policy =
-{
-    0, // no insert()
-    0, // no remove()
-    &rr_init_sched_data,
-    &rr_schedule
-};
+static struct ksched_policy rr_policy = {0, // no insert()
+                                         0, // no remove()
+                                         &rr_init_sched_data,
+                                         &rr_schedule};
 
 //! Contains the current scheduling policy
 //! This can be modified at run time using the
@@ -184,38 +181,38 @@ static int tasks_remove(struct ktask* task)
 //! \return The created task
 static struct ktask* new_task(int pid, const char* name, void* start, void* exit, void* arg)
 {
-	struct ktask* task = (struct ktask*) kmalloc(sizeof(struct ktask));
-	if (!task)
-		return 0;
+    struct ktask* task = (struct ktask*)kmalloc(sizeof(struct ktask));
+    if (!task)
+        return 0;
 
-	// Initialize the task's data
-	task->pid = pid;
-	task->name = name;
-	task->sched_data = 0;
-	task->next = task->prev = 0;
+    // Initialize the task's data
+    task->pid = pid;
+    task->name = name;
+    task->sched_data = 0;
+    task->next = task->prev = 0;
 
-	// Get some stack space
-	task->page = alloc_stack_page();
-	if (!task->page)
-	{
-		kfree(task);
-		return 0;
-	}
+    // Get some stack space
+    task->page = alloc_stack_page();
+    if (!task->page)
+    {
+        kfree(task);
+        return 0;
+    }
 
-	// Craft the initial stack frame
-	uint32_t* sp = ((uint32_t*) task->page) - HW_FRAME_SIZE + 1;
-	sp[7] = 0x21000000; // xPSR
-	sp[6] = (uint32_t) start; // PC
-	sp[5] = (uint32_t) exit; // LR
-	sp[4] = 0; // R12
-	sp[3] = 0; // R3
-	sp[2] = 0; // R2
-	sp[1] = 0; // R1
-	sp[0] = (uint32_t) arg; // R0
+    // Craft the initial stack frame
+    uint32_t* sp = ((uint32_t*)task->page) - HW_FRAME_SIZE + 1;
+    sp[7] = 0x21000000;      // xPSR
+    sp[6] = (uint32_t)start; // PC
+    sp[5] = (uint32_t)exit;  // LR
+    sp[4] = 0;               // R12
+    sp[3] = 0;               // R3
+    sp[2] = 0;               // R2
+    sp[1] = 0;               // R1
+    sp[0] = (uint32_t)arg;   // R0
 
-	task->sp = (void*) push_sw_frame(sp);
+    task->sp = (void*)push_sw_frame(sp);
 
-	return task;
+    return task;
 }
 
 //! Init the stack layout (must be called
@@ -223,14 +220,14 @@ static struct ktask* new_task(int pid, const char* name, void* start, void* exit
 //! \return 0 if OK, -1 otherwise
 static int init_stack()
 {
-	// Just clear out all status flags
-	for (int i = 0; i < MAX_TASKS; ++i)
-	{
-		uint32_t* flag = stack_top - KERNEL_STACK_SIZE - i * TASK_STACK_SIZE;
-		*flag = 0;
-	}
+    // Just clear out all status flags
+    for (int i = 0; i < MAX_TASKS; ++i)
+    {
+        uint32_t* flag = stack_top - KERNEL_STACK_SIZE - i * TASK_STACK_SIZE;
+        *flag = 0;
+    }
 
-	return 0;
+    return 0;
 }
 
 //! Request the allocation of a stack page.
@@ -239,15 +236,18 @@ static int init_stack()
 //!         (as some data is stored at the beginning)
 static void* alloc_stack_page()
 {
-	for (int i = 0; i < MAX_TASKS; ++i)
-	{
-		uint32_t* flag = stack_top - KERNEL_STACK_SIZE - i * TASK_STACK_SIZE;
+    for (int i = 0; i < MAX_TASKS; ++i)
+    {
+        uint32_t* flag = stack_top - KERNEL_STACK_SIZE - i * TASK_STACK_SIZE;
 
-		if (!(*flag & SPF_USED))
-			return flag - sizeof(uint32_t);
-	}
+        if (!(*flag & SPF_USED))
+        {
+            *flag ^= SPF_USED;
+            return flag - 1;
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 //! Release a stack page
@@ -255,18 +255,18 @@ static void* alloc_stack_page()
 //! \return 0 if OK, -1 otherwise
 static int free_stack_page(void* page)
 {
-	if (!page)
-		return -1;
+    if (!page)
+        return -1;
 
-	// Fix the page address to go to the status flag
-	uint32_t* flag = ((uint32_t*) page) + 1;
+    // Fix the page address to go to the status flag
+    uint32_t* flag = ((uint32_t*)page) + 1;
 
-	if (*flag & SPF_USED)
-		*flag ^= SPF_USED;
-	else
-		return -1;
+    if (*flag & SPF_USED)
+        *flag ^= SPF_USED;
+    else
+        return -1;
 
-	return 0;
+    return 0;
 }
 
 //! Find out the next free pid
@@ -345,7 +345,7 @@ static int schedule()
     if (!current_task)
     {
         // If we don't have any task to run,
-        //   don't do bad stuff 
+        //   don't do bad stuff
         if (tasks_list->next == tasks_list)
             return -1;
 
@@ -372,8 +372,8 @@ static int schedule()
         //   in kernel mode (so we use the msp)
         if (next != current_task)
         {
-            uint32_t* psp = read_psp();
-            write_psp(psp);
+            current_task->sp = read_psp();
+            write_psp(next->sp);
 
             current_task = next;
         }
@@ -477,10 +477,10 @@ int ksched_init()
 
     // Init the stack's layout
     if (init_stack() < 0)
-    	return -1;
+        return -1;
 
     // Create and setup the root task
-    struct ktask* root = (struct ktask*) kmalloc(sizeof(struct ktask));
+    struct ktask* root = (struct ktask*)kmalloc(sizeof(struct ktask));
     if (!root)
         return -1;
 
@@ -565,7 +565,7 @@ int ksched_spawn(const char* name, void* start, void* arg)
         return -1;
 
     int pid;
-    if ((pid = spawn(name, start, (void*) &h_exit, arg)) < 0)
+    if ((pid = spawn(name, start, (void*)&h_exit, arg)) < 0)
         return -1;
 
     // The very first time, start the Systick and

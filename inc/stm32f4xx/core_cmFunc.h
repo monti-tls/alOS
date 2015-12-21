@@ -31,9 +31,10 @@
   @{
  */
 
-#if defined(__CC_ARM) /*------------------RealView Compiler                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-                         \ \ \ \ \                                                                                     \
-                         -----------------*/
+#if defined(                                                                                                     \
+    __CC_ARM) /*------------------RealView Compiler                    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+                 \ \ \ \ \                                                                                     \ \
+                 -----------------*/
 /* ARM armcc specific functions */
 
 #if (__ARMCC_VERSION < 400677)

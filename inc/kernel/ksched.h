@@ -68,7 +68,7 @@ struct ksched_policy
     //!   policy is inserted into the system (use it to register
     //!   symbols for example)
     int (*insert)();
-    
+
     //! This function is called (if not null) when the scheduling
     //!   policy is removed froom the system (use it to un-register
     //!   symbols for example)

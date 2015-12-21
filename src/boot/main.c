@@ -22,6 +22,7 @@
 #include "kernel/kmalloc.h"
 #include "kernel/kelf.h"
 #include "kernel/kmodule.h"
+#include "kernel/ksyscall.h"
 
 #include "kernel/fs/inode.h"
 #include "kernel/fs/vfs.h"
@@ -37,6 +38,7 @@ void print_initrd(struct inode* node, int indent)
     for (int i = 0; i < indent; ++i)
         kprint(" ");
     kprint("%s\n", node->name);
+
 
     if (inode_cdable(node))
     {
@@ -67,6 +69,15 @@ void export_ksymbols()
     ksymbol_add("kelf_load", &kelf_load);
     ksymbol_add("kelf_unload", &kelf_unload);
     ksymbol_add("kelf_symbol", &kelf_symbol);
+
+    // kmodule.h exports
+    ksymbol_add("kmodule_insert", &kmodule_insert);
+    ksymbol_add("kmodule_remove", &kmodule_remove);
+
+    // ksched.h exports
+    ksymbol_add("ksched_task_by_pid", &ksched_task_by_pid);
+    ksymbol_add("ksched_change_policy", &ksched_change_policy);
+    ksymbol_add("ksched_spawn", &ksched_spawn);
 
     // fs/inode.h exports
     ksymbol_add("inode_cdable", &inode_cdable);
@@ -100,10 +111,27 @@ void export_ksymbols()
  *  - design a proper system call system
  */
 
+int __attribute__((naked)) spawn(const char* name, void* addr, void* arg)
+{
+    asm volatile("svc #0x05");
+    asm volatile("bx lr");
+}
+
+void yolo()
+{
+    int d = 123456;
+    for (int i = 0;; ++i)
+    {
+        d -= 1;
+    }
+}
+
 void thread(void* arg)
 {
-    int c = (int) arg + 1;
-    for (int i = 0; ; ++i)
+    int pid = spawn("yolo", (void*)yolo, 0);
+
+    int c = (int)arg + 1;
+    for (int i = 0;; ++i)
     {
         c *= i;
     }
@@ -122,6 +150,9 @@ int main()
         kprint(KPRINT_ERR "kmalloc_init() failed\n");
     else
         kprint(KPRINT_MSG "memory allocator initialized\n");
+
+    // Init system calls
+    ksyscall_init();
 
     // Export kernel symbols
     export_ksymbols();
@@ -159,7 +190,7 @@ int main()
     else
         kprint(KPRINT_MSG "scheduler succesfully initialized\n");
 
-    err = ksched_spawn("[thread]", (void*) &thread, 0);
+    err = ksched_spawn("[thread]", (void*)&thread, 0);
     if (err < 0)
         kprint(KPRINT_ERR "failed to spawn the first task =(\n");
 
